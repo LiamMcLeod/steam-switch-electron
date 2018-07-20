@@ -20,6 +20,7 @@
     "electron": "^2.0.0",
     "electron-winstaller": "^2.6.4",
     "gulp": "^3.9.1",
+    "jquery": "^3.3.1",
     "laravel-elixir": "^6.0.0-18",
     "laravel-elixir-webpack-official": "^1.0.10"
   },

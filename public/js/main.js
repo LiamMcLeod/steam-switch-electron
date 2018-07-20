@@ -1,3 +1,6 @@
+var $ = require('jquery');
+require('./imports');
+
 // $(document).ready(function () {
 //https://github.com/electron/electron-api-demos/blob/5f980e5c2df570eb399e8e9a82068fb3cb73ca51/assets/nav.js
 $('#modal-show').on('click', (e) => {
