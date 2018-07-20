@@ -1,0 +1,79 @@
+//* My CSS
+// Main Colour #2b2f46
+::-webkit-scrollbar {
+	width: 2px;
+	height: 2px;
+}
+
+::-webkit-scrollbar-button {
+	width: 0px;
+	height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #e1e1e1;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background: #000000;
+}
+
+::-webkit-scrollbar-track {
+	background: #666666;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-track:hover {
+	background: #666666;
+}
+
+::-webkit-scrollbar-track:active {
+	background: #333333;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+body {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	background: rgb(48, 48, 48);
+	color: var(--color);
+	overflow-y: auto;
+	max-width: 500px;
+	min-width: 500px;
+}
+
+main {
+	/* display: flex; */
+}
+
+div.account-container {
+	background: var(--color-bg);
+	width: 240px;
+	height: 80px;
+	display: inline-flex;
+}
+
+footer {
+	color: var(--color-accent);
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+}
+
+a {
+	text-decoration: none;
+	color: var(--color);
+}
+
+footer a {
+	color: var(--color-accent);
+}
