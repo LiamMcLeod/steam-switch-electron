@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Steam Switcher</title>
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="public/css/all.min.css">
   <!-- My CSS -->
@@ -11,8 +12,10 @@
   <link rel="stylesheet" href="public/css/main.css">
 
   <link rel/="icon" type="image/png" href="/favicon.ico" />
-  
+
   <link rel="import" href="views/account.html">
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -25,8 +28,8 @@
     </div> -->
   </main>
   <footer>
-    <a id="add-account" href="#" :onclick="toggleModal($event)">
-      <i class="fas fa-plus fa-lg"></i>
+    <a href="#">
+      <i id="modal-show" class="fas fa-plus fa-lg"></i>
     </a>
   </footer>
   <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->
@@ -34,8 +37,12 @@
   <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
   <script>
     // You can also require other files to run in this process require('./renderer.js')
+    require('./public/js/imports')
   </script>
-  <script src="public/js/app.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="public\/js\/jquery.min.js"><\/script>')
+  </script>
+  <script type="text/javascript" src="public/js/app.js"></script>
 </body>
 
 </html>
