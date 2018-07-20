@@ -1,0 +1,65 @@
+/* Generic Colours */
+
+:root {
+    --color: rgb(240, 240, 240);
+    --color-subtle: rgb(131, 131, 131);
+    --color-strong: rgb(255, 255, 255);
+    --color-link: rgb(255, 255, 255);
+    --color-border: rgb(255, 255, 255);
+    --color-bg: rgb(27, 27, 27);
+    --color-accent: grey;
+    /* Fallback */
+}
+
+/* Accent Colours */
+
+.u-category-windows {
+    --color-accent: hsl(116, 30%, 36%);
+}
+
+.u-category-menu {
+    --color-accent: hsl(194, 60%, 36%);
+}
+
+.u-category-native-ui {
+    --color-accent: hsl(222, 53%, 50%);
+}
+
+.u-category-communication {
+    --color-accent: hsl(285, 47%, 46%);
+}
+
+.u-category-system {
+    --color-accent: hsl(330, 65%, 48%);
+}
+
+.u-category-media {
+    --color-accent: hsl( 36, 77%, 34%);
+}
+
+body {
+    background: rgb(48, 48, 48);
+    color: var(--color);
+}
+
+main {
+    /* display: flex; */
+}
+
+div.account-container {
+    background: var(--color-bg);
+    width: 240px;
+    height: 80px;
+    display: inline-flex;
+}
+
+footer {
+    position: fixed;
+    bottom:5px;
+    right:5px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color);
+}
