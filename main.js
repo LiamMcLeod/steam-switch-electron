@@ -6,8 +6,10 @@ const {
   Tray
 } = require('electron')
 
-var path = require('path')
-var url = require('url')
+const path = require('path')
+const fs = require('fs');
+const url = require('url')
+// const Store = require('store.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -84,6 +86,7 @@ function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
 
   var contextMenu = Menu.buildFromTemplate([{
+    // TODO Dynamically generate this with accounts in
       label: 'Show',
       click: function () {
         // Show Window
@@ -102,3 +105,6 @@ function createTray(event) {
   ])
   tray.setContextMenu(contextMenu);
 }
+
+//! When complete use electron-winstaller to build exes
+//? https://github.com/electron/windows-installer

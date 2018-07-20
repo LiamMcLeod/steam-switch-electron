@@ -4,14 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Steam Switcher</title>
-  <link rel="stylesheet" href="css/all.min.css">
-  <link rel="stylesheet" href="css/main.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="public/css/all.min.css">
+  <!-- My CSS -->
+  <link rel="stylesheet" href="public/css/account.css">
+  <link rel="stylesheet" href="public/css/main.css">
 
   <link rel/="icon" type="image/png" href="/favicon.ico" />
+  
+  <link rel="import" href="views/account.html">
 </head>
 
 <body>
-  <main>
+  <main class="content js-content">
     <!-- <div class="account-container">
 
     </div>
@@ -20,7 +25,7 @@
     </div> -->
   </main>
   <footer>
-    <a id="add-account" href="#">
+    <a id="add-account" href="#" :onclick="toggleModal($event)">
       <i class="fas fa-plus fa-lg"></i>
     </a>
   </footer>
@@ -30,6 +35,7 @@
   <script>
     // You can also require other files to run in this process require('./renderer.js')
   </script>
+  <script src="public/js/app.js"></script>
 </body>
 
 </html>

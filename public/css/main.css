@@ -13,27 +13,27 @@
 
 /* Accent Colours */
 
-.u-category-windows {
+.accent-green {
     --color-accent: hsl(116, 30%, 36%);
 }
 
-.u-category-menu {
-    --color-accent: hsl(194, 60%, 36%);
+.accent-cyan {
+    --color-accent: hsl(194, 82%, 48%);
 }
 
-.u-category-native-ui {
+.accent-blue {
     --color-accent: hsl(222, 53%, 50%);
 }
 
-.u-category-communication {
+.accent-pruple {
     --color-accent: hsl(285, 47%, 46%);
 }
 
-.u-category-system {
+.accent-pink {
     --color-accent: hsl(330, 65%, 48%);
 }
 
-.u-category-media {
+.accent-orange{
     --color-accent: hsl( 36, 77%, 34%);
 }
 
