@@ -23,13 +23,33 @@
 </head>
 
 <body>
+  <header>
+    <a class="account-hide" href="#">
+      <i id="account-hide" class="far fa-times-circle fa-2x hidden"></i>
+    </a>
+  </header>
   <main class="content js-content">
+    <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
+      KEEPING ALL CONTENT WITHIN 
+      INDEX AND USING SHOW / HIDE TO DYNAMICALLY 
+      DISPLAY AND RENDER THINGS
+    
+      adjust methods within main to accomodate for that
+      such as buttons and stuff.
 
+      template content not clickable no events work on them
+
+      maybe document.write() templates instead of JQuery appends??
+      I don't know
+
+      see delegated bindings which I'm sure I was using but just in case
+      https://stackoverflow.com/questions/6658752/click-event-doesnt-work-on-dynamically-generated-elements
+    -->
   </main>
   <footer>
     <!-- <a id="modal-show"> About </a> -->
     <a href="#">
-      <i id="account" class="fas fa-plus fa-lg"></i>
+      <i id="account-show" class="fas fa-plus fa-lg"></i>
     </a>
   </footer>
   <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->

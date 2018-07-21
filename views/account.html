@@ -1,5 +1,5 @@
-<template id="account-modal" class="template">
-	<div class="content-body account hidden">
+<template id="account-template" class="template">
+	<div id="account" class="content-body account hidden">
 		<div class="pure-u-5-12">
 
 		</div>
@@ -23,44 +23,12 @@
 			</form>
 		</div>
 		<div class="pure-u-5-12">
-
-		</div>
-		<!-- <div>
-			<a id="account-hide" class="account-hide" href="#">
+			<!-- <a id="account-hide" class="account-hide" href="#">
 				<i class="far fa-times-circle fa-2x"></i>
-			</a>
-		</div> -->
+			</a> -->
+		</div>
 	</div>
+	<script>
+		//var $ = window.$;
+	</script>
 </template>
-<script>
-	//console.log(window);
-	/**
-	document.body.onclick = function () {
-		var $ = window.$;
-		var x = document.getElementById('modal-hide')
-		//console.log(x.id);
-		if (x.id == "modal-hide")
-			//toggleAccount();
-			console.log($('#modal-hide'));
-		//window.$('#mod')
-	}*/
-	/* document.body.onclick = (e) => {
-		var $ = window.$;
-		console.log(e);
-		if (e.target.id == "modal-hide") {
-			var modal = $('.account');
-			if (modal.hasClass('hide')) modal.removeClass('hide');
-			else modal.addClass('hide');
-		}
-	} */
-	/* document.body.addEventListener('click', (e) => {
-		var $ = window.$;
-		console.log(e);
-		if (e.target.id == "modal-hide") {
-			var modal = $('.account');
-			if (modal.hasClass('hide'))
-				modal.removeClass('hide');
-			else modal.addClass('hide');
-		}
-	}) */
-</script>

@@ -70,6 +70,13 @@ a {
   color: #f0f0f0;
 }
 
+header a {
+  color: white;
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
 footer a {
   color: grey;
 }
@@ -104,13 +111,6 @@ div.account-container {
 
 .fixed {
   position: fixed;
-}
-
-.account-hide {
-  color: white;
-  position: fixed;
-  top: 5px;
-  right: 5px;
 }
 
 .pure-form legend {

@@ -1,61 +1,98 @@
     window.$ = window.jQuery = require('jquery');
     require('./imports');
 
-    $('#modal-show').on('click', (e) => {
-      e.preventDefault();
-      toggleAccount(event);
-    })
-    $('#modal-hide').on('click', (e) => {
-      e.preventDefault();
-      toggleAccount(event);
-    })
-
+    //* Basic Functions 
     function toggleModal() {
       var modal = $('#modal');
-      hideAll();
-      // console.log(modal);
-      if (modal.hasClass('hide')) modal.removeClass('hide');
-      else modal.addClass('hide');
+      toggle(modal);
     }
 
     function showContent(content) {
       var content = $('.content-body .' + content);
-      if (content.hasClass('hidden'))
-        $('.list').removeClass('hidden');
+      show(content);
     }
 
     function showMainContent() {
       var mainContent = $('.content-body.list');
-      hideAll();
-      if (mainContent.hasClass('hidden'))
-        mainContent.removeClass('hidden');
+      show(mainContent);
     }
 
-    function hideAll() {
+    function hideAll(showMain) {
       var content = $('.content-body');
       var modal = $('#modal');
 
-      if (!content.hasClass('hidden'))
-        content.addClass('hidden');
-      if (!modal.hasClass('hidden'))
-        modal.addClass('hidden');
+      content.each(function (i) {
+        //? Vanilla JS because $ isn't in scope
+        if (!this.classList.contains('hidden'))
+          this.classList.add('hidden')
+      })
 
-      showMainContent();
+      hide(modal);
+      if (showMain)
+        showMainContent();
     }
 
-    $(document).click((e) => {
-      // e.preventDefault();
-      var target = e.target;
-      target = e.target; //e.target.id;
-      console.log(target);
-      if (target.id == "account") {
+    function objectHasId(id) {
+      if (id == "account-show") {
+        hideAll();
         target = $('.content-body.account')
-        if (target.hasClass('hidden'))
-          target.removeClass('hidden');
+        show(target)
+      } else if (id == "account-hide") {
+        hideAll(true);
+      } else {
+        // TODO CATCH ALL
+      }
+    }
+
+    function objectHasNoId(classList) {
+      if (classList.contains("account-show")) {
+
+      }
+    }
+
+    function show(object) {
+      if (object.hasClass('hidden'))
+        object.removeClass('hidden');
+    }
+
+    function hide(object) {
+      if (!object.hasClass('hidden'))
+        object.addClass('hidden');
+    }
+
+    function toggle() {
+      if (object.hasClass('hidden'))
+        object.removeClass('hidden');
+      else
+        object.addClass('hidden')
+    }
+
+    //* Button Events
+    // $('#account-show').click((e) => {
+    //   hideAll();
+    //   account = $('.content-body.account')
+    //   show(account);
+    // })
+
+    // $('#account-hide').on("click", (e) => {
+    //   console.log("Hide Event")
+    //   hideAll();
+    // })
+
+    //* Body Events
+    $(document).on('click', function (e) {
+      console.log($(this));
+      console.log(e);
+      var target = e.target;
+
+      if (target.id) {
+        objectHasId(target.id);
+      } else {
+        objectHasNoId(target.classList);
       }
     })
 
+    //* Load Main Content
     $(document).ready((e) => {
-      // console.log("ready");
       showMainContent();
     })

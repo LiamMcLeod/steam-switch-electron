@@ -14,20 +14,19 @@
 	color: $color-accent;
 	pointer-events: none; // transform: scale(1.1);
 	transition: visibility 0s .12s linear, opacity .12s ease-in, transform .12s ease-in;
-	margin: 50px 0 0 0; // padding: 50px 0 0 0;
+	margin: 50px 0 0 0; // padding: 50px 0 0 0;\
 }
 
 .fixed {
 	position: fixed;
 }
 
-.account-hide {
-	color: $color-strong;
-	position: fixed;
-	top: 5px;
-	right: 5px;
-}
-
+// .account-hide {
+// 	color: $color-strong;
+// 	position: fixed;
+// 	top: 5px;
+// 	right: 5px;
+// }
 .pure-form legend {
 	color: $color
 }

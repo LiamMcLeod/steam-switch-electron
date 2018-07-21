@@ -69,6 +69,13 @@ a {
 	color: $color;
 }
 
+header a {
+	color: $color-strong;
+	position: fixed;
+	top: 5px;
+	right: 5px;
+}
+
 footer a {
 	color: $color-accent;
 }
