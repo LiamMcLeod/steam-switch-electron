@@ -20,7 +20,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 500,
     height: 380,
-    // resizable: false, //!Uncomment when complete
+    resizable: false, //!Uncomment when complete
     fullscreenable: false,
     icon: __dirname + "/icon.png",
     title: "Steam Switcher v1"
@@ -86,7 +86,7 @@ function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
 
   var contextMenu = Menu.buildFromTemplate([{
-    // TODO Dynamically generate this with accounts in
+      // TODO Dynamically generate this with accounts in
       label: 'Show',
       click: function () {
         // Show Window

@@ -45,25 +45,20 @@
 body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	background: rgb(48, 48, 48);
-	color: var(--color);
+	color: $color;
 	overflow-y: auto;
+	overflow-x: hidden;
 	max-width: 500px;
 	min-width: 500px;
 }
 
 main {
-	/* display: flex; */
-}
-
-div.account-container {
-	background: var(--color-bg);
-	width: 240px;
-	height: 80px;
-	display: inline-flex;
+	display: flex; // flex-direction: row | column;
+	margin-top: 10px;
 }
 
 footer {
-	color: var(--color-accent);
+	color: $color-accent;
 	position: fixed;
 	bottom: 5px;
 	right: 5px;
@@ -71,9 +66,9 @@ footer {
 
 a {
 	text-decoration: none;
-	color: var(--color);
+	color: $color;
 }
 
 footer a {
-	color: var(--color-accent);
+	color: $color-accent;
 }

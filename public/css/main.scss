@@ -1,3 +1,23 @@
 @import "vars";
 @import "index";
+@import "list";
 @import "account";
+@import "modal";
+//* Stuff for visibility
+.show {
+	pointer-events: auto;
+	visibility: visible;
+	/* display: flex; */
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.hidden {
+	display: none;
+}
+
+.shown {
+	display: inherit;
+}
