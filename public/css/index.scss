@@ -14,17 +14,23 @@ body {
 	*/
 }
 
-header {
-	// background: $color-bg-dark;
+body>header {
+	background: $color-bg-md;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
 	height: 30px;
 }
 
 main {
 	margin-top: 15px;
-	height: 445px;
+	height: 310px;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
-footer {
+body>footer {
 	height: 25px;
 	position: fixed;
 	bottom: 0;

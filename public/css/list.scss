@@ -19,6 +19,7 @@ a.show-account,
 
 header.card-header {
 	background-color: $color-bg-dark;
+	height: 35px;
 }
 
 .card {
@@ -43,4 +44,12 @@ header.card-header {
 
 .medium {
 	background: $color-dark
+}
+
+footer.card-footer {
+	background: $color-dark;
+}
+
+footer.card-footer a:hover {
+	color: $color-accent;
 }
