@@ -9678,8 +9678,16 @@ body > footer {
   right: 0;
 }
 
+body > footer a {
+  color: grey;
+}
+
 a {
   color: #f0f0f0;
+}
+
+.list {
+  padding-top: 15px;
 }
 
 div.account-container {
@@ -9718,10 +9726,6 @@ header.card-header {
 
 .card-content {
   background: #333;
-}
-
-.dark {
-  background: #1b1b1b;
 }
 
 .medium {
@@ -9868,6 +9872,11 @@ footer.card-footer a:hover {
 
 .inline-flex {
   display: inline-flex;
+}
+
+.dark {
+  background: #1b1b1b;
+  color: grey;
 }
 
 /*# sourceMappingURL=app.css.map */

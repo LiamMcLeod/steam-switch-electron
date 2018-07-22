@@ -85,3 +85,8 @@
 .inline-flex {
 	display: inline-flex;
 }
+
+.dark {
+	background: $color-bg-dark;
+	color: $color-accent;
+}

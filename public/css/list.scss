@@ -1,4 +1,6 @@
-.list {}
+.list {
+	padding-top: 15px;
+}
 
 div.account-container {
 	background: $color-bg-dark;
@@ -36,10 +38,6 @@ header.card-header {
 
 .card-content {
 	background: $color-dark;
-}
-
-.dark {
-	background: $color-bg-dark;
 }
 
 .medium {

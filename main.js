@@ -6,9 +6,11 @@ const {
   Tray
 } = require('electron')
 
-const path = require('path')
+const path = require('path');
 const fs = require('fs');
-const url = require('url')
+const url = require('url');
+var crypto = require("crypto");
+var uuid = require("uuid");
 // const Store = require('store.js');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -60,6 +62,7 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after  event occurs.
 app.on('ready', () => {
+  checkFirstRun()
   createWindow();
 })
 
@@ -82,11 +85,25 @@ app.on('activate', () => {
 
 // In  file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+//? Maybe generate random encryption key for user through https://api.random.org/api-keys/beta
+function checkFirstRun() {
+  var homePath = process.env.Home;
+  var path = homePath + "\\Documents\\SteamSwitcher";
+  if (fs.existsSync(path)) {
+    console.log('true')
+    //todo get user data
+  } else {
+    //todo make one
+    console.log(false);
+    console.log(generateId());
+  }
+}
+
 function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
-
+  // TODO Dynamically generate this with accounts in
   var contextMenu = Menu.buildFromTemplate([{
-      // TODO Dynamically generate this with accounts in
       label: 'Show',
       click: function () {
         // Show Window
@@ -101,9 +118,43 @@ function createTray(event) {
         // Quit
         app.quit()
       }
+    },
+    {
+      label: 'Launch Steam',
+      click: function () {
+        // Test Menu
+        launchSteam();
+      },
     }
   ])
   tray.setContextMenu(contextMenu);
+  tray.on('right-click', (e) => {
+    tray.popUpContextMenu(contextMenu);
+  });
+  tray.on('double-click', (e) => {
+    mainWindow.show();
+    tray.destroy();
+  });
+}
+
+function launchSteam(user, pass) {
+  user,
+  pass = ""; // TODO Define these 
+  var child = require("child_process").execFile;
+  var executablePath =
+    "C:\\Program Files (x86)\\Steam\\steam.exe";
+  var parameters = ["--login" + user + " " + pass];
+
+  child(executablePath, parameters, function (err, data) {
+    if (err)
+      console.log(err);
+    if (data)
+      console.log(data.toString());
+  });
+}
+
+function generateId() {
+  return crypto.randomBytes(20).toString('hex');
 }
 
 //! When complete use electron-winstaller to build exes
