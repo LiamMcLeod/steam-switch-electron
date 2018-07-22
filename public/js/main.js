@@ -12,9 +12,23 @@
       show(content);
     }
 
+
     function showMainContent() {
       var mainContent = $('.content-body.list');
+      switchButtons(true);
       show(mainContent);
+    }
+
+    function switchButtons(def) {
+      // TODO TEST
+      /** Default Returns to original states */
+      if (def) {
+        show($('#account-show'));
+        hide($('#account-hide'));
+      } else {
+        toggle($('#account-show'));
+        toggle($('#account-hide'));
+      }
     }
 
     function hideAll(showMain) {
@@ -35,10 +49,12 @@
     function objectHasId(id) {
       if (id == "account-show") {
         hideAll();
+        switchButtons();
         target = $('.content-body.account')
         show(target)
       } else if (id == "account-hide") {
         hideAll(true);
+        switchButtons(true);
       } else {
         // TODO CATCH ALL
       }
@@ -60,28 +76,16 @@
         object.addClass('hidden');
     }
 
-    function toggle() {
+    function toggle(object) {
       if (object.hasClass('hidden'))
         object.removeClass('hidden');
       else
         object.addClass('hidden')
     }
 
-    //* Button Events
-    // $('#account-show').click((e) => {
-    //   hideAll();
-    //   account = $('.content-body.account')
-    //   show(account);
-    // })
-
-    // $('#account-hide').on("click", (e) => {
-    //   console.log("Hide Event")
-    //   hideAll();
-    // })
-
     //* Body Events
     $(document).on('click', function (e) {
-      console.log($(this));
+      // console.log($(this));
       console.log(e);
       var target = e.target;
 
@@ -91,6 +95,21 @@
         objectHasNoId(target.classList);
       }
     })
+
+    //* Button Events
+    $('#account-show').click((e) => {
+      hideAll();
+      account = $('.content-body.account')
+      show(account);
+    })
+
+    $('#account-hide').on("click", (e) => {
+      hideAll();
+    })
+
+    //* Load Linked Content
+    //! Giving up on templates until I at least have the basics of the app down
+    // require('./imports'); 
 
     //* Load Main Content
     $(document).ready((e) => {

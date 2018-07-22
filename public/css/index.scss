@@ -1,81 +1,37 @@
 //* My CSS
 // Main Colour #2b2f46
-::-webkit-scrollbar {
-	width: 2px;
-	height: 2px;
-}
-
-::-webkit-scrollbar-button {
-	width: 0px;
-	height: 0px;
-}
-
-::-webkit-scrollbar-thumb {
-	background: #e1e1e1;
-	border: 0px none #ffffff;
-	border-radius: 50px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #ffffff;
-}
-
-::-webkit-scrollbar-thumb:active {
-	background: #000000;
-}
-
-::-webkit-scrollbar-track {
-	background: #666666;
-	border: 0px none #ffffff;
-	border-radius: 50px;
-}
-
-::-webkit-scrollbar-track:hover {
-	background: #666666;
-}
-
-::-webkit-scrollbar-track:active {
-	background: #333333;
-}
-
-::-webkit-scrollbar-corner {
-	background: transparent;
-}
-
 body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	background: rgb(48, 48, 48);
 	color: $color;
-	overflow-y: auto;
+	/*
+	overflow-y: hidden;
 	overflow-x: hidden;
+	height: 100%;
+	width: 500px;
 	max-width: 500px;
-	min-width: 500px;
+	min-width: 500px; 
+	*/
+}
+
+header {
+	// background: $color-bg-dark;
+	height: 30px;
 }
 
 main {
-	display: flex; // flex-direction: row | column;
-	margin-top: 10px;
+	margin-top: 15px;
+	height: 445px;
 }
 
 footer {
-	color: $color-accent;
+	height: 25px;
 	position: fixed;
-	bottom: 5px;
-	right: 5px;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 
 a {
-	text-decoration: none;
 	color: $color;
-}
-
-header a {
-	color: $color-strong;
-	position: fixed;
-	top: 5px;
-	right: 5px;
-}
-
-footer a {
-	color: $color-accent;
 }

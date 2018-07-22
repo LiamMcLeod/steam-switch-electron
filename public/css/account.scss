@@ -1,56 +1,17 @@
 .account {
-	height: 380px;
-	width: 500px;
-	max-width: 500px;
-	min-width: 500px;
-	position: fixed;
-	display: flex;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	color: $color-accent;
-	pointer-events: none; // transform: scale(1.1);
-	transition: visibility 0s .12s linear, opacity .12s ease-in, transform .12s ease-in;
-	margin: 50px 0 0 0; // padding: 50px 0 0 0;\
+	color: $color;
+	transition: visibility 0s.12s linear, opacity.12s ease-in, transform.12s ease-in; // 	margin: 50px 0 0 0; // padding: 50px 0 0 0;\
 }
 
-.fixed {
-	position: fixed;
+.account label {
+	color: $color;
 }
 
-// .account-hide {
-// 	color: $color-strong;
-// 	position: fixed;
-// 	top: 5px;
-// 	right: 5px;
-// }
-.pure-form legend {
-	color: $color
+.button.is-primary {
+	background: $color-bg-dark;
 }
 
-.pure-button-primary {
-	background-color: $color-accent;
-	float: right;
-}
-
-//* Stuff for visibility
-.show {
-	pointer-events: auto;
-	visibility: visible;
-	/* display: flex; */
-}
-
-.hide {
-	visibility: hidden;
-}
-
-.hidden {
-	display: none;
-}
-
-.shown {
-	display: inherit;
+.button.is-primary:hover,
+.button.is-primary.is-hovered {
+	background: $color-accent;
 }

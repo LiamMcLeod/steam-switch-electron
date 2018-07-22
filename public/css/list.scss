@@ -2,9 +2,45 @@
 
 div.account-container {
 	background: $color-bg-dark;
-	width: 240px;
 	height: 80px;
 	display: inline-flex;
 	margin-right: 3px;
 	margin-left: 3px;
+}
+
+a.show-account,
+.hide-account {
+	position: fixed; // bottom: 5px;
+	top: 5px;
+	right: 5px;
+	color: $color-accent;
+	z-index: 1;
+}
+
+header.card-header {
+	background-color: $color-bg-dark;
+}
+
+.card {
+	color: $color;
+}
+
+.card header p {
+	color: $color-strong;
+}
+
+.text-no-decoration {
+	text-decoration: none;
+}
+
+.card-content {
+	background: $color-dark;
+}
+
+.dark {
+	background: $color-bg-dark;
+}
+
+.medium {
+	background: $color-dark
 }

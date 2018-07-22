@@ -10,26 +10,28 @@
 
   <!-- Libraries -->
   <link rel="stylesheet" href="public/css/normalize.css">
-  <link rel="stylesheet" href="public/css/pure.min.css">
-
   <!-- My CSS -->
   <link rel="stylesheet" href="public/app.css">
 
   <link rel="icon" type="image/png" href="/favicon.ico" />
 
-  <link rel="import" href="views/account.html">
-  <link rel="import" href="views/list.html">
+  <!-- <link rel="import" href="views/account.html">
+  <link rel="import" href="views/list.html"> -->
 
 </head>
 
 <body>
   <header>
-    <a class="account-hide" href="#">
-      <i id="account-hide" class="far fa-times-circle fa-2x hidden"></i>
+    <a class="hide-account" href="#">
+      <i id="account-hide" class="fas fa-times fa-lg hidden"></i>
+    </a>
+    <a class="show-account" href="#">
+      <i id="account-show" class="fas fa-plus fa-lg"></i>
     </a>
   </header>
   <main class="content js-content">
-    <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
+    <div class="container">
+      <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
       KEEPING ALL CONTENT WITHIN 
       INDEX AND USING SHOW / HIDE TO DYNAMICALLY 
       DISPLAY AND RENDER THINGS
@@ -45,12 +47,130 @@
       see delegated bindings which I'm sure I was using but just in case
       https://stackoverflow.com/questions/6658752/click-event-doesnt-work-on-dynamically-generated-elements
     -->
+      <!-- Account List -->
+      <div id="list" class="content-body list hidden">
+        <script>
+          // TODO CODE TO LOOP THROUGH STORAGE and document write the below -->
+        </script>
+        <div class="columns inline-flex">
+          <!-- COL - 1 -->
+          <div class="column is-6-mobile">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  Steam Account Name Here
+                </p>
+                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                  <a href="#">@bulmaio</a>.
+                  <a href="#">#css</a>
+                  <a href="#">#responsive</a>
+                  <br>
+                  <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a href="#" class="card-footer-item">Save</a>
+                <a href="#" class="card-footer-item">Edit</a>
+                <a href="#" class="card-footer-item">Delete</a>
+              </footer>
+            </div>
+          </div>
+          <!-- COL - 2 -->
+          <div class="column is-6-mobile">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  Steam Account
+                </p>
+                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                  <a href="#">@bulmaio</a>.
+                  <a href="#">#css</a>
+                  <a href="#">#responsive</a>
+                  <br>
+                  <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a href="#" class="card-footer-item">Save</a>
+                <a href="#" class="card-footer-item">Edit</a>
+                <a href="#" class="card-footer-item">Delete</a>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Account -->
+      <div id="account" class="content-body account hidden">
+        <div class="columns">
+          <div class="column is-8-mobile is-offset-2-mobile">
+            <form>
+              <fieldset>
+                <legend>Your Account</legend>
+
+                <div class="field">
+                  <label class="label">Username</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input class="input is-success" type="text" placeholder="Username" value="">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Password</label>
+                  <p class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+
+                <label class="checkbox">
+                  <input type="checkbox"> Remember me
+                </label>
+
+                <div class="field">
+                  <p class="control">
+                    <button class="button is-primary fright">
+                      Add
+                    </button>
+                  </p>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-  <footer>
-    <!-- <a id="modal-show"> About </a> -->
-    <a href="#">
-      <i id="account-show" class="fas fa-plus fa-lg"></i>
-    </a>
+  <footer class="dark">
+    <div class="content has-text-centered">
+      <a id="modal-show" href="">
+        About
+      </a>
+    </div>
   </footer>
   <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->
   <!-- Chromium <script>document.write(process.versions.chrome)</script>, -->
