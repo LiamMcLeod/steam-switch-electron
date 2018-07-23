@@ -21,6 +21,8 @@
     const {
       ipcRenderer
     } = require('electron');
+    //* Acts as a request for account data.
+    ipcRenderer.send('dom-ready');
   </script>
 </head>
 

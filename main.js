@@ -56,6 +56,8 @@ function createWindow() {
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 
+
+  //* Main Window Event Listeners
   mainWindow.on('minimize', (e) => {
     e.preventDefault();
     // Create tray icon,
@@ -80,9 +82,9 @@ app.on('ready', () => {
   checkFirstRun();
   id = createKey(id);
   createWindow();
-  account = getAccount();
-  //! https://electronjs.org/docs/api/web-contents
-  mainWindow.webContents.send('ping', account);
+  // account = getAccount();
+  // //! https://electronjs.org/docs/api/web-contents
+  // mainWindow.webContents.send('ping', account);
 })
 
 // Quit when all windows are closed.
@@ -104,7 +106,6 @@ app.on('activate', () => {
 
 // In  file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
 //? Maybe generate random encryption key for user through https://api.random.org/api-keys/beta
 function checkFirstRun() {
   var homePath = process.env.Home;
@@ -281,5 +282,9 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 
 });
 
+ipcMain.on('dom-ready', () => {
+  account = getAccount();
+  mainWindow.webContents.send('ping', account);
+})
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer
