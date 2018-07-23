@@ -17,7 +17,11 @@
 
   <!-- <link rel="import" href="views/account.html">
   <link rel="import" href="views/list.html"> -->
-
+  <script>
+    const {
+      ipcRenderer
+    } = require('electron');
+  </script>
 </head>
 
 <body>
@@ -31,6 +35,11 @@
   </header>
   <main class="content js-content">
     <div class="container">
+      <script>
+        ipcRenderer.on('ping', (event, account) => {
+          console.log(account);
+        })
+      </script>
       <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
       KEEPING ALL CONTENT WITHIN 
       INDEX AND USING SHOW / HIDE TO DYNAMICALLY 
@@ -152,10 +161,6 @@
   <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
   <script type="text/javascript" src="public/app.js"></script>
   <script>
-    const {
-      ipcRenderer
-    } = require('electron');
-
     $('.card-footer-item').on('click', (e) => {
       launchAccount(e)
     })

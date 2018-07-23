@@ -3,7 +3,8 @@ const {
   app,
   BrowserWindow,
   Menu,
-  Tray
+  Tray,
+  webContents
 } = require('electron');
 
 const {
@@ -16,9 +17,11 @@ const fs = require('fs');
 const url = require('url');
 const crypto = require("crypto");
 const uuid = require("uuid");
-const sha512 = require('sha512');
+const sha256 = require('sha256');
+const aes256 = require('aes256');
 var id = '';
 
+var jsObf = require('javascript-obfuscator');
 
 
 // const Store = require('store.js');
@@ -74,8 +77,12 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after  event occurs.
 app.on('ready', () => {
-  checkFirstRun()
+  checkFirstRun();
+  id = createKey(id);
   createWindow();
+  account = getAccount();
+  //! https://electronjs.org/docs/api/web-contents
+  mainWindow.webContents.send('ping', account);
 })
 
 // Quit when all windows are closed.
@@ -102,8 +109,6 @@ app.on('activate', () => {
 function checkFirstRun() {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-  // var filePath = __dirname + '\\data';
-  console.log(filePath);
   if (fs.existsSync(filePath)) {
     if (fs.existsSync(filePath + "\\.id")) {
       id = fs.readFileSync(filePath + "\\.id", 'utf8');
@@ -116,7 +121,22 @@ function checkFirstRun() {
     makeFile(filePath);
     checkFirstRun();
   }
-  // console.log(sha512(hardwareId.concat()).toString('hex'));
+}
+
+function getAccount() {
+  var homePath = process.env.Home;
+  var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  if (fs.existsSync(filePath + "\\.account")) {
+    account = fs.readFileSync(filePath + "\\.account", 'utf8');
+    // console.log(account);
+    return account;
+  }
+
+}
+
+function createKey(key = id) {
+  // console.log(sha256(hardwareId.concat(key)).toString('hex'));
+  return sha256(hardwareId.concat(key)).toString('hex');
 }
 
 function makeDir(filePath) {
@@ -124,7 +144,7 @@ function makeDir(filePath) {
 }
 
 function makeFile(filePath) {
-  fs.writeFile(filePath + "\\.id", generateId(), function (err) {
+  fs.writeFile(filePath + "\\.id", generateId(20), function (err) {
     if (err) {
       return console.log(err);
     }
@@ -193,8 +213,18 @@ function createNotification() {
   myNotification.show();
 }
 
-function generateId() {
-  return crypto.randomBytes(20).toString('hex');
+function generateId(length, enc = 'hex') {
+  return crypto.randomBytes(length).toString(enc);
+}
+
+function storeAccount(account) {
+  // TODO CHECK IF EXISTS AND APPEND
+  var homePath = process.env.Home;
+  var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
+    if (err)
+      return console.log(err);
+  })
 }
 
 // main process, for example app/main.js
@@ -208,11 +238,34 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
   //TODO logic for communicating between main proc and render
   if (proc) {
     if (proc.id) {
+      //TODO CHECK FOR STEAM INSTANCE AND CLOSE
       launchSteam();
     }
     if (proc.post) {
-      console.log();
-      console.log(proc.post);
+      //* Generate Id
+      proc.post.id = generateId(2, 'hex')
+      //* Generate Key 
+      var key = generateId(20);
+      //* Store Key 
+      proc.post.key = key;
+      //* Hash Key 
+      console.log(proc.post.key);
+      //? Maybe Concat ID, might be overkill
+      encKey = createKey(proc.post.key);
+      //* Encrypt PW
+      var encrypted = aes256.encrypt(encKey, proc.post.password);
+      proc.post.password = encrypted;
+      // console.log(JSON.stringify(proc.post))
+
+      //? Maybe obfuscate result
+      //https://github.com/mongodb-js/objfuscate
+
+      storeAccount(proc.post);
+
+      // decryptKey = createKey(proc.post.key);
+      // var decrypted = aes256.decrypt(decryptKey, encrypted);
+      // console.log("Encrypted: " + encrypted);
+      // console.log("Decrypted: " + decrypted);
     }
     if (proc.get) {
       // console.log(proc.get);
@@ -224,7 +277,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       // console.log(proc.delete);
     }
   }
-
+  //**http://electron.rocks/different-ways-to-communicate-between-main-and-renderer-process/ */
 
 });
 

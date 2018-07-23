@@ -25,7 +25,9 @@
     "laravel-elixir-webpack-official": "^1.0.10"
   },
   "dependencies": {
+    "aes256": "^1.0.3",
     "node-machine-id": "^1.1.10",
+    "sha256": "^0.2.0",
     "sha512": "0.0.1"
   }
 }
