@@ -21,8 +21,6 @@ const sha256 = require('sha256');
 const aes256 = require('aes256');
 var id = '';
 
-var jsObf = require('javascript-obfuscator');
-
 
 // const Store = require('store.js');
 
@@ -124,15 +122,26 @@ function checkFirstRun() {
   }
 }
 
-function getAccount() {
+function readAccount() {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
     account = fs.readFileSync(filePath + "\\.account", 'utf8');
-    // console.log(account);
     return account;
+  } else {
+    return {}
   }
+}
 
+function getAccount() {
+  var account = readAccount();
+  var accounts = []
+  if (account.length) {
+    account = account.split(account.indexOf('}'));
+  }
+  // todo finish
+  // accounts.push(JSON.parse(account));
+  return account;
 }
 
 function createKey(key = id) {
@@ -222,10 +231,28 @@ function storeAccount(account) {
   // TODO CHECK IF EXISTS AND APPEND
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-  fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
-    if (err)
-      return console.log(err);
-  })
+  if (fs.existsSync(filePath + "\\.account")) {
+    // console.log("append")
+    var accounts = []
+    var existingAccounts = JSON.parse(readAccount());
+    accounts.push(existingAccounts);
+    accounts.push(account)
+
+    console.log(JSON.stringify(accounts));
+
+    fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
+      if (err)
+        return console.log(err);
+    })
+  } else {
+    var accounts = [];
+    accounts = JSON.parse(JSON.stringify(account));
+    // console.log(account);
+    fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
+      if (err)
+        return console.log(err);
+    })
+  }
 }
 
 // main process, for example app/main.js
@@ -244,6 +271,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
     }
     if (proc.post) {
       //* Generate Id
+      // TODO CHECK UNIQUE
       proc.post.id = generateId(2, 'hex')
       //* Generate Key 
       var key = generateId(20);

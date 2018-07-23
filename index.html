@@ -37,11 +37,6 @@
   </header>
   <main class="content js-content">
     <div class="container">
-      <script>
-        ipcRenderer.on('ping', (event, account) => {
-          console.log(account);
-        })
-      </script>
       <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
       KEEPING ALL CONTENT WITHIN 
       INDEX AND USING SHOW / HIDE TO DYNAMICALLY 
@@ -59,13 +54,54 @@
       https://stackoverflow.com/questions/6658752/click-event-doesnt-work-on-dynamically-generated-elements
     -->
       <!-- Account List -->
-      <div id="list" class="content-body list hidden">
-        <script>
-          // TODO CODE TO LOOP THROUGH STORAGE and document write the below -->
-        </script>
-        <!-- ROW ONE -->
+      <script>
+        ipcRenderer.on('ping', (event, accounts) => {
+          //for ()
+          //      document.write(
+          //        `
+          //          <div id="list" class="content-body list hidden">
+          //            <!-- ROW ONE -->
+          //            <div class="columns inline-flex">
+          //              <!-- COL - 1 -->
+          //              <div class="column is-5-mobile is-offset-1-mobile">
+          //                <div class="card">
+          //                  <header class="card-header">
+          //                    <p class="card-header-title">
+          //                      ` +
+          //        account[0] +
+          //        `
+          //                    </p>
+          //                    <a href="#" class="card-header-icon" aria-label="more options">
+          //                      <span class="icon">
+          //                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+          //                      </span>
+          //                    </a>
+          //                  </header>
+          //                  <div class="card-content">
+          //                    <div class="content">
+          //                      Misc Account Details Go Here Perhaps pulled from API
+          //                    </div>
+          //                  </div>
+          //                  <footer class="card-footer">
+          //                    <a data-id="1" href="#" class="card-footer-item">Launch</a>
+          //                  </footer>
+          //                </div>
+          //              </div>
+          //              <!-- COL - 2 -->
+          //              <div class="column is-5-mobile">
+          //
+          //              </div>
+          //              <div class="column is-1-mobile">
+          //
+          //              </div>
+          //            </div>
+          //          </div>
+          //      `
+          //)
+        })
+      </script>
+      <!-- <div id="list" class="content-body list hidden">
         <div class="columns inline-flex">
-          <!-- COL - 1 -->
           <div class="column is-5-mobile is-offset-1-mobile">
             <div class="card">
               <header class="card-header">
@@ -88,7 +124,6 @@
               </footer>
             </div>
           </div>
-          <!-- COL - 2 -->
           <div class="column is-5-mobile">
 
           </div>
@@ -96,7 +131,7 @@
 
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Add Account -->
       <div id="account" class="content-body account hidden">
