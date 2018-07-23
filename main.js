@@ -20,8 +20,13 @@ const uuid = require("uuid");
 const sha256 = require('sha256');
 const aes256 = require('aes256');
 var id = '';
+//!remove when done
+process.env.NODE_ENV = "development";
 
-
+function log(log) {
+  if (process.env.NODE_ENV == "development")
+    console.log(log);
+}
 // const Store = require('store.js');
 
 let hardwareId = machineIdSync()
@@ -79,6 +84,7 @@ function createWindow() {
 app.on('ready', () => {
   checkFirstRun();
   id = createKey(id);
+  console.log(process.env.NODE_ENV);
   createWindow();
   // account = getAccount();
   // //! https://electronjs.org/docs/api/web-contents
@@ -231,15 +237,19 @@ function storeAccount(account) {
   // TODO CHECK IF EXISTS AND APPEND
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  var accounts = []
   if (fs.existsSync(filePath + "\\.account")) {
     // console.log("append")
-    var accounts = []
     var existingAccounts = JSON.parse(readAccount());
-    accounts.push(existingAccounts);
-    accounts.push(account)
-
-    console.log(JSON.stringify(accounts));
-
+    if (!existingAccounts.length) {
+      accounts.push(existingAccounts);
+      accounts.push(account)
+    } else {
+      for (var i = 0; i < existingAccounts.length; i++) {
+        accounts.push(existingAccounts[i]);
+      }
+      accounts.push(account);
+    }
     fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
       if (err)
         return console.log(err);
@@ -247,7 +257,6 @@ function storeAccount(account) {
   } else {
     var accounts = [];
     accounts = JSON.parse(JSON.stringify(account));
-    // console.log(account);
     fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
       if (err)
         return console.log(err);
