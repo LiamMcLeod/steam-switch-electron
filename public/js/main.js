@@ -1,6 +1,7 @@
     window.$ = window.jQuery = require('jquery');
     require('./imports');
 
+
     //* Basic Functions 
     function toggleModal() {
       var modal = $('#modal');
@@ -86,7 +87,7 @@
     //* Body Events
     $(document).on('click', function (e) {
       // console.log($(this));
-      console.log(e);
+      // console.log(e);
       var target = e.target;
 
       if (target.id) {
@@ -103,9 +104,11 @@
       show(account);
     })
 
-    $('#account-hide').on("click", (e) => {
+    $('#account-hide').on('click', (e) => {
       hideAll();
     })
+
+
 
     //* Load Linked Content
     //! Giving up on templates until I at least have the basics of the app down

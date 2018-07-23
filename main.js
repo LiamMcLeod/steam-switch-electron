@@ -4,14 +4,26 @@ const {
   BrowserWindow,
   Menu,
   Tray
-} = require('electron')
+} = require('electron');
+
+const {
+  machineId,
+  machineIdSync
+} = require('node-machine-id');
 
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
-var crypto = require("crypto");
-var uuid = require("uuid");
+const crypto = require("crypto");
+const uuid = require("uuid");
+const sha512 = require('sha512');
+var id = '';
+
+
+
 // const Store = require('store.js');
+
+let hardwareId = machineIdSync()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -89,21 +101,46 @@ app.on('activate', () => {
 //? Maybe generate random encryption key for user through https://api.random.org/api-keys/beta
 function checkFirstRun() {
   var homePath = process.env.Home;
-  var path = homePath + "\\Documents\\SteamSwitcher";
-  if (fs.existsSync(path)) {
-    console.log('true')
-    //todo get user data
+  var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  // var filePath = __dirname + '\\data';
+  console.log(filePath);
+  if (fs.existsSync(filePath)) {
+    if (fs.existsSync(filePath + "\\.id")) {
+      id = fs.readFileSync(filePath + "\\.id", 'utf8');
+    } else {
+      makeFile(filePath);
+      checkFirstRun();
+    }
   } else {
-    //todo make one
-    console.log(false);
-    console.log(generateId());
+    makeDir(filePath);
+    makeFile(filePath);
+    checkFirstRun();
   }
+  // console.log(sha512(hardwareId.concat()).toString('hex'));
+}
+
+function makeDir(filePath) {
+  fs.mkdirSync(filePath);
+}
+
+function makeFile(filePath) {
+  fs.writeFile(filePath + "\\.id", generateId(), function (err) {
+    if (err) {
+      return console.log(err);
+    }
+  })
 }
 
 function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
   // TODO Dynamically generate this with accounts in
   var contextMenu = Menu.buildFromTemplate([{
+      label: 'Launch Steam',
+      click: function () {
+        // Test Menu
+        launchSteam();
+      },
+    }, {
       label: 'Show',
       click: function () {
         // Show Window
@@ -119,13 +156,6 @@ function createTray(event) {
         app.quit()
       }
     },
-    {
-      label: 'Launch Steam',
-      click: function () {
-        // Test Menu
-        launchSteam();
-      },
-    }
   ])
   tray.setContextMenu(contextMenu);
   tray.on('right-click', (e) => {
@@ -151,11 +181,52 @@ function launchSteam(user, pass) {
     if (data)
       console.log(data.toString());
   });
+
+  // createNotification();
+}
+
+function createNotification() {
+  var myNotification = new Notification('The Title!', {
+    icon: __dirname + '/icon.png',
+    body: 'Your notification body'
+  });
+  myNotification.show();
 }
 
 function generateId() {
   return crypto.randomBytes(20).toString('hex');
 }
+
+// main process, for example app/main.js
+//* Event Listeners
+const {
+  ipcMain
+} = require('electron');
+
+// Listener on the mainProcess to recieve renderProcess data
+ipcMain.on('request-mainprocess-action', (event, proc) => {
+  //TODO logic for communicating between main proc and render
+  if (proc) {
+    if (proc.id) {
+      launchSteam();
+    }
+    if (proc.post) {
+      console.log();
+      console.log(proc.post);
+    }
+    if (proc.get) {
+      // console.log(proc.get);
+    }
+    if (proc.put) {
+      // console.log(proc.put);
+    }
+    if (proc.delete) {
+      // console.log(proc.delete);
+    }
+  }
+
+
+});
 
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer
