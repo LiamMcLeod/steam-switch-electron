@@ -233,23 +233,40 @@ function launchSteam(id) {
     decryptKey = createKey(account.key);
     pass = aes256.decrypt(decryptKey, pass);
 
-    // log(user);
+    log(user);
     // log(pass);
-
-    var child = require("child_process").execFile;
-    var executablePath =
-      "C:\\Program Files (x86)\\Steam\\steam.exe";
-    var parameters = ["--login" + user + " " + pass];
-
-    child(executablePath, parameters, function (err, data) {
-      if (err)
-        console.log(err);
-      if (data)
-        console.log(data.toString());
-    });
+    closeSteam();
+    openSteam(user, pass)
 
     // createNotification();
   }
+}
+
+function openSteam(user, pass) {
+  var child = require("child_process").execFile;
+  var executablePath =
+    "C:\\Program Files (x86)\\Steam\\steam.exe";
+  var parameters = ["-login " + user + " " + pass];
+
+  child(executablePath, parameters, function (err, data) {
+    if (err)
+      log(err);
+    if (data) {
+      log(data.toString());
+    }
+  });
+}
+
+function closeSteam() {
+  var exec = require('child_process').exec;
+  exec('taskkill /F /IM Steam.exe', function (err, stdout, stderr) {
+    if (err)
+      log(err);
+    if (stdout)
+      log(stdout);
+    if (stderr)
+      log(stderr);
+  });
 }
 
 function createNotification() {

@@ -89,9 +89,7 @@ function toggle(object) {
 //* JS Render Functions
 window.renderTemplate = function renderTemplate(template, data, el) {
   //!remove when complete
-  // console.log(data);
   $(el).html(template.render(data));
-  // console.log(jsrender);
 }
 
 window.renderMultiple = function renderMultiple(template, data, el) {
