@@ -3,7 +3,7 @@
         <div class="card">
             <header class="card-header">
                 <p class="card-header-title">
-                    TEST
+                    {{:name}}
                 </p>
                 <a href="#" class="card-header-icon" aria-label="more options">
                     <span class="icon">
@@ -11,18 +11,15 @@
                     </span>
                 </a>
             </header>
-            <div class="card-content">
-                <div class="content">
-                    <span>
-                        This is just a test to see if I can render data from the variables parsed
-                    </span>
-                    <span> {{:name}}
-                        <span>
-
-                </div>
+            <div class="card-content text-center">
+                <span>
+                    {{:username}}
+                </span>
+                <i class="fab fa-steam-symbol fa-7x"></i>
+                <!-- perhaps an image in here -->
             </div>
             <footer class="card-footer">
-                <a data-id="1" href="#" class="card-footer-item">Launch</a>
+                <a data-id={{:id}} href="#" class="card-footer-item">Launch</a>
             </footer>
         </div>
     </div>

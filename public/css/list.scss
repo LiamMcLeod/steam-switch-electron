@@ -19,16 +19,17 @@ a.show-account,
 	z-index: 1;
 }
 
-header.card-header {
+header.-header {
 	background-color: $color-bg-dark;
 	height: 35px;
 }
 
-.card {
+. {
 	color: $color;
+	min-width: 200px;
 }
 
-.card header p {
+. header p {
 	color: $color-strong;
 }
 
@@ -36,7 +37,7 @@ header.card-header {
 	text-decoration: none;
 }
 
-.card-content {
+.-content {
 	background: $color-dark;
 }
 
@@ -44,10 +45,14 @@ header.card-header {
 	background: $color-dark
 }
 
-footer.card-footer {
+footer.-footer {
 	background: $color-dark;
 }
 
-footer.card-footer a:hover {
+footer.-footer a:hover {
 	color: $color-accent;
+}
+
+.text-center {
+	text-align: center;
 }
