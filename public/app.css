@@ -9717,7 +9717,7 @@ header.card-header {
   min-width: 200px;
 }
 
-.card header p {
+.card header span {
   color: white;
 }
 
