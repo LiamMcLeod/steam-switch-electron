@@ -41,19 +41,12 @@
       <!-- Account List -->
       <div id="list" class="content-body list hidden">
         <script>
-          //var jsrender = require('jsrender');
-          // Account Template from views
-          var accountTemplate = $.templates("./views/account.html");
-          // The same but for when $ namespace unavailable
-          //accountTemplate = jsrender.templates("./views/account.html");
-          var toRender = accountTemplate.render(data);
-          ipcRenderer.on('ping', (event, data) => {
-            // Render template for template 
+          var jsrender = require('jsrender');
+          var accountTemplate = jsrender.templates('./views/account-no-js.html');
 
-            // Render by inserting using JQuery 
-            console.log(toRender);
-            $('#list').html(toRender);
-            console.log($('#list'));
+          ipcRenderer.on('ping', (event, data) => {
+            window.renderTemplate(accountTemplate, data, '#list')
+            //var html = jsrender.renderFile('./views/account-no-js.html', data);
           })
         </script>
       </div>

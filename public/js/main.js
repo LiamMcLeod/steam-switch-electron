@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery');
 window.jsrender = require('jsrender');
-console.log($.views);
+// console.log($.views);
 require('./imports');
 
 
@@ -84,6 +84,20 @@ function toggle(object) {
     object.removeClass('hidden');
   else
     object.addClass('hidden')
+}
+
+//* JS Render Functions
+window.renderTemplate = function renderTemplate(template, data, el) {
+  //!remove when complete
+  // console.log(data);
+  $(el).html(template.render(data));
+  // console.log(jsrender);
+}
+
+//? Redundant, but keep anyway
+function renderTemplateFromFile(path, el, data) {
+  var html = jsrender.renderFile(path, data);
+  $(el).html(html);
 }
 
 //* Body Events
