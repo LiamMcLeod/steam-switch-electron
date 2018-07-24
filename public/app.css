@@ -9644,10 +9644,11 @@ body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   background: #303030;
   color: #f0f0f0;
+  height: 100%;
   /*
 	overflow-y: hidden;
 	overflow-x: hidden;
-	height: 100%;
+	
 	width: 500px;
 	max-width: 500px;
 	min-width: 500px; 
@@ -9728,20 +9729,12 @@ header.card-header {
   background: #333;
 }
 
-.medium {
-  background: #333;
-}
-
 footer.card-footer {
   background: #333;
 }
 
 footer.card-footer a:hover {
   color: grey;
-}
-
-.text-center {
-  text-align: center;
 }
 
 .account {
@@ -9840,6 +9833,19 @@ footer.card-footer a:hover {
   background: transparent;
 }
 
+.dark {
+  background: #1b1b1b;
+  color: grey;
+}
+
+.medium {
+  background: #303030;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .show {
   pointer-events: auto;
   visibility: visible;
@@ -9876,11 +9882,6 @@ footer.card-footer a:hover {
 
 .inline-flex {
   display: inline-flex;
-}
-
-.dark {
-  background: #1b1b1b;
-  color: grey;
 }
 
 /*# sourceMappingURL=app.css.map */

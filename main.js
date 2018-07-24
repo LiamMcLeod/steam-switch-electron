@@ -38,9 +38,9 @@ let mainWindow
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 500,
+    width: 480,
     height: 380,
-    //resizable: false, //!Uncomment when complete
+    resizable: false, //!Uncomment when complete
     fullscreenable: false,
     icon: __dirname + "/icon.png",
     title: "Steam Switcher v1"
@@ -128,6 +128,7 @@ function checkFirstRun() {
   }
 }
 
+// Get All Accounts
 function readAccount() {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
@@ -139,15 +140,33 @@ function readAccount() {
   }
 }
 
+// Get All Accounts and divide into array 
 function getAccount() {
   var account = readAccount();
   var accounts = []
   if (account.length) {
     account = account.split(account.indexOf('}'));
+    //account= JSON.parse(account));
+    // console.log(account[0]);
   }
   // todo finish
   // accounts.push(JSON.parse(account));
   return account;
+}
+
+function getAccountById(id) {
+  var account = readAccount();
+  account = JSON.parse(account);
+  //* Returns index
+  var i = account.findIndex(function (index) {
+    if (index.id == id) {
+      //log(item);
+      //log("match")
+      return index;
+    }
+  });
+  // log(account[i]);
+  return account[i];
 }
 
 function createKey(key = id) {
@@ -203,22 +222,34 @@ function createTray(event) {
   });
 }
 
-function launchSteam(user, pass) {
-  user,
-  pass = ""; // TODO Define these 
-  var child = require("child_process").execFile;
-  var executablePath =
-    "C:\\Program Files (x86)\\Steam\\steam.exe";
-  var parameters = ["--login" + user + " " + pass];
+function launchSteam(id) {
+  if (!id) {
+    return
+  } else {
+    var account = getAccountById(id);
+    var user = account.username;
+    var pass = account.password;
 
-  child(executablePath, parameters, function (err, data) {
-    if (err)
-      console.log(err);
-    if (data)
-      console.log(data.toString());
-  });
+    decryptKey = createKey(account.key);
+    pass = aes256.decrypt(decryptKey, pass);
 
-  // createNotification();
+    // log(user);
+    // log(pass);
+
+    var child = require("child_process").execFile;
+    var executablePath =
+      "C:\\Program Files (x86)\\Steam\\steam.exe";
+    var parameters = ["--login" + user + " " + pass];
+
+    child(executablePath, parameters, function (err, data) {
+      if (err)
+        console.log(err);
+      if (data)
+        console.log(data.toString());
+    });
+
+    // createNotification();
+  }
 }
 
 function createNotification() {
@@ -276,7 +307,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
   if (proc) {
     if (proc.id) {
       //TODO CHECK FOR STEAM INSTANCE AND CLOSE
-      launchSteam();
+      launchSteam(proc.id);
     }
     if (proc.post) {
       //* Generate Id
@@ -323,6 +354,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 
 ipcMain.on('dom-ready', () => {
   account = getAccount();
+  // account = readAccount();
   mainWindow.webContents.send('ping', account);
 })
 //! When complete use electron-winstaller to build exes

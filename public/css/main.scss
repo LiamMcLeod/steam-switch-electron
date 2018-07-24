@@ -47,6 +47,19 @@
 	background: transparent;
 }
 
+.dark {
+	background: $color-bg-dark;
+	color: $color-accent;
+}
+
+.medium {
+	background: $color-bg-md;
+}
+
+.text-center {
+	text-align: center;
+}
+
 //* Visibility
 .show {
 	pointer-events: auto;
@@ -84,9 +97,4 @@
 
 .inline-flex {
 	display: inline-flex;
-}
-
-.dark {
-	background: $color-bg-dark;
-	color: $color-accent;
 }

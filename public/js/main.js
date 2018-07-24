@@ -98,10 +98,7 @@ window.renderMultiple = function renderMultiple(template, data, el) {
   //!remove when complete
   var html = "";
   data.forEach(function (item, i) {
-    console.log(template[i]);
-    console.log(data[i]);
     html += template[i].render(data[i])
-    console.log(html);
   })
   $(el).html(html);
 }

@@ -50,7 +50,7 @@
             var accountTemplate = [];
             var renderData = [];
             data.forEach(function (item, i) {
-              accountTemplate.push(jsrender.templates('account' + i, './views/account-no-js.html'));
+              accountTemplate.push(jsrender.templates('account' + i, './views/account-styling.html'));
               renderData.push(data[i])
             })
             window.renderMultiple(accountTemplate, data, '#list');
@@ -112,7 +112,7 @@
 
     </div>
   </main>
-  <footer class="dark">
+  <footer class="medium">
     <div class="content has-text-centered">
       <a id="modal-show" href="">
         About

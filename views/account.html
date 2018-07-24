@@ -1,36 +1,33 @@
-<script id="accountTemplate" type="text/x-jsrender">
-    <!-- TODO WRITE LOOP TO EXTRACT OBJECTS FROM ARRAY  -->
-    <!-- ROW - 1 -->
-    <div class="columns inline-flex">
-        <!-- COL - 1 -->
-        <div class="column is-5-mobile is-offset-1-mobile">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title">
-                        <!-- {{accounts[0].name}} -->
-                    </p>
-                    <a href="#" class="card-header-icon" aria-label="more options">
-                        <span class="icon">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <!-- {{accounts[0].username}} -->
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <!-- <a data-id="{{accounts[0].id}}" href="#" class="card-footer-item">Launch</a> -->
-                </footer>
+<div class="columns inline-flex">
+    <div class="column is-5-mobile is-offset-1-mobile">
+        <div class="card">
+            <header class="card-header">
+                <span class="card-header-title text-center">
+                    {{:name}}
+                </span>
+                <a href="#" class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </header>
+            <div class="card-content text-center">
+                <span>
+                    {{:username}}
+                </span>
+                <i class="fab fa-steam-symbol fa-7x"></i>
+                <!-- perhaps an image in here -->
             </div>
-        </div>
-        <!-- COL - 2 -->
-        <div class="column is-5-mobile">
-
-        </div>
-        <div class="column is-1-mobile">
-
+            <footer class="card-footer">
+                <a data-id={{:id}} href="#" class="card-footer-item">Launch</a>
+            </footer>
         </div>
     </div>
-</script>
+    <!-- TODO BETTER STYLING -->
+    <!-- <div class="column is-5-mobile">
+
+    </div>
+    <div class="column is-1-mobile">
+
+    </div> -->
+</div>
