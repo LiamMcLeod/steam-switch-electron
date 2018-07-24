@@ -47,11 +47,13 @@
 
           ipcRenderer.on('ping', (event, data) => {
             data = JSON.parse(data[0]);
-            var accountTemplate = []
+            var accountTemplate = [];
+            var renderData = [];
             data.forEach(function (item, i) {
-              accountTemplate = jsrender.templates('account' + i, './views/account-no-js.html');
-              window.renderTemplate(accountTemplate, item, '#list')
+              accountTemplate.push(jsrender.templates('account' + i, './views/account-no-js.html'));
+              renderData.push(data[i])
             })
+            window.renderMultiple(accountTemplate, data, '#list');
             console.log(jsrender);
           })
         </script>

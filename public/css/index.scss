@@ -2,7 +2,7 @@
 // Main Colour #2b2f46
 body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	background: rgb(48, 48, 48);
+	background: $color-bg-md;
 	color: $color;
 	/*
 	overflow-y: hidden;
@@ -15,17 +15,17 @@ body {
 }
 
 body>header {
-	background: $color-bg-md;
+	// background: $color-bg-md;
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	height: 30px;
+	z-index: 99;
 }
 
 main {
-	margin-top: 15px;
-	height: 310px;
+	padding-top: 15px; // height: 310px;
 	overflow-y: hidden;
 	overflow-x: hidden;
 }

@@ -94,6 +94,18 @@ window.renderTemplate = function renderTemplate(template, data, el) {
   // console.log(jsrender);
 }
 
+window.renderMultiple = function renderMultiple(template, data, el) {
+  //!remove when complete
+  var html = "";
+  data.forEach(function (item, i) {
+    console.log(template[i]);
+    console.log(data[i]);
+    html += template[i].render(data[i])
+    console.log(html);
+  })
+  $(el).html(html);
+}
+
 //? Redundant, but keep anyway
 function renderTemplateFromFile(path, el, data) {
   var html = jsrender.renderFile(path, data);

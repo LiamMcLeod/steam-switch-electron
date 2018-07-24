@@ -40,7 +40,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 500,
     height: 380,
-    resizable: false, //!Uncomment when complete
+    //resizable: false, //!Uncomment when complete
     fullscreenable: false,
     icon: __dirname + "/icon.png",
     title: "Steam Switcher v1"
