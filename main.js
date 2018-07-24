@@ -23,6 +23,9 @@ var id = '';
 //!remove when done
 process.env.NODE_ENV = "development";
 
+//TODO REMEMBER PASSWORD BOX REFER TO BELOW
+//*https://github.com/W3D3/SteamAccountSwitcher2/issues/4
+
 function log(log) {
   if (process.env.NODE_ENV == "development")
     console.log(log);
@@ -164,6 +167,11 @@ function getAccountById(id) {
       //log("match")
       return index;
     }
+    //todo look into below reg to remember based upon the 
+    //todo value of index.remember
+    //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
+    //reg add "HKCU\Software\Valve\Steam" / v RememberPassword / t REG_DWORD / d 1 / f
+
   });
   // log(account[i]);
   return account[i];
@@ -250,18 +258,21 @@ function launchSteam(id) {
 function openSteam(user, pass) {
   var child = require("child_process").execFile;
   var executablePath =
-    '"C:\\Program Files (x86)\\Steam\\steam.exe"';
-  var parameters = ["-login " + user + " " + pass];
+    'C:\\Program Files (x86)\\Steam\\Steam.exe';
+  var parameters = ["-login", user, pass];
+  // var parameters = ["-login " + user + " " + pass];
 
-  child(executablePath, parameters, function (err, data) {
+  child = child(executablePath, parameters, {
+    killSignal: null
+  }, function (err, data) {
     //!COMMENT WHEN DONE
     log(parameters)
     if (err)
-      //!COMMENT WHEN DONE
       log(err);
+    //!COMMENT WHEN DONE
     if (data) {
-      //!COMMENT WHEN DONE
       log(data.toString());
+      //!COMMENT WHEN DONE
     }
   });
   // createNotification();
