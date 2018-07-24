@@ -256,26 +256,16 @@ function launchSteam(id) {
 }
 
 function openSteam(user, pass) {
-  var child = require("child_process").execFile;
+  var child = require("child_process").spawn;
   var executablePath =
     'C:\\Program Files (x86)\\Steam\\Steam.exe';
   var parameters = ["-login", user, pass];
   // var parameters = ["-login " + user + " " + pass];
 
   child = child(executablePath, parameters, {
-    killSignal: null
-  }, function (err, data) {
-    //!COMMENT WHEN DONE
-    log(parameters)
-    if (err)
-      log(err);
-    //!COMMENT WHEN DONE
-    if (data) {
-      log(data.toString());
-      //!COMMENT WHEN DONE
-    }
-  });
-  // createNotification();
+    detached: true,
+    stdio: 'ignore'
+  }).unref();
 }
 
 function steamExists(user, pass, cb) {
