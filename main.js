@@ -235,29 +235,59 @@ function launchSteam(id) {
 
     log(user);
     // log(pass);
-    closeSteam();
-    openSteam(user, pass)
-
-    // createNotification();
+    steamExists(user, pass, function (steamExists, user, pass) {
+      log(steamExists);
+      if (steamExists) {
+        closeSteam(user, pass, function (user, pass) {
+          openSteam(user, pass);
+        });
+      }
+      openSteam(user, pass);
+    });
   }
 }
 
 function openSteam(user, pass) {
   var child = require("child_process").execFile;
   var executablePath =
-    "C:\\Program Files (x86)\\Steam\\steam.exe";
+    '"C:\\Program Files (x86)\\Steam\\steam.exe"';
   var parameters = ["-login " + user + " " + pass];
 
   child(executablePath, parameters, function (err, data) {
+    //!COMMENT WHEN DONE
+    log(parameters)
     if (err)
+      //!COMMENT WHEN DONE
       log(err);
     if (data) {
+      //!COMMENT WHEN DONE
       log(data.toString());
     }
   });
+  // createNotification();
 }
 
-function closeSteam() {
+function steamExists(user, pass, cb) {
+  var exec = require('child_process').exec;
+  exec('tasklist', function (err, stdout, stderr) {
+    var steamExists = false;
+    if (err)
+      log(err);
+    if (stdout) {
+      // log(stdout);
+      if (stdout.match("Steam.exe")) {
+        log("Steam Found");
+        steamExists = true;
+      }
+    }
+    if (stderr)
+      log(stderr);
+
+    cb(steamExists, user, pass)
+  });
+}
+
+function closeSteam(user, pass, cb) {
   var exec = require('child_process').exec;
   exec('taskkill /F /IM Steam.exe', function (err, stdout, stderr) {
     if (err)
@@ -266,6 +296,8 @@ function closeSteam() {
       log(stdout);
     if (stderr)
       log(stderr);
+
+    cb(user, pass)
   });
 }
 
