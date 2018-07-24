@@ -17,6 +17,7 @@
 
   <!-- <link rel="import" href="views/account.html">
   <link rel="import" href="views/list.html"> -->
+  <script type="text/javascript" src="public/app.js"></script>
   <script>
     const {
       ipcRenderer
@@ -37,106 +38,25 @@
   </header>
   <main class="content js-content">
     <div class="container">
-      <!-- TODO GIVE UP ON TEMPLATING AND MOVE TO 
-      KEEPING ALL CONTENT WITHIN 
-      INDEX AND USING SHOW / HIDE TO DYNAMICALLY 
-      DISPLAY AND RENDER THINGS
-    
-      adjust methods within main to accomodate for that
-      such as buttons and stuff.
- 
-      template content not clickable no events work on them
-
-      maybe document.write() templates instead of JQuery appends??
-      I don't know
-
-      see delegated bindings which I'm sure I was using but just in case
-      https://stackoverflow.com/questions/6658752/click-event-doesnt-work-on-dynamically-generated-elements
-    -->
       <!-- Account List -->
-      <script>
-        ipcRenderer.on('ping', (event, accounts) => {
-          //TODO CAN FOR ON 2 and +1 och +2 to each and produce a list for both
-          /*for (var i = 0; i < accounts.length; i + 2) {
-            console.log(accounts[i]);
-            console.log(accounts[i + 1]);
-          }*/
-          //
-          //      document.write(
-          //        `
-          //          <div id="list" class="content-body list hidden">
-          //            <!-- ROW ONE -->
-          //            <div class="columns inline-flex">
-          //              <!-- COL - 1 -->
-          //              <div class="column is-5-mobile is-offset-1-mobile">
-          //                <div class="card">
-          //                  <header class="card-header">
-          //                    <p class="card-header-title">
-          //                      ` +
-          //        account[0] +
-          //        `
-          //                    </p>
-          //                    <a href="#" class="card-header-icon" aria-label="more options">
-          //                      <span class="icon">
-          //                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-          //                      </span>
-          //                    </a>
-          //                  </header>
-          //                  <div class="card-content">
-          //                    <div class="content">
-          //                      Misc Account Details Go Here Perhaps pulled from API
-          //                    </div>
-          //                  </div>
-          //                  <footer class="card-footer">
-          //                    <a data-id="1" href="#" class="card-footer-item">Launch</a>
-          //                  </footer>
-          //                </div>
-          //              </div>
-          //              <!-- COL - 2 -->
-          //              <div class="column is-5-mobile">
-          //
-          //              </div>
-          //              <div class="column is-1-mobile">
-          //
-          //              </div>
-          //            </div>
-          //          </div>
-          //      `
-          //)
-        })
-      </script>
-      <!-- <div id="list" class="content-body list hidden">
-        <div class="columns inline-flex">
-          <div class="column is-5-mobile is-offset-1-mobile">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title">
-                  Account Name
-                </p>
-                <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </a>
-              </header>
-              <div class="card-content">
-                <div class="content">
-                  Misc Account Details Go Here Perhaps pulled from API
-                </div>
-              </div>
-              <footer class="card-footer">
-                <a data-id="1" href="#" class="card-footer-item">Launch</a>
-              </footer>
-            </div>
-          </div>
-          <div class="column is-5-mobile">
+      <div id="list" class="content-body list hidden">
+        <script>
+          //var jsrender = require('jsrender');
+          // Account Template from views
+          var accountTemplate = $.templates("./views/account.html");
+          // The same but for when $ namespace unavailable
+          //accountTemplate = jsrender.templates("./views/account.html");
+          var toRender = accountTemplate.render(data);
+          ipcRenderer.on('ping', (event, data) => {
+            // Render template for template 
 
-          </div>
-          <div class="column is-1-mobile">
-
-          </div>
-        </div>
-      </div> -->
+            // Render by inserting using JQuery 
+            console.log(toRender);
+            $('#list').html(toRender);
+            console.log($('#list'));
+          })
+        </script>
+      </div>
 
       <!-- Add Account -->
       <div id="account" class="content-body account hidden">
@@ -201,7 +121,6 @@
   <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->
   <!-- Chromium <script>document.write(process.versions.chrome)</script>, -->
   <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
-  <script type="text/javascript" src="public/app.js"></script>
   <script>
     $('.card-footer-item').on('click', (e) => {
       launchAccount(e)

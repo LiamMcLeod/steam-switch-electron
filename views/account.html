@@ -1,34 +1,36 @@
-<template id="account-template" class="template">
-	<div id="account" class="content-body account hidden">
-		<div class="pure-u-5-12">
+<script id="accountTemplate" type="text/x-jsrender">
+    <!-- TODO WRITE LOOP TO EXTRACT OBJECTS FROM ARRAY  -->
+    <!-- ROW - 1 -->
+    <div class="columns inline-flex">
+        <!-- COL - 1 -->
+        <div class="column is-5-mobile is-offset-1-mobile">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        {{accounts[0].name}}
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        {{accounts[0].username}}
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a data-id="{{accounts[0].id}}" href="#" class="card-footer-item">Launch</a>
+                </footer>
+            </div>
+        </div>
+        <!-- COL - 2 -->
+        <div class="column is-5-mobile">
 
-		</div>
-		<div class="pure-u-2-12">
-			<form class="pure-form pure-form-stacked">
-				<fieldset>
-					<legend>Enter your account</legend>
+        </div>
+        <div class="column is-1-mobile">
 
-					<label for="email">Username:</label>
-					<input id="userInput" type="text" placeholder="Username">
-
-					<label for="password">Password:</label>
-					<input id="passInput" type="password" placeholder="Password">
-
-					<label for="remember" class="pure-checkbox">
-						<input id="remember" type="checkbox"> Remember?
-					</label>
-
-					<button type="submit" class="pure-button pure-button-primary">Add</button>
-				</fieldset>
-			</form>
-		</div>
-		<div class="pure-u-5-12">
-			<a id="account-hide" class="account-hide" href="#">
-				<i class="far fa-times-circle fa-2x"></i>
-			</a>
-		</div>
-	</div>
-	<script>
-		var $ = window.$;
-	</script>
-</template>
+        </div>
+    </div>
+</script>

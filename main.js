@@ -245,7 +245,7 @@ function storeAccount(account) {
       accounts.push(existingAccounts);
       accounts.push(account)
     } else {
-      for (var i = 0; i < existingAccounts.length; i++) {
+      for (let i = 0; i < existingAccounts.length; i++) {
         accounts.push(existingAccounts[i]);
       }
       accounts.push(account);
@@ -282,6 +282,8 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       //* Generate Id
       // TODO CHECK UNIQUE
       proc.post.id = generateId(2, 'hex')
+
+      // TODO MAKE BETTER CRYPTO function
       //* Generate Key 
       var key = generateId(20);
       //* Store Key 

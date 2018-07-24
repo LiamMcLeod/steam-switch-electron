@@ -1,0 +1,34 @@
+<template id="account-template" class="template">
+	<div id="account" class="content-body account hidden">
+		<div class="pure-u-5-12">
+
+		</div>
+		<div class="pure-u-2-12">
+			<form class="pure-form pure-form-stacked">
+				<fieldset>
+					<legend>Enter your account</legend>
+
+					<label for="email">Username:</label>
+					<input id="userInput" type="text" placeholder="Username">
+
+					<label for="password">Password:</label>
+					<input id="passInput" type="password" placeholder="Password">
+
+					<label for="remember" class="pure-checkbox">
+						<input id="remember" type="checkbox"> Remember?
+					</label>
+
+					<button type="submit" class="pure-button pure-button-primary">Add</button>
+				</fieldset>
+			</form>
+		</div>
+		<div class="pure-u-5-12">
+			<a id="account-hide" class="account-hide" href="#">
+				<i class="far fa-times-circle fa-2x"></i>
+			</a>
+		</div>
+	</div>
+	<script>
+		var $ = window.$;
+	</script>
+</template>
