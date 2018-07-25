@@ -9712,6 +9712,10 @@ header.card-header {
   height: 35px;
 }
 
+header a.card-header-icon {
+  padding-top: .50rem;
+}
+
 .card {
   color: #f0f0f0;
   min-width: 200px;
@@ -9840,10 +9844,6 @@ footer.card-footer a:hover {
 
 .medium {
   background: #303030;
-}
-
-.text-center {
-  text-align: center;
 }
 
 .show {
