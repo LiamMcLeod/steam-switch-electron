@@ -202,7 +202,6 @@ function deleteAccount(id) {
   account.splice(i, 1);
   // log(account);
   storeAccount(account, true);
-
 }
 
 function createKey(key = id) {
@@ -390,6 +389,7 @@ function storeAccount(account, del = false) {
       })
     }
   }
+  updateStore();
 }
 
 // main process, for example app/main.js
