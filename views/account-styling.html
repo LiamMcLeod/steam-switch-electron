@@ -15,14 +15,14 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                         <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
+                            <a data-id={{:id}} href="#" class="dropdown-item launch-drop">
                                 Launch
                             </a>
-                            <a href="#" class="dropdown-item">
+                            <a data-id={{:id}} href="#" class="dropdown-item edit-drop">
                                 Edit
                             </a>
                             <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item has-text-danger">
+                            <a data-id={{:id}} href="#" class="dropdown-item has-text-danger delete-drop">
                                 Delete
                             </a>
                         </div>
@@ -33,7 +33,7 @@
                 <span>
                     {{:username}}
                 </span>
-                <i class="fab fa-steam-symbol fa-7x"></i>
+                <i data-id={{:id}} class="fab fa-steam-symbol fa-7x"></i>
                 <!-- perhaps an image in here -->
             </div>
             <footer class="card-footer">

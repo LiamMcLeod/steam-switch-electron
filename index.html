@@ -126,6 +126,14 @@
       launchAccount(e)
     })
 
+    $('.dropdown-item.launch-drop').on('click', (e) => {
+      launchAccount(e)
+    })
+
+    $('.fab.fa-steam-symbol.fa-7x').on('dblclick', (e) => {
+      launchAccount(e)
+    })
+
     $("#submitAccount").on('click', (e) => {
       var create = {};
       create['name'] = $('#account-form').find('#name').val();

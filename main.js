@@ -23,6 +23,8 @@ var id = '';
 //!remove when done
 process.env.NODE_ENV = "development";
 
+accountsStore = []
+
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
 //*https://github.com/W3D3/SteamAccountSwitcher2/issues/4
 
@@ -55,9 +57,6 @@ function createWindow() {
   // Misc Window  things
   mainWindow.setMenu(null);
 
-  //! Apply the below when steam is open
-  // mainWindow.setOverlayIcon(path.join(__dirname, "favicon.ico"), 'Steam Account Switcher');
-
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -86,6 +85,9 @@ function createWindow() {
 // Some APIs can only be used after  event occurs.
 app.on('ready', () => {
   checkFirstRun();
+  if (hasAccounts()) {
+    accountsStore = getAccount()
+  }
   id = createKey(id);
   console.log(process.env.NODE_ENV);
   createWindow();
@@ -120,6 +122,7 @@ function checkFirstRun() {
   if (fs.existsSync(filePath)) {
     if (fs.existsSync(filePath + "\\.id")) {
       id = fs.readFileSync(filePath + "\\.id", 'utf8');
+      return true;
     } else {
       makeFile(filePath);
       checkFirstRun();
@@ -128,6 +131,19 @@ function checkFirstRun() {
     makeDir(filePath);
     makeFile(filePath);
     checkFirstRun();
+  }
+}
+
+function hasAccounts() {
+  var homePath = process.env.Home;
+  var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  if (fs.existsSync(filePath + "\\.account")) {
+    accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
+    if (accounts.length)
+      return true;
+    else return false
+  } else {
+    return false;
   }
 }
 
@@ -197,6 +213,9 @@ function makeFile(filePath) {
 function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
   // TODO Dynamically generate this with accounts in
+  if (accountsStore) {
+
+  }
   var contextMenu = Menu.buildFromTemplate([{
       label: 'Launch Steam',
       click: function () {
@@ -256,6 +275,7 @@ function launchSteam(id) {
 }
 
 function openSteam(user, pass) {
+  mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
   var child = require("child_process").spawn;
   var executablePath =
     'C:\\Program Files (x86)\\Steam\\Steam.exe';
@@ -298,6 +318,7 @@ function closeSteam(user, pass, cb) {
     if (stderr)
       log(stderr);
 
+    mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
     cb(user, pass)
   });
 }
@@ -407,5 +428,10 @@ ipcMain.on('dom-ready', () => {
   // account = readAccount();
   mainWindow.webContents.send('ping', account);
 })
+
+//todo event to pick up on steam close
+// child.on('close', () => {
+//redoverlay32
+// })
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer
