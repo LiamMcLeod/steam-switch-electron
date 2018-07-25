@@ -85,11 +85,9 @@ function createWindow() {
 // Some APIs can only be used after  event occurs.
 app.on('ready', () => {
   checkFirstRun();
-  if (hasAccounts()) {
-    accountsStore = getAccount()
-  }
+  updateStore();
   id = createKey(id);
-  console.log(process.env.NODE_ENV);
+  log(process.env.NODE_ENV);
   createWindow();
 })
 
@@ -150,7 +148,12 @@ function readAccount() {
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
     account = fs.readFileSync(filePath + "\\.account", 'utf8');
-    return JSON.parse(account);
+    // log(typeof (account))
+    log(account)
+    if (typeof (account) != "object")
+      return JSON.parse(account);
+    else
+      return account;
   } else {
     return {}
   }
@@ -158,16 +161,12 @@ function readAccount() {
 
 // Get All Accounts and divide into array 
 function getAccount() {
+  // var accounts = JSON.parse(readAccount());
   var accounts = readAccount();
   if (accounts.length) {
-    // accounts = accounts.split(accounts.indexOf('}'));
-    //? Maybe JSON parse instead of split
-
-
-    // console.log(account[0]);
+    //
   }
-  // todo finish
-  // accounts.push(JSON.parse(account));
+
   return account;
 }
 
@@ -191,8 +190,23 @@ function getAccountById(id) {
   return account[i];
 }
 
+function deleteAccount(id) {
+  var account = readAccount();
+  //* Returns index
+  // log(account)
+  var i = account.findIndex(function (index) {
+    if (index.id == id) {
+      return index;
+    }
+  });
+  account.splice(i, 1);
+  // log(account);
+  storeAccount(account, true);
+
+}
+
 function createKey(key = id) {
-  // console.log(sha256(hardwareId.concat(key)).toString('hex'));
+  // log(sha256(hardwareId.concat(key)).toString('hex'));
   return sha256(hardwareId.concat(key)).toString('hex');
 }
 
@@ -203,7 +217,7 @@ function makeDir(filePath) {
 function makeFile(filePath) {
   fs.writeFile(filePath + "\\.id", generateId(20), function (err) {
     if (err) {
-      return console.log(err);
+      return log(err);
     }
   })
 }
@@ -263,7 +277,7 @@ function launchSteam(id) {
     decryptKey = createKey(account.key);
     pass = aes256.decrypt(decryptKey, pass);
 
-    log(user);
+    // log(user);
     // log(pass);
     steamExists(user, pass, function (steamExists, user, pass) {
       log(steamExists);
@@ -300,7 +314,7 @@ function steamExists(user, pass, cb) {
     if (stdout) {
       // log(stdout);
       if (stdout.match("Steam.exe")) {
-        log("Steam Found");
+        // log("Steam Found");
         steamExists = true;
       }
     }
@@ -338,34 +352,43 @@ function generateId(length, enc = 'hex') {
   return crypto.randomBytes(length).toString(enc);
 }
 
-function storeAccount(account) {
-  // TODO CHECK IF EXISTS AND APPEND
+function storeAccount(account, del = false) {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   var accounts = []
-  if (fs.existsSync(filePath + "\\.account")) {
-    // console.log("append")
-    var existingAccounts = JSON.parse(readAccount());
-    if (!existingAccounts.length) {
-      accounts.push(existingAccounts);
-      accounts.push(account)
-    } else {
-      for (let i = 0; i < existingAccounts.length; i++) {
-        accounts.push(existingAccounts[i]);
+  // log(del);
+  if (!del) {
+    if (fs.existsSync(filePath + "\\.account")) {
+      // log("append")
+      var existingAccounts = readAccount();
+      if (!existingAccounts.length) {
+        accounts.push(existingAccounts);
+        accounts.push(account)
+      } else {
+        for (let i = 0; i < existingAccounts.length; i++) {
+          accounts.push(existingAccounts[i]);
+        }
+        accounts.push(account);
       }
-      accounts.push(account);
+      fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
+        if (err)
+          return log(err);
+      })
+    } else {
+      var accounts = [];
+      accounts = JSON.parse(JSON.stringify(account));
+      fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
+        if (err)
+          return log(err);
+      })
     }
-    fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
-      if (err)
-        return console.log(err);
-    })
   } else {
-    var accounts = [];
-    accounts = JSON.parse(JSON.stringify(account));
-    fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
-      if (err)
-        return console.log(err);
-    })
+    if (fs.existsSync(filePath + "\\.account")) {
+      fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
+        if (err)
+          return log(err);
+      })
+    }
   }
 }
 
@@ -380,7 +403,6 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
   //TODO logic for communicating between main proc and render
   if (proc) {
     if (proc.id) {
-      //TODO CHECK FOR STEAM INSTANCE AND CLOSE
       launchSteam(proc.id);
     }
     if (proc.post) {
@@ -394,39 +416,45 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       //* Store Key 
       proc.post.key = key;
       //* Hash Key 
-      console.log(proc.post.key);
+      // log(proc.post.key);
       //? Maybe Concat ID, might be overkill
       encKey = createKey(proc.post.key);
       //* Encrypt PW
       var encrypted = aes256.encrypt(encKey, proc.post.password);
       proc.post.password = encrypted;
-      // console.log(JSON.stringify(proc.post))
 
       //? Maybe obfuscate result
       //https://github.com/mongodb-js/objfuscate
 
       storeAccount(proc.post);
-
-      // decryptKey = createKey(proc.post.key);
-      // var decrypted = aes256.decrypt(decryptKey, encrypted);
-      // console.log("Encrypted: " + encrypted);
-      // console.log("Decrypted: " + decrypted);
     }
     if (proc.get) {
-      // console.log(proc.get);
+      log(proc.get);
     }
     if (proc.put) {
-      // console.log(proc.put);
+      log(proc.put);
     }
     if (proc.delete) {
-      // console.log(proc.delete);
+      deleteAccount(proc.delete);
     }
   }
   //**http://electron.rocks/different-ways-to-communicate-between-main-and-renderer-process/ */
 
 });
 
+function updateStore() {
+  if (hasAccounts()) {
+    accountsStore = getAccount()
+  }
+}
+
 ipcMain.on('dom-ready', () => {
+  account = getAccount();
+  // account = readAccount();
+  mainWindow.webContents.send('ping', account);
+})
+
+ipcMain.on('refresh', () => {
   account = getAccount();
   // account = readAccount();
   mainWindow.webContents.send('ping', account);

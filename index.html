@@ -49,7 +49,6 @@
             //console.log(data)
             //data = JSON.parse(data[0]);
             data = JSON.parse(data);
-            console.log(typeof (data));
             var accountTemplate = [];
             var renderData = [];
             data.forEach(function (item, i) {
@@ -137,6 +136,10 @@
       launchAccount(e)
     })
 
+    $('.dropdown-item.delete-drop').on('click', (e) => {
+      deleteAccount(e)
+    })
+
     $("#submitAccount").on('click', (e) => {
       var create = {};
       create['name'] = $('#account-form').find('#name').val();
@@ -161,6 +164,13 @@
 
       //* Send data to main process
       ipcRenderer.send('request-mainprocess-action', proc);
+    }
+
+    function deleteAccount(e) {
+      var proc = {};
+      proc.delete = $(e.currentTarget).data("id");
+      ipcRenderer.send('request-mainprocess-action', proc);
+      ipcRenderer.send('refresh');
     }
   </script>
 </body>
