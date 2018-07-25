@@ -165,6 +165,7 @@ function getAccount() {
   var accounts = []
   if (account.length) {
     account = account.split(account.indexOf('}'));
+    //? Maybe JSON parse instead of split
     //account= JSON.parse(account));
     // console.log(account[0]);
   }
@@ -212,17 +213,8 @@ function makeFile(filePath) {
 
 function createTray(event) {
   var tray = new Tray(path.join(__dirname, "favicon.ico"));
-  // TODO Dynamically generate this with accounts in
-  if (accountsStore) {
-
-  }
-  var contextMenu = Menu.buildFromTemplate([{
-      label: 'Launch Steam',
-      click: function () {
-        // Test Menu
-        launchSteam();
-      },
-    }, {
+  //* Default Context Menu
+  var menuItems = [{
       label: 'Show',
       click: function () {
         // Show Window
@@ -238,7 +230,21 @@ function createTray(event) {
         app.quit()
       }
     },
-  ])
+  ]
+  //* If they have accounts generate additional menu items
+  if (accountsStore) {
+    accountsStore = JSON.parse(accountsStore);
+    accountsStore.forEach(function (item, i) {
+      // log(item);
+      menuItems.unshift({
+        label: 'Launch ' + item.name,
+        click: function () {
+          launchSteam(item.id);
+        }
+      });
+    })
+  }
+  var contextMenu = Menu.buildFromTemplate(menuItems);
   tray.setContextMenu(contextMenu);
   tray.on('right-click', (e) => {
     tray.popUpContextMenu(contextMenu);
