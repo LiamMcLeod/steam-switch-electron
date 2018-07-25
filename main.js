@@ -91,9 +91,6 @@ app.on('ready', () => {
   id = createKey(id);
   console.log(process.env.NODE_ENV);
   createWindow();
-  // account = getAccount();
-  // //! https://electronjs.org/docs/api/web-contents
-  // mainWindow.webContents.send('ping', account);
 })
 
 // Quit when all windows are closed.
@@ -153,7 +150,7 @@ function readAccount() {
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
     account = fs.readFileSync(filePath + "\\.account", 'utf8');
-    return account;
+    return JSON.parse(account);
   } else {
     return {}
   }
@@ -161,12 +158,12 @@ function readAccount() {
 
 // Get All Accounts and divide into array 
 function getAccount() {
-  var account = readAccount();
-  var accounts = []
-  if (account.length) {
-    account = account.split(account.indexOf('}'));
+  var accounts = readAccount();
+  if (accounts.length) {
+    // accounts = accounts.split(accounts.indexOf('}'));
     //? Maybe JSON parse instead of split
-    //account= JSON.parse(account));
+
+
     // console.log(account[0]);
   }
   // todo finish
@@ -176,7 +173,7 @@ function getAccount() {
 
 function getAccountById(id) {
   var account = readAccount();
-  account = JSON.parse(account);
+  account = account;
   //* Returns index
   var i = account.findIndex(function (index) {
     if (index.id == id) {
