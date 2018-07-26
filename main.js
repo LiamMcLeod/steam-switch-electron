@@ -180,11 +180,8 @@ function readAccount() {
     var filePath = homePath + "\\Documents\\SteamSwitcher\\";
     if (fs.existsSync(filePath + "\\.account")) {
         account = fs.readFileSync(filePath + "\\.account", 'utf8');
-        // log(typeof (account))
-        // log(account);
 
-        // was !=object
-        if (typeof(account) === "string") {
+        if (typeof(account) === "string" && account != "") {
             account = JSON.parse(account);
             return account;
         } else {
@@ -199,10 +196,7 @@ function readAccount() {
 function getAccount() {
     // var accounts = JSON.parse(readAccount());
     var accounts = readAccount();
-    if (accounts.length) {
-        //
-    }
-
+    // log(account);
     return accounts;
 }
 
@@ -212,8 +206,6 @@ function getAccountById(id) {
     //* Returns index
     var i = account.findIndex(function(index) {
         if (index.id == id) {
-            //log(item);
-            //log("match")
             return index;
         }
     });
@@ -223,9 +215,9 @@ function getAccountById(id) {
 
 function deleteAccount(id) {
     var account = readAccount();
-    //* Returns index
-    // log(account)
+
     var i = account.findIndex(function(index) {
+        //* Returns index
         if (index.id == id) {
             return index;
         }
@@ -233,6 +225,7 @@ function deleteAccount(id) {
     if (i && account[i]) {
         account.splice(i, 1);
         storeAccount(account, true);
+        // log(account)
     }
 }
 
@@ -391,37 +384,39 @@ function storeAccount(account, del = false) {
     var filePath = homePath + "\\Documents\\SteamSwitcher\\";
     var accounts = [];
     // log(account);
-    if (!del) {
-        if (fs.existsSync(filePath + "\\.account")) {
-            var existingAccounts = readAccount();
-            if (!existingAccounts.length) {
-                accounts.push(existingAccounts);
-                accounts.push(account);
+    if (account != null && account != "") {
+        if (!del) {
+            if (fs.existsSync(filePath + "\\.account")) {
+                var existingAccounts = readAccount();
+                if (!existingAccounts.length) {
+                    accounts.push(existingAccounts);
+                    accounts.push(account);
+                } else {
+                    for (let i = 0; i < existingAccounts.length; i++) {
+                        accounts.push(existingAccounts[i]);
+                    }
+                    accounts.push(account);
+                }
+                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
+                    if (err) {
+                        return log(err);
+                    }
+                });
             } else {
-                for (let i = 0; i < existingAccounts.length; i++) {
-                    accounts.push(existingAccounts[i]);
-                }
-                accounts.push(account);
+                accounts = JSON.stringify(account);
+                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
+                    if (err) {
+                        return log(err);
+                    }
+                });
             }
-            fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
-                if (err) {
-                    return log(err);
-                }
-            });
         } else {
-            accounts = JSON.stringify(account);
-            fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
+            fs.writeFile(filePath + "\\.account", JSON.stringify(account), function(err) {
                 if (err) {
                     return log(err);
                 }
             });
         }
-    } else {
-        fs.writeFile(filePath + "\\.account", JSON.stringify(account), function(err) {
-            if (err) {
-                return log(err);
-            }
-        });
     }
 }
 
@@ -457,6 +452,8 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 
             storeAccount(proc.post);
             updateStore();
+            //Refresh
+
         }
         if (proc.get) {
             log(proc.get);
@@ -467,6 +464,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         if (proc.delete) {
             deleteAccount(proc.delete);
             updateStore();
+            //Refresh
         }
     }
 });
