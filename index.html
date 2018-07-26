@@ -168,6 +168,7 @@
 
       //* Send data to main process
       ipcRenderer.send('request-mainprocess-action', proc);
+      ipcRenderer.send('refresh');
     }
 
     function deleteAccount(e) {

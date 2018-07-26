@@ -27,7 +27,7 @@ var id = '';
 //!remove when done
 // process.env.NODE_ENV = "development";
 
-accountsStore = [];
+var accountsStore = [];
 
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
 //*https://github.com/W3D3/SteamAccountSwitcher2/issues/4
@@ -97,7 +97,7 @@ app.on('ready', () => {
   //! TEMP
   //*Needed to refresh so that event listeners 
   //*are applied to the renderer
-   
+
   var reload = () => {
     mainWindow.reload();
   };
@@ -150,13 +150,17 @@ function hasAccounts() {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
-    accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
+    var accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
     if (accounts.length)
       return true;
     else return false;
   } else {
     return false;
-  } 
+  }
+}
+
+function refreshWindow() {
+  // mainWindow.reload();
 }
 
 // Get All Accounts
@@ -167,10 +171,10 @@ function readAccount() {
   if (fs.existsSync(filePath + "\\.account")) {
     account = fs.readFileSync(filePath + "\\.account", 'utf8');
     // log(typeof (account))
-    log(account);
+    // log(account);
 
     // was !=object
-    if (typeof(account) == "string") {
+    if (typeof (account) == "string") {
       account = JSON.parse(account);
       return account;
     } else {
@@ -221,9 +225,10 @@ function deleteAccount(id) {
       return index;
     }
   });
-  account.splice(i, 1);
-  // log(account);
-  storeAccount(account, true);
+  if (i && account[i]) {
+    account.splice(i, 1);
+    storeAccount(account, true);
+  }
 }
 
 function createKey(key = id) {
@@ -274,7 +279,7 @@ function createTray(event) {
           launchSteam(item.id);
         }
       });
-    })
+    });
   }
   var contextMenu = Menu.buildFromTemplate(menuItems);
   tray.setContextMenu(contextMenu);
@@ -295,7 +300,7 @@ function launchSteam(id) {
     var user = account.username;
     var pass = account.password;
 
-    decryptKey = createKey(account.key);
+    var decryptKey = createKey(account.key);
     pass = aes256.decrypt(decryptKey, pass);
 
     // log(user);
@@ -374,13 +379,14 @@ function generateId(length, enc = 'hex') {
 }
 
 function storeAccount(account, del = false) {
+  //todo resolve int json problem whenever any input data is int
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-  var accounts = []
+  var accounts = [];
+  log(account);
   // log(del);
   if (!del) {
     if (fs.existsSync(filePath + "\\.account")) {
-      // log("append")
       var existingAccounts = readAccount();
       if (!existingAccounts.length) {
         accounts.push(existingAccounts);
@@ -439,7 +445,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       //* Hash Key 
       // log(proc.post.key);
       //? Maybe Concat ID, might be overkill
-      encKey = createKey(proc.post.key);
+      var encKey = createKey(proc.post.key);
       //* Encrypt PW
       var encrypted = aes256.encrypt(encKey, proc.post.password);
       proc.post.password = encrypted;
@@ -459,26 +465,23 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       deleteAccount(proc.delete);
     }
   }
-  //**http://electron.rocks/different-ways-to-communicate-between-main-and-renderer-process/ */
-
 });
 
 function updateStore() {
   if (hasAccounts()) {
     accountsStore = getAccount();
   }
+  refreshWindow();
 }
 
 ipcMain.on('dom-ready', () => {
-  account = getAccount();
+  var account = getAccount();
   // account = readAccount();
   mainWindow.webContents.send('ping', account);
 });
 
 ipcMain.on('refresh', () => {
-  account = getAccount();
-  // account = readAccount();
-  mainWindow.webContents.send('ping', account);
+  mainWindow.reload();
 });
 //todo event to pick up on steam close
 // child.on('close', () => {
