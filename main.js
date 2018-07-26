@@ -1,4 +1,7 @@
 // Modules to control application life and create native browser window
+/**
+Liam McLeod, 2018.
+*/
 const {
   app,
   BrowserWindow,
@@ -21,9 +24,9 @@ const sha256 = require('sha256');
 const aes256 = require('aes256');
 var id = '';
 //!remove when done
-process.env.NODE_ENV = "development";
+// process.env.NODE_ENV = "development";
 
-accountsStore = []
+accountsStore = [];
 
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
 //*https://github.com/W3D3/SteamAccountSwitcher2/issues/4
@@ -34,22 +37,22 @@ function log(log) {
 }
 // const Store = require('store.js');
 
-let hardwareId = machineIdSync()
+let hardwareId = machineIdSync();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
 
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 480,
     height: 380,
-    resizable: false, //!Uncomment when complete
+    // resizable: false, //!Uncomment when complete
     fullscreenable: false,
     icon: __dirname + "/icon.png",
     title: "Steam Switcher v1"
-  })
+  });
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html');
@@ -59,7 +62,7 @@ function createWindow() {
 
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools(); //!Must be off for VS Debugging
 
 
   //* Main Window Event Listeners
@@ -69,27 +72,27 @@ function createWindow() {
     createTray(e)
     // Hide Window
     mainWindow.hide();
-  })
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows,  is the time
     // when you should delete the corresponding element.
-    mainWindow = null
-  })
+    mainWindow = null;
+  });
 }
 
 //  method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after  event occurs.
 app.on('ready', () => {
+  log(process.env.NODE_ENV);
   checkFirstRun();
   updateStore();
   id = createKey(id);
-  log(process.env.NODE_ENV);
   createWindow();
-})
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -98,7 +101,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-})
+});
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
@@ -106,7 +109,7 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
-})
+});
 
 // In  file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -114,6 +117,7 @@ app.on('activate', () => {
 function checkFirstRun() {
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+  // log(filePath);
   if (fs.existsSync(filePath)) {
     if (fs.existsSync(filePath + "\\.id")) {
       id = fs.readFileSync(filePath + "\\.id", 'utf8');
@@ -136,7 +140,7 @@ function hasAccounts() {
     accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
     if (accounts.length)
       return true;
-    else return false
+    else return false;
   } else {
     return false;
   }
@@ -144,18 +148,22 @@ function hasAccounts() {
 
 // Get All Accounts
 function readAccount() {
+  var account = null;
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
     account = fs.readFileSync(filePath + "\\.account", 'utf8');
     // log(typeof (account))
-    log(account)
-    if (typeof (account) != "object")
-      return JSON.parse(account);
-    else
+    log(account);
+
+    // was !=object
+    if (typeof (account) == "string") {
+      account = JSON.parse(account);
+      return account;
+    } else
       return account;
   } else {
-    return {}
+    return {};
   }
 }
 
@@ -167,7 +175,7 @@ function getAccount() {
     //
   }
 
-  return account;
+  return accounts;
 }
 
 function getAccountById(id) {
@@ -218,7 +226,7 @@ function makeFile(filePath) {
     if (err) {
       return log(err);
     }
-  })
+  });
 }
 
 function createTray(event) {
@@ -237,10 +245,10 @@ function createTray(event) {
       label: 'Quit',
       click: function () {
         // Quit
-        app.quit()
+        app.quit();
       }
     },
-  ]
+  ];
   //* If they have accounts generate additional menu items
   if (accountsStore) {
     accountsStore = JSON.parse(accountsStore);
@@ -267,7 +275,7 @@ function createTray(event) {
 
 function launchSteam(id) {
   if (!id) {
-    return
+    return;
   } else {
     var account = getAccountById(id);
     var user = account.username;
@@ -320,7 +328,7 @@ function steamExists(user, pass, cb) {
     if (stderr)
       log(stderr);
 
-    cb(steamExists, user, pass)
+    cb(steamExists, user, pass);
   });
 }
 
@@ -335,7 +343,7 @@ function closeSteam(user, pass, cb) {
       log(stderr);
 
     mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-    cb(user, pass)
+    cb(user, pass);
   });
 }
 
@@ -362,7 +370,7 @@ function storeAccount(account, del = false) {
       var existingAccounts = readAccount();
       if (!existingAccounts.length) {
         accounts.push(existingAccounts);
-        accounts.push(account)
+        accounts.push(account);
       } else {
         for (let i = 0; i < existingAccounts.length; i++) {
           accounts.push(existingAccounts[i]);
@@ -372,21 +380,20 @@ function storeAccount(account, del = false) {
       fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
         if (err)
           return log(err);
-      })
+      });
     } else {
-      var accounts = [];
       accounts = JSON.parse(JSON.stringify(account));
       fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
         if (err)
           return log(err);
-      })
+      });
     }
   } else {
     if (fs.existsSync(filePath + "\\.account")) {
       fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
         if (err)
           return log(err);
-      })
+      });
     }
   }
   updateStore();
@@ -444,7 +451,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 
 function updateStore() {
   if (hasAccounts()) {
-    accountsStore = getAccount()
+    accountsStore = getAccount();
   }
 }
 
@@ -452,13 +459,13 @@ ipcMain.on('dom-ready', () => {
   account = getAccount();
   // account = readAccount();
   mainWindow.webContents.send('ping', account);
-})
+});
 
 ipcMain.on('refresh', () => {
   account = getAccount();
   // account = readAccount();
   mainWindow.webContents.send('ping', account);
-})
+});
 
 //todo event to pick up on steam close
 // child.on('close', () => {

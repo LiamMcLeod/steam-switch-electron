@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+      "name": "Electron: Main",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "program": "${workspaceRoot}/main.js",
+      "protocol": "inspector",
+      // "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "Home": "C:\\Users\\dual1ty\\"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        // "--no-lazy",
+        "."
+      ],
+      "outputCapture": "std",
+      "stopOnEntry": false,
+    },
+    {
+      "name": "Electron: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "timeout": 30000,
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ],
+  "compounds": [{
+    "name": "Electron: All",
+    "configurations": [
+      "Electron: Main",
+      "Electron: Renderer"
+    ]
+  }]
+}

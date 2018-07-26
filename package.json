@@ -1,20 +1,20 @@
 {
-  "name": "electron-quick-start",
+  "name": "steam-switch-electron",
   "version": "1.0.0",
   "description": "A minimal application to switch Steam profiles",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/liammcleod/messing-with-electron",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "steam",
+    "account",
+    "switcher",
+    "alpha"
   ],
-  "author": "GitHub",
+  "author": "LiamMcLeod",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^2.0.0",
