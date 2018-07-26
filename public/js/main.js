@@ -1,46 +1,46 @@
-window.$ = window.jQuery = require('jquery');
-window.jsrender = require('jsrender');
+window.$ = window.jQuery = require('jquery'); 
+window.jsrender = require('jsrender'); 
 // console.log($.views);
-require('./imports');
+require('./imports'); 
 
 //* Basic Functions 
 function toggleModal() {
-  var modal = $('#modal');
-  toggle(modal);
+var modal = $('#modal'); 
+toggle(modal); 
 }
 
 function showContent(content) {
-  var content = $('.content-body .' + content);
-  show(content);
+content = $('.content-body .' + content); 
+show(content); 
 }
 
 
 function showMainContent() {
-  var mainContent = $('.content-body.list');
-  switchButtons(true);
-  show(mainContent);
+var mainContent = $('.content-body.list'); 
+switchButtons(true); 
+show(mainContent); 
 }
 
 function switchButtons(def) {
-  // TODO TEST
-  /** Default Returns to original states */
-  if (def) {
-    show($('#account-show'));
-    hide($('#account-hide'));
-  } else {
-    toggle($('#account-show'));
-    toggle($('#account-hide'));
-  }
+// TODO TEST
+/** Default Returns to original states */
+if (def) {
+show($('#account-show')); 
+hide($('#account-hide')); 
+}else {
+toggle($('#account-show')); 
+toggle($('#account-hide')); 
+}
 }
 
 function hideAll(showMain) {
-  var content = $('.content-body');
-  var modal = $('#modal');
+var content = $('.content-body'); 
+var modal = $('#modal'); 
 
-  content.each(function (i) {
-    //? Vanilla JS because $ isn't in scope
+content.each(function (i) {
+//? Vanilla JS because $ isn't in scope
     if (!this.classList.contains('hidden'))
-      this.classList.add('hidden')
+      this.classList.add("hidden");
   })
 
   hide(modal);
@@ -49,12 +49,12 @@ function hideAll(showMain) {
 }
 
 function objectHasId(id) {
-  if (id == "account-show") {
+  if (id === "account-show") {
     hideAll();
     switchButtons();
-    target = $('.content-body.account')
-    show(target)
-  } else if (id == "account-hide") {
+    var target = $(".content-body.account");
+    show(target);
+  } else if (id === "account-hide") {
     hideAll(true);
     switchButtons(true);
   } else {
@@ -82,53 +82,45 @@ function toggle(object) {
   if (object.hasClass('hidden'))
     object.removeClass('hidden');
   else
-    object.addClass('hidden')
+    object.addClass("hidden");
 }
 
 //* JS Render Functions
 window.renderTemplate = function renderTemplate(template, data, el) {
-  //!remove when complete
   $(el).html(template.render(data));
-}
+};
 
-window.renderMultiple = function renderMultiple(template, data, el) {
-  //!remove when complete
-  var html = "";
-  data.forEach(function (item, i) {
-    html += template[i].render(data[i])
-  })
-  $(el).html(html);
-}
-
-//? Redundant, but keep anyway
-function renderTemplateFromFile(path, el, data) {
-  var html = jsrender.renderFile(path, data);
-  $(el).html(html);
-}
+window.renderMultiple = function renderMultiple(template, data, el) { 
+	var html = "";
+	data.forEach(function(item, i) {
+		html += template[i].render(data[i]);
+	});
+	$(el).html(html);
+};
 
 //* Body Events
-$(document).on('click', function (e) {
-  // console.log($(this));
-  // console.log(e);
-  var target = e.target;
+$(document).on("click", function(e) {
+	// console.log($(this));
+	// console.log(e);
+	var target = e.target;
 
-  if (target.id) {
-    objectHasId(target.id);
-  } else {
-    objectHasNoId(target.classList);
-  }
-})
+	if (target.id) {
+		objectHasId(target.id);
+	} else {
+		objectHasNoId(target.classList);
+	}
+});
 
 //* Button Events
-$('#account-show').click((e) => {
-  hideAll();
-  account = $('.content-body.account')
-  show(account);
-})
+$("#account-show").click(e => {
+	hideAll();
+	var account = $(".content-body.account");
+	show(account);
+});
 
-$('#account-hide').on('click', (e) => {
+$('#account - hide').on('click', (e) => {
   hideAll();
-})
+});
 
 
 
@@ -139,4 +131,4 @@ $('#account-hide').on('click', (e) => {
 //* Load Main Content
 $(document).ready((e) => {
   showMainContent();
-})
+});

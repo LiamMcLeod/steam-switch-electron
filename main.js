@@ -7,12 +7,11 @@ const {
   BrowserWindow,
   Menu,
   Tray,
-  webContents,
+  //webContents,
   globalShortcut
 } = require('electron');
 
 const {
-  machineId,
   machineIdSync
 } = require('node-machine-id');
 
@@ -30,11 +29,19 @@ var id = '';
 var accountsStore = [];
 
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
-//*https://github.com/W3D3/SteamAccountSwitcher2/issues/4
+//TODO Maybe bcrypt the key
+ //todo look into below reg to remember based upon the 
+    //todo value of index.remember
+    //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
+    //reg add "HKCU\Software\Valve\Steam" / v RememberPassword / t REG_DWORD / d 1 / f
+  //todo resolve int json problem whenever any input data is int
+  //todo improve the storage code it's messy and I've forgotten my logic behind it
+
 
 function log(log) {
-  if (process.env.NODE_ENV == "development")
+  if (process.env.NODE_ENV === "development"){
     console.log(log);
+  }
 }
 // const Store = require('store.js');
 
@@ -60,8 +67,7 @@ function createWindow() {
 
   // Misc Window  things
   mainWindow.setMenu(null);
-
-
+  
   // Open the DevTools.
   //!Must be off for VS Debugging
   //mainWindow.webContents.openDevTools(); 
@@ -71,7 +77,7 @@ function createWindow() {
   mainWindow.on('minimize', (e) => {
     e.preventDefault();
     // Create tray icon,
-    createTray(e)
+    createTray(e);
     // Hide Window
     mainWindow.hide();
   });
@@ -95,10 +101,8 @@ app.on('ready', () => {
   id = createKey(id);
   createWindow();
 
-  //! TEMP
   //*Needed to refresh so that event listeners 
   //*are applied to the renderer
-
   var reload = () => {
     mainWindow.reload();
   };
@@ -152,16 +156,13 @@ function hasAccounts() {
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   if (fs.existsSync(filePath + "\\.account")) {
     var accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
-    if (accounts.length)
+    if (accounts.length){
       return true;
-    else return false;
+    }
+    else {return false;}
   } else {
     return false;
   }
-}
-
-function refreshWindow() {
-  // mainWindow.reload();
 }
 
 // Get All Accounts
@@ -175,7 +176,7 @@ function readAccount() {
     // log(account);
 
     // was !=object
-    if (typeof (account) == "string") {
+    if (typeof (account) === "string") {
       account = JSON.parse(account);
       return account;
     } else {
@@ -186,7 +187,7 @@ function readAccount() {
   }
 }
 
-// Get All Accounts and divide into array 
+//? Initially meant to return the object rather than string but it's called to now
 function getAccount() {
   // var accounts = JSON.parse(readAccount());
   var accounts = readAccount();
@@ -207,11 +208,6 @@ function getAccountById(id) {
       //log("match")
       return index;
     }
-    //todo look into below reg to remember based upon the 
-    //todo value of index.remember
-    //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
-    //reg add "HKCU\Software\Valve\Steam" / v RememberPassword / t REG_DWORD / d 1 / f
-
   });
   // log(account[i]);
   return account[i];
@@ -271,7 +267,6 @@ function createTray(event) {
   ];
   //* If they have accounts generate additional menu items
   if (accountsStore) {
-    accountsStore = JSON.parse(accountsStore);
     accountsStore.forEach(function (item, i) {
       // log(item);
       menuItems.unshift({
@@ -336,8 +331,9 @@ function steamExists(user, pass, cb) {
   var exec = require('child_process').exec;
   exec('tasklist', function (err, stdout, stderr) {
     var steamExists = false;
-    if (err)
+    if (err) {
       log(err);
+    }
     if (stdout) {
       // log(stdout);
       if (stdout.match("Steam.exe")) {
@@ -345,9 +341,9 @@ function steamExists(user, pass, cb) {
         steamExists = true;
       }
     }
-    if (stderr)
+    if (stderr){
       log(stderr);
-
+    }
     cb(steamExists, user, pass);
   });
 }
@@ -355,12 +351,15 @@ function steamExists(user, pass, cb) {
 function closeSteam(user, pass, cb) {
   var exec = require('child_process').exec;
   exec('taskkill /F /IM Steam.exe', function (err, stdout, stderr) {
-    if (err)
+    if (err) {
       log(err);
-    if (stdout)
+    }
+    if (stdout) {
       log(stdout);
-    if (stderr)
+    }
+    if (stderr) {
       log(stderr);
+    }
 
     mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
     cb(user, pass);
@@ -380,12 +379,10 @@ function generateId(length, enc = 'hex') {
 }
 
 function storeAccount(account, del = false) {
-  //todo resolve int json problem whenever any input data is int
   var homePath = process.env.Home;
   var filePath = homePath + "\\Documents\\SteamSwitcher\\";
   var accounts = [];
-  log(account);
-  // log(del);
+  // log(account);
   if (!del) {
     if (fs.existsSync(filePath + "\\.account")) {
       var existingAccounts = readAccount();
@@ -399,25 +396,25 @@ function storeAccount(account, del = false) {
         accounts.push(account);
       }
       fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
-        if (err)
+        if (err) {
           return log(err);
+        }
       });
     } else {
-      accounts = JSON.parse(JSON.stringify(account));
+      accounts = JSON.stringify(account);
       fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function (err) {
-        if (err)
+        if (err) {
           return log(err);
+        }
       });
     }
   } else {
-    if (fs.existsSync(filePath + "\\.account")) {
-      fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
-        if (err)
-          return log(err);
-      });
-    }
+    fs.writeFile(filePath + "\\.account", JSON.stringify(account), function (err) {
+      if (err) {
+        return log(err);
+      }
+    });
   }
-  updateStore();
 }
 
 // main process, for example app/main.js
@@ -455,6 +452,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
       //https://github.com/mongodb-js/objfuscate
 
       storeAccount(proc.post);
+      updateStore();
     }
     if (proc.get) {
       log(proc.get);
@@ -464,6 +462,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
     }
     if (proc.delete) {
       deleteAccount(proc.delete);
+      updateStore();
     }
   }
 });
@@ -472,7 +471,6 @@ function updateStore() {
   if (hasAccounts()) {
     accountsStore = getAccount();
   }
-  refreshWindow();
 }
 
 ipcMain.on('dom-ready', () => {
