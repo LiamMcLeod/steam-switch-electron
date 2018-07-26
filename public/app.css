@@ -9645,6 +9645,10 @@ body {
   background: #303030;
   color: #f0f0f0;
   height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   /*
 	overflow-y: hidden;
 	overflow-x: hidden;
@@ -9882,6 +9886,13 @@ footer.card-footer a:hover {
 
 .inline-flex {
   display: inline-flex;
+}
+
+*.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /*# sourceMappingURL=app.css.map */

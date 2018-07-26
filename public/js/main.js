@@ -3,7 +3,6 @@ window.jsrender = require('jsrender');
 // console.log($.views);
 require('./imports');
 
-
 //* Basic Functions 
 function toggleModal() {
   var modal = $('#modal');

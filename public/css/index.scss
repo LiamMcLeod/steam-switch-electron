@@ -5,6 +5,7 @@ body {
 	background: $color-bg-md;
 	color: $color;
 	height: 100%;
+	user-select: none; //! important
 	/*
 	overflow-y: hidden;
 	overflow-x: hidden;

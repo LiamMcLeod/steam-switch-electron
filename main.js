@@ -63,7 +63,8 @@ function createWindow() {
 
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools(); //!Must be off for VS Debugging
+  //!Must be off for VS Debugging
+  //mainWindow.webContents.openDevTools(); 
 
 
   //* Main Window Event Listeners

@@ -94,3 +94,8 @@
 .inline-flex {
 	display: inline-flex;
 }
+
+*.unselectable {
+	-webkit-user-select: none;
+	user-select: none;
+}
