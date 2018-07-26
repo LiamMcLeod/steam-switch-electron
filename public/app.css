@@ -9672,6 +9672,7 @@ main {
   padding-top: 15px;
   overflow-y: hidden;
   overflow-x: hidden;
+  min-height: 300px;
 }
 
 body > footer {

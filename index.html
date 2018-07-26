@@ -2,182 +2,182 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Steam Switcher</title>
+    <meta charset="UTF-8">
+    <title>Steam Switcher</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="public/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="public/css/all.min.css">
 
-  <!-- Libraries -->
-  <link rel="stylesheet" href="public/css/normalize.css">
-  <!-- My CSS -->
-  <link rel="stylesheet" href="public/app.css">
+    <!-- Libraries -->
+    <link rel="stylesheet" href="public/css/normalize.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="public/app.css">
 
-  <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.ico" />
 
-  <!-- <link rel="import" href="views/account.html">
+    <!-- <link rel="import" href="views/account.html">
   <link rel="import" href="views/list.html"> -->
-  <script type="text/javascript" src="public/app.js"></script>
-  <script>
-    const {
-      ipcRenderer
-    } = require('electron');
-    //* Acts as a request for account data.
-    ipcRenderer.send('dom-ready');
-  </script>
+    <script type="text/javascript" src="public/app.js"></script>
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron');
+        //* Acts as a request for account data.
+        ipcRenderer.send('dom-ready');
+    </script>
 </head>
 
 <body>
-  <header>
-    <a class="hide-account" href="#">
+    <header>
+        <a class="hide-account" href="#">
       <i id="account-hide" class="fas fa-times fa-lg hidden"></i>
     </a>
-    <a class="show-account" href="#">
+        <a class="show-account" href="#">
       <i id="account-show" class="fas fa-plus fa-lg"></i>
     </a>
-  </header>
-  <main class="content js-content">
-    <div class="container">
-      <!-- Account List -->
-      <div id="list" class="content-body list hidden">
-        <script>
-          var jsrender = require('jsrender');
-          //TODO Make for loop to declare template as each template is single use only
-          // and therefore needs dynamic declaration in array in order to make dynamic templates
+    </header>
+    <main class="content js-content">
+        <div class="container">
+            <!-- Account List -->
+            <div id="list" class="content-body list hidden">
+                <script>
+                    var jsrender = require('jsrender');
+                    //TODO Make for loop to declare template as each template is single use only
+                    // and therefore needs dynamic declaration in array in order to make dynamic templates
 
-          ipcRenderer.on('ping', (event, data) => {
-            //console.log(data)
-            //data = JSON.parse(data[0]);
-            if (typeof (data) != "object") {
-              data = JSON.parse(data);
-            }
-            var accountTemplate = [];
-            var renderData = [];
-            data.forEach(function (item, i) {
-              accountTemplate.push(jsrender.templates('account' + i, './views/account-styling.html'));
-              renderData.push(data[i])
-            })
-            window.renderMultiple(accountTemplate, data, '#list');
-          })
-        </script>
-      </div>
+                    ipcRenderer.on('ping', (event, data) => {
+                        //console.log(data)
+                        //data = JSON.parse(data[0]);
+                        if (typeof(data) != "object") {
+                            data = JSON.parse(data);
+                        }
+                        var accountTemplate = [];
+                        var renderData = [];
+                        data.forEach(function(item, i) {
+                            accountTemplate.push(jsrender.templates('account' + i, './views/account-styling.html'));
+                            renderData.push(data[i])
+                        })
+                        window.renderMultiple(accountTemplate, data, '#list');
+                    })
+                </script>
+            </div>
 
-      <!-- Add Account -->
-      <div id="account" class="content-body account hidden">
-        <div class="columns">
-          <div class="column is-8-mobile is-offset-2-mobile">
-            <form id="account-form">
+            <!-- Add Account -->
+            <div id="account" class="content-body account hidden">
+                <div class="columns">
+                    <div class="column is-8-mobile is-offset-2-mobile">
+                        <form id="account-form">
 
-              <div class="field">
-                <label class="label">Name</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input id="name" class="input" type="text" placeholder="Name" value="">
-                  <span class="icon is-small is-left">
+                            <div class="field">
+                                <label class="label">Name</label>
+                                <div class="control has-icons-left has-icons-right">
+                                    <input id="name" class="input" type="text" placeholder="Name" value="">
+                                    <span class="icon is-small is-left">
                     <i class="fas fa-pencil-alt"></i>
                   </span>
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Username</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input id="username" class="input" type="text" placeholder="Username" value="">
-                  <span class="icon is-small is-left">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Username</label>
+                                <div class="control has-icons-left has-icons-right">
+                                    <input id="username" class="input" type="text" placeholder="Username" value="">
+                                    <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                   </span>
-                </div>
-              </div>
+                                </div>
+                            </div>
 
-              <div class="field">
-                <label class="label">Password</label>
-                <p class="control has-icons-left">
-                  <input id="password" class="input" type="password" placeholder="Password">
-                  <span class="icon is-small is-left">
+                            <div class="field">
+                                <label class="label">Password</label>
+                                <p class="control has-icons-left">
+                                    <input id="password" class="input" type="password" placeholder="Password">
+                                    <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
-                </p>
-              </div>
+                                </p>
+                            </div>
 
-              <label class="checkbox">
+                            <label class="checkbox">
                 <input id="remember" type="checkbox"> Remember me
               </label>
 
-              <div class="field">
-                <p class="control">
-                  <button id="submitAccount" class="button is-primary fright">
+                            <div class="field">
+                                <p class="control">
+                                    <button id="submitAccount" class="button is-primary fright">
                     Add
                   </button>
-                </p>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-    </div>
-  </main>
-  <footer class="medium">
-    <div class="content has-text-centered">
-      <a id="modal-show" href="">
+        </div>
+    </main>
+    <footer class="medium">
+        <div class="content has-text-centered">
+            <a id="modal-show" href="">
         About
       </a>
-    </div>
-  </footer>
-  <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->
-  <!-- Chromium <script>document.write(process.versions.chrome)</script>, -->
-  <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
-  <script>
-    require("./renderer.js");
-    $('.card-footer-item').on('click', (e) => {
-      launchAccount(e)
-    })
+        </div>
+    </footer>
+    <!-- We are using Node.js <script>document.write(process.versions.node)</script>, -->
+    <!-- Chromium <script>document.write(process.versions.chrome)</script>, -->
+    <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
+    <script>
+        require("./renderer.js");
+        $('.card-footer-item').on('click', (e) => {
+            launchAccount(e)
+        })
 
-    $('.dropdown-item.launch-drop').on('click', (e) => {
-      launchAccount(e)
-    })
+        $('.dropdown-item.launch-drop').on('click', (e) => {
+            launchAccount(e)
+        })
 
-    $('.fab.fa-steam-symbol.fa-7x').on('dblclick', (e) => {
-      launchAccount(e)
-    })
+        $('.fab.fa-steam-symbol.fa-7x').on('dblclick', (e) => {
+            launchAccount(e)
+        })
 
-    $('.dropdown-item.delete-drop').on('click', (e) => {
-      console.log("Delete requested");
-      deleteAccount(e)
-    })
+        $('.dropdown-item.delete-drop').on('click', (e) => {
+            console.log("Delete requested");
+            deleteAccount(e)
+        })
 
-    $("#submitAccount").on('click', (e) => {
-      var create = {};
-      create['name'] = $('#account-form').find('#name').val();
-      create['username'] = $('#account-form').find('#username').val();
-      create['password'] = $('#account-form').find('#password').val();
-      create['remember'] = $('#account-form').find('#remember').is(':checked');;
-      //TODO ERROR CHECK
-      createAccount(create);
-    })
+        $("#submitAccount").on('click', (e) => {
+            var create = {};
+            create['name'] = $('#account-form').find('#name').val();
+            create['username'] = $('#account-form').find('#username').val();
+            create['password'] = $('#account-form').find('#password').val();
+            create['remember'] = $('#account-form').find('#remember').is(':checked');;
+            //TODO ERROR CHECK
+            createAccount(create);
+        })
 
-    function createAccount(create) {
-      var proc = {}
-      proc.post = create;
+        function createAccount(create) {
+            var proc = {}
+            proc.post = create;
 
-      //* Send data to main process
-      ipcRenderer.send('request-mainprocess-action', proc);
-    }
+            //* Send data to main process
+            ipcRenderer.send('request-mainprocess-action', proc);
+        }
 
-    function launchAccount(e) {
-      var proc = {};
-      proc.id = $(e.currentTarget).data("id");
+        function launchAccount(e) {
+            var proc = {};
+            proc.id = $(e.currentTarget).data("id");
 
-      //* Send data to main process
-      ipcRenderer.send('request-mainprocess-action', proc);
-      ipcRenderer.send('refresh');
-    }
+            //* Send data to main process
+            ipcRenderer.send('request-mainprocess-action', proc);
+            ipcRenderer.send('refresh');
+        }
 
-    function deleteAccount(e) {
-      var proc = {};
-      proc.delete = $(e.currentTarget).data("id");
-      ipcRenderer.send('request-mainprocess-action', proc);
-      ipcRenderer.send('refresh');
-    }
-  </script>
+        function deleteAccount(e) {
+            var proc = {};
+            proc.delete = $(e.currentTarget).data("id");
+            ipcRenderer.send('request-mainprocess-action', proc);
+            ipcRenderer.send('refresh');
+        }
+    </script>
 </body>
 
 </html>
