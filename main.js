@@ -453,7 +453,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             storeAccount(proc.post);
             updateStore();
             //Refresh
-
+            mainWindow.reload();
         }
         if (proc.get) {
             log(proc.get);
@@ -465,6 +465,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             deleteAccount(proc.delete);
             updateStore();
             //Refresh
+            mainWindow.reload();
         }
     }
 });
