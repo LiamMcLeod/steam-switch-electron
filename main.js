@@ -7,7 +7,8 @@ const {
   BrowserWindow,
   Menu,
   Tray,
-  webContents
+  webContents,
+  globalShortcut
 } = require('electron');
 
 const {
@@ -92,6 +93,18 @@ app.on('ready', () => {
   updateStore();
   id = createKey(id);
   createWindow();
+
+  //! TEMP
+  //*Needed to refresh so that event listeners 
+  //*are applied to the renderer
+   
+  var reload = () => {
+    mainWindow.reload();
+  };
+
+  globalShortcut.register('F5', reload);
+  globalShortcut.register('CommandOrControl+R', reload);
+
 });
 
 // Quit when all windows are closed.
@@ -143,7 +156,7 @@ function hasAccounts() {
     else return false;
   } else {
     return false;
-  }
+  } 
 }
 
 // Get All Accounts
@@ -157,11 +170,12 @@ function readAccount() {
     log(account);
 
     // was !=object
-    if (typeof (account) == "string") {
+    if (typeof(account) == "string") {
       account = JSON.parse(account);
       return account;
-    } else
+    } else {
       return account;
+    }
   } else {
     return {};
   }
@@ -466,7 +480,6 @@ ipcMain.on('refresh', () => {
   // account = readAccount();
   mainWindow.webContents.send('ping', account);
 });
-
 //todo event to pick up on steam close
 // child.on('close', () => {
 //redoverlay32

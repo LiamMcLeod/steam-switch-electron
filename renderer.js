@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 
 function test() {
-	console.log('test');
+	console.log('test'); 
 }
 
-test();
+test(); 
