@@ -7,6 +7,7 @@ const {
     BrowserWindow,
     Menu,
     Tray,
+    Notification,
     //webContents,
     globalShortcut
 } = require('electron');
@@ -26,9 +27,6 @@ const base64 = require('base-64');
 const utf8 = require('utf8');
 
 var id = '';
-
-process.env.NODE_ENV = "development";
-
 var accountsStore = [];
 
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
@@ -312,6 +310,7 @@ function launchSteam(id) {
 }
 
 function openSteam(user, pass) {
+    createNotification();
     mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
     var child = require("child_process").spawn;
     var executablePath =
@@ -369,11 +368,13 @@ function closeSteam(user, pass, cb) {
 }
 
 function createNotification() {
-    var myNotification = new Notification('The Title!', {
-        icon: __dirname + '/icon.png',
-        body: 'Your notification body'
-    });
-    myNotification.show();
+    if (Notification.isSupported()) {
+        var notification = new Notification('Launching Steam', {
+            icon: __dirname + '/icon.png',
+            body: 'Steam is launching, this shouldn\'t take long...'
+        });
+        notification.show();
+    }
 }
 
 function generateId(length, enc = 'hex') {
