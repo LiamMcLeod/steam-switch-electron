@@ -1,7 +1,7 @@
-// Modules to control application life and create native browser window
 /**
 Liam McLeod, 2018.
 */
+// Modules to control application life and create native browser window
 const {
     app,
     BrowserWindow,
@@ -22,14 +22,17 @@ const crypto = require("crypto");
 const uuid = require("uuid");
 const sha256 = require('sha256');
 const aes256 = require('aes256');
+const base64 = require('base-64');
+const utf8 = require('utf8');
+
 var id = '';
-//!remove when done
-// process.env.NODE_ENV = "development";
+
+process.env.NODE_ENV = "development";
 
 var accountsStore = [];
 
 //TODO REMEMBER PASSWORD BOX REFER TO BELOW
-//TODO Maybe bcrypt the key
+
 //todo look into below reg to remember based upon the 
 //todo value of index.remember
 //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
@@ -42,6 +45,7 @@ var accountsStore = [];
 //? Maybe Concat ID, might be overkill
 // TODO CHECK said ID is UNIQUE
 //? Maybe obfuscate result
+//TODO Maybe bcrypt the key
 //https://github.com/mongodb-js/objfuscate
 
 
@@ -63,7 +67,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 480,
         height: 380,
-        // resizable: false, //!Uncomment when complete
+        resizable: false, //!Uncomment when complete
         fullscreenable: false,
         icon: __dirname + "/icon.png",
         title: "Steam Switcher v1"
@@ -194,9 +198,7 @@ function readAccount() {
 
 //? Initially meant to return the object rather than string but it's called to now
 function getAccount() {
-    // var accounts = JSON.parse(readAccount());
     var accounts = readAccount();
-    // log(account);
     return accounts;
 }
 
@@ -209,7 +211,6 @@ function getAccountById(id) {
             return index;
         }
     });
-    // log(account[i]);
     return account[i];
 }
 
@@ -225,12 +226,10 @@ function deleteAccount(id) {
     if (i && account[i]) {
         account.splice(i, 1);
         storeAccount(account, true);
-        // log(account)
     }
 }
 
 function createKey(key = id) {
-    // log(sha256(hardwareId.concat(key)).toString('hex'));
     return sha256(hardwareId.concat(key)).toString('hex');
 }
 
@@ -269,7 +268,6 @@ function createTray(e) {
     //* If they have accounts generate additional menu items
     if (accountsStore) {
         accountsStore.forEach(function(item) {
-            // log(item);
             menuItems.unshift({
                 label: 'Launch ' + item.name,
                 click: function() {
@@ -297,13 +295,12 @@ function launchSteam(id) {
         var user = account.username;
         var pass = account.password;
 
+        //* Decrypt Key
         var decryptKey = createKey(account.key);
         pass = aes256.decrypt(decryptKey, pass);
+        pass = base64.decode(pass);
 
-        // log(user);
-        // log(pass);
         steamExists(user, pass, function(steamExists, user, pass) {
-            log(steamExists);
             if (steamExists) {
                 closeSteam(user, pass, function(user, pass) {
                     openSteam(user, pass);
@@ -320,12 +317,16 @@ function openSteam(user, pass) {
     var executablePath =
         'C:\\Program Files (x86)\\Steam\\Steam.exe';
     var parameters = ["-login", user, pass];
-    // var parameters = ["-login " + user + " " + pass];
 
     child = child(executablePath, parameters, {
         detached: true,
         stdio: 'ignore'
     }).unref();
+
+    //todo event to pick up on steam close
+    // child.on('close', () => {
+    //     mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
+    // });
 }
 
 function steamExists(user, pass, cb) {
@@ -383,7 +384,6 @@ function storeAccount(account, del = false) {
     var homePath = process.env.Home;
     var filePath = homePath + "\\Documents\\SteamSwitcher\\";
     var accounts = [];
-    // log(account);
     if (account != null && account != "") {
         if (!del) {
             if (fs.existsSync(filePath + "\\.account")) {
@@ -446,8 +446,10 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             //* Hash Key 
             var encKey = createKey(proc.post.key);
 
-            //* Encrypt PW
-            var encrypted = aes256.encrypt(encKey, proc.post.password);
+            //* Encrypt PW with an extra layer of difficulty
+            var encrypted = utf8.encode(proc.post.password);
+            encrypted = base64.encode(encrypted);
+            encrypted = aes256.encrypt(encKey, encrypted);
             proc.post.password = encrypted;
 
             storeAccount(proc.post);
@@ -485,9 +487,6 @@ ipcMain.on('dom-ready', () => {
 ipcMain.on('refresh', () => {
     mainWindow.reload();
 });
-//todo event to pick up on steam close
-// child.on('close', () => {
-//redoverlay32
-// })
+
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer

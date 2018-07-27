@@ -1,3 +1,6 @@
+/**
+Liam McLeod, 2018.
+*/
 window.$ = window.jQuery = require('jquery');
 window.jsrender = require('jsrender');
 // console.log($.views);
