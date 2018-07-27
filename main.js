@@ -374,6 +374,10 @@ function createNotification() {
             body: 'Steam is launching, this shouldn\'t take long...'
         });
         notification.show();
+
+        notification.onclick = () => {
+            notification.hide();
+        };
     }
 }
 
