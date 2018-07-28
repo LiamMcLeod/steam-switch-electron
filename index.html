@@ -13,11 +13,10 @@
     <link rel="stylesheet" href="public/css/normalize.css">
     <!-- My CSS -->
     <link rel="stylesheet" href="public/app.css">
-
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.ico" />
+    <!-- HTML Imports -->
 
-    <!-- <link rel="import" href="views/account.html">
-  <link rel="import" href="views/list.html"> -->
     <script type="text/javascript" src="public/app.js"></script>
     <script>
         const {
@@ -43,12 +42,7 @@
             <div id="list" class="content-body list hidden">
                 <script>
                     var jsrender = require('jsrender');
-                    //TODO Make for loop to declare template as each template is single use only
-                    // and therefore needs dynamic declaration in array in order to make dynamic templates
-
                     ipcRenderer.on('ping', (event, data) => {
-                        //console.log(data)
-                        //data = JSON.parse(data[0]);
                         if (typeof(data) != "object") {
                             data = JSON.parse(data);
                         }
