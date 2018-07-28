@@ -334,16 +334,16 @@ function createTray(e) {
     var menuItems = [{
             label: 'Show',
             click: function() {
-                // Show Window
+                //* Show Window
                 mainWindow.show();
-                // Remove Tray Icon
+                //* Remove Tray Icon
                 tray.destroy();
             }
         },
         {
             label: 'Quit',
             click: function() {
-                // Quit
+                //* Quit
                 app.quit();
             }
         },
@@ -354,11 +354,13 @@ function createTray(e) {
             menuItems.unshift({
                 label: 'Launch ' + item.name,
                 click: function() {
+                    //* Launch Steam Account with ID
                     launchSteam(item.id);
                 }
             });
         });
     }
+
     //* Create Menu
     var contextMenu = Menu.buildFromTemplate(menuItems);
     tray.setContextMenu(contextMenu);
@@ -415,6 +417,8 @@ function openSteam(user, pass) {
     createNotification();
     mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
     var child = require("child_process").spawn;
+
+    //* Exe Location + Launch Params 
     var executablePath =
         'C:\\Program Files (x86)\\Steam\\Steam.exe';
     var parameters = ["-login", user, pass];
@@ -423,13 +427,17 @@ function openSteam(user, pass) {
      * Spawn and unref were chosen so that users can 
      * close the app without closing child process
      */
-    child = child(executablePath, parameters, {
+    var steam = child(executablePath, parameters, {
         detached: true,
         stdio: 'ignore'
     }).unref();
 
-    //TODO todo event to pick up on steam close
-    // child.on('close', () => {
+    //* Attach Listener
+    steam
+        .on('close', (code) => {
+            mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
+        });
+    // .on('close', () => {
     //     mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
     // });
 }
