@@ -17,9 +17,7 @@ function toggleModal() {
 }
 
 /**
- * @param content string
- ** String containing class name
- ** of a content div to be shown
+ * @param  content  String  HTML class name
  *
  * Shows a content div by class name
  */
@@ -38,8 +36,7 @@ function showMainContent() {
 }
 
 /**
- * @param def boolean
- ** Returns buttons to original states 
+ * @param  def  boolean  default state boolean
  *
  * Switches buttons based upon whether 
  * account creation div is shown
@@ -55,8 +52,7 @@ function switchButtons(def) {
 }
 
 /**
- * @param showMain boolean
- ** Shows the main content body
+ * @param  showMain  boolean  show main content boolean
  * 
  * Returns all content to original
  * hidden state
@@ -79,8 +75,7 @@ function hideAll(showMain = true) {
 }
 
 /**
- * @param id string
- ** id being interacted with by event
+ * @param  id  String  HTML id interacted with
  * 
  * Checks the id of an element being interacted with
  * action is taken based upon those ids
@@ -107,54 +102,48 @@ function objectHasNoId(classList) {
 }
 
 /**
- * @param object Object
- ** The object to show
+ * @param  el  Object  element to show
  * 
  * shows the provided object
  * provided it has the class hidden
  */
-function show(object) {
-    if (object.hasClass('hidden')) {
-        object.removeClass('hidden');
+function show(el) {
+    if (el.hasClass('hidden')) {
+        el.removeClass('hidden');
     }
 }
 
 /**
- * @param object Object
- ** The object to hide
+ * @param  el  Object  element to hide
  * 
  * hides the provided object
  */
-function hide(object) {
-    if (!object.hasClass('hidden')) {
-        object.addClass('hidden');
+function hide(el) {
+    if (!el.hasClass('hidden')) {
+        el.addClass('hidden');
     }
 }
 
 /**
- * @param object Object
- ** The object to apply or remove hidden from
+ * @param   el  Object  element to change class
  * 
  * Toggles the hidden status
  * of the provided object
  * using hidden class
  */
-function toggle(object) {
-    if (object.hasClass('hidden')) {
-        object.removeClass('hidden');
+function toggle(el) {
+    if (el.hasClass('hidden')) {
+        el.removeClass('hidden');
     } else {
-        object.addClass("hidden");
+        el.addClass("hidden");
     }
 }
 
 //* JS Render Functions
 /**
- * @param template JSRender Object
- ** Name of template to be rendered
- * @param data JSON Object
- ** Data for template to render
- * @param el string
- ** HTML element to append template to.
+ * @param   template  JSRender Object    Template to be rendered
+ * @param   data      JSON Object        Data for template to render
+ * @param   el        String             HTML element to append to
  * 
  * Renders a JSrender template to the
  * given element containing data parsed.
@@ -164,12 +153,9 @@ window.renderTemplate = function renderTemplate(template, data, el) {
 };
 
 /**
- * @param template Array of JSRender Objects
- ** Name of template to be rendered
- * @param data JSON Object
- ** Data for template to render
- * @param el string
- ** HTML element to append template to.
+ * @param  template  Array of JSRender Objects    Template to be rendered
+ * @param  data      JSON Object                  Data for template to render
+ * @param  el        String                       HTML element to append template to.
  * 
  * Renders a multiple JSrender templates to the
  * given element containing data parsed.
