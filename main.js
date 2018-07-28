@@ -46,6 +46,7 @@ var accountsStore = [];
 //https://github.com/mongodb-js/objfuscate
 //TODO separate crypo functions and base it off of below
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
+//TODO modularise
 
 /**
  * @param  log  any
@@ -79,7 +80,7 @@ function createWindow() {
         resizable: false, //!Uncomment when complete
         fullscreenable: false,
         icon: __dirname + "/icon.png",
-        title: "Steam Switcher v1"
+        title: "Steam Switcher"
     });
 
     //* and load the index.html of the app.
@@ -280,7 +281,9 @@ function deleteAccount(id) {
         }
     });
     if (i && account[i]) {
+        //* Delete index
         account.splice(i, 1);
+        //* Write changes
         storeAccount(account, true);
     }
 }
@@ -345,7 +348,7 @@ function createTray(e) {
             }
         },
     ];
-    //* If they have accounts generate additional menu items
+    //* Generate additional menu items
     if (accountsStore) {
         accountsStore.forEach(function(item) {
             menuItems.unshift({
@@ -356,8 +359,11 @@ function createTray(e) {
             });
         });
     }
+    //* Create Menu
     var contextMenu = Menu.buildFromTemplate(menuItems);
     tray.setContextMenu(contextMenu);
+
+    //* Add Listeners
     tray.on('right-click', (e) => {
         tray.popUpContextMenu(contextMenu);
     });
@@ -385,7 +391,7 @@ function launchSteam(id) {
         pass = aes256.decrypt(decryptKey, pass);
         pass = base64.decode(pass);
 
-
+        //*Begin with Steam
         steamExists(user, pass, function(steamExists, user, pass) {
             if (steamExists) {
                 closeSteam(user, pass, function(user, pass) {
@@ -402,7 +408,7 @@ function launchSteam(id) {
  * @param  pass  String  password of account
  * 
  * Opens Steam passes username and password as launch parameters
- * as set down in the link below
+ * as specified in the link below
  * https://support.steampowered.com/kb_article.php?ref=5623-QOSV-5250
  */
 function openSteam(user, pass) {
@@ -445,7 +451,6 @@ function steamExists(user, pass, cb) {
         if (stdout) {
             // log(stdout);
             if (stdout.match("Steam.exe")) {
-                // log("Steam Found");
                 steamExists = true;
             }
         }
@@ -486,7 +491,7 @@ function closeSteam(user, pass, cb) {
  */
 function createNotification() {
     if (Notification.isSupported()) {
-        var notification = new Notification('Launching Steam', {
+        var notification = new Notification('Launching Steam...', {
             icon: __dirname + '/icon.png',
             body: 'Steam is launching, this shouldn\'t take long...'
         });
@@ -556,8 +561,19 @@ function storeAccount(account, del = false) {
     }
 }
 
-//* main process, for example app/main.js
-//* Event Listeners
+/**
+ * Populate storage array
+ * using getAccount
+ */
+function updateStore() {
+    if (hasAccounts()) {
+        accountsStore = getAccount();
+    }
+}
+
+
+
+//* Event Listeners & Inter-Proc Comms
 const {
     ipcMain
 } = require('electron');
@@ -608,16 +624,6 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
     }
 });
 
-/**
- * Populate storage array
- * using getAccount
- */
-function updateStore() {
-    if (hasAccounts()) {
-        accountsStore = getAccount();
-    }
-}
-
 ipcMain.on('dom-ready', () => {
     var account = getAccount();
     // account = readAccount();
@@ -630,3 +636,4 @@ ipcMain.on('refresh', () => {
 
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer
+//* main process, for example app/main.js
