@@ -433,13 +433,10 @@ function openSteam(user, pass) {
     }).unref();
 
     //* Attach Listener
-    steam
-        .on('close', (code) => {
-            mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-        });
-    // .on('close', () => {
-    //     mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-    // });
+    // steam
+    //     .on('close', (code) => {
+    //         mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
+    //     });
 }
 
 /**
