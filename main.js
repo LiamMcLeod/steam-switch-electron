@@ -11,24 +11,14 @@ const {
     globalShortcut
 } = require('electron');
 
-const {
-    machineIdSync
-} = require('node-machine-id');
 
 const path = require('path');
 const fs = require('fs');
-const url = require('url');
-const crypto = require("crypto");
-const uuid = require("uuid");
-const sha256 = require('sha256');
-const aes256 = require('aes256');
-const base64 = require('base-64');
-const utf8 = require('utf8');
 
-var id = '';
+const crypto = require('./modules/crypto');
+
 var accountsStore = [];
-
-//TODO REMEMBER PASSWORD BOX REFER TO BELOW
+var userId = '';
 
 //todo look into below reg to remember based upon the 
 //todo value of index.remember
@@ -44,7 +34,7 @@ var accountsStore = [];
 //? Maybe obfuscate result
 //TODO Maybe bcrypt the key
 //https://github.com/mongodb-js/objfuscate
-//TODO separate crypo functions and base it off of below
+//TODO separate crypto functions and base it off of below
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
 //TODO modularise
 
@@ -58,13 +48,10 @@ var accountsStore = [];
  * console.log should deal with the type itself
  */
 function log(log) {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development" || process.argv[2] === "--d") {
         console.log(log);
     }
 }
-
-//* Get HW Id
-let hardwareId = machineIdSync();
 
 /** 
  * Keep a global reference of the window object, if you don't, the window will
@@ -120,13 +107,14 @@ function createWindow() {
  * Some APIs can only be used after  event occurs.
  */
 app.on('ready', () => {
-    log(process.env.NODE_ENV + ": true");
+    // log(process.env.NODE_ENV || process.argv[2]);
+    log("Debug: True");
     //* Create folder if necessary
-    checkFirstRun();
+    crypto.checkFirstRun();
     //* Retrieve data
     updateStore();
-    //* Create key
-    id = createKey(id);
+    //* Get Id
+    userId = crypto.getId();
     //* Create window
     createWindow();
 
@@ -169,24 +157,6 @@ app.on('activate', () => {
  *  In file you can include the rest of your app's specific main process
  *  code. You can also put them in separate files and require them here.
  */
-function checkFirstRun() {
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    // log(filePath);
-    if (fs.existsSync(filePath)) {
-        if (fs.existsSync(filePath + "\\.id")) {
-            id = fs.readFileSync(filePath + "\\.id", 'utf8');
-            return true;
-        } else {
-            makeFile(filePath);
-            checkFirstRun();
-        }
-    } else {
-        makeDir(filePath);
-        makeFile(filePath);
-        checkFirstRun();
-    }
-}
 
 /**
  * @returns    Boolean  Accounts exist?
@@ -219,7 +189,6 @@ function readAccount() {
     var filePath = homePath + "\\Documents\\SteamSwitcher\\";
     if (fs.existsSync(filePath + "\\.account")) {
         account = fs.readFileSync(filePath + "\\.account", 'utf8');
-
         if (typeof(account) === "string" && account != "") {
             account = JSON.parse(account);
             return account;
@@ -247,13 +216,14 @@ function getAccount() {
 }
 
 /**
- * @param  id  string  id of account to get
+ * @param  id  String    id of account to get
+ * @param  cb  Function  callback
  * 
  * @returns Object account sought by user
  * 
  * Gets account by id
  */
-function getAccountById(id) {
+function getAccountById(id, cb = null) {
     var account = readAccount();
     account = account;
     //* Returns index
@@ -262,6 +232,9 @@ function getAccountById(id) {
             return index;
         }
     });
+    if (cb) {
+        cb(account[i]);
+    }
     return account[i];
 }
 
@@ -286,40 +259,6 @@ function deleteAccount(id) {
         //* Write changes
         storeAccount(account, true);
     }
-}
-
-/**
- * @param  key  String to concat to HWId
- //! id defunct was for when half of the key was stored
- * @returns String sha256 hash to be used as key
- * 
- * Uses sha256 to create a hash of hwid and psuedo
- * random key to be used as a key for encryption
- */
-function createKey(key = id) {
-    return sha256(hardwareId.concat(key)).toString('hex');
-}
-
-/**
- * @param  filePath  String  path to make dir in
- * 
- * Makes dir in filePath
- */
-function makeDir(filePath) {
-    fs.mkdirSync(filePath);
-}
-
-/**
- * @param  filePath  String  path to make file in
- * 
- * Makes id file to be used in key generation
- */
-function makeFile(filePath) {
-    fs.writeFile(filePath + "\\.id", generateId(20), function(err) {
-        if (err) {
-            return log(err);
-        }
-    });
 }
 
 /**
@@ -384,23 +323,14 @@ function launchSteam(id) {
     if (!id) {
         return;
     } else {
-        var account = getAccountById(id);
-        var user = account.username;
-        var pass = account.password;
-
-        //* Decrypt Key move later
-        var decryptKey = createKey(account.key);
-        pass = aes256.decrypt(decryptKey, pass);
-        pass = base64.decode(pass);
-
         //*Begin with Steam
-        steamExists(user, pass, function(steamExists, user, pass) {
+        steamExists(id, function(id, steamExists) {
             if (steamExists) {
-                closeSteam(user, pass, function(user, pass) {
-                    openSteam(user, pass);
+                closeSteam(function(id) {
+                    openSteam(id);
                 });
             }
-            openSteam(user, pass);
+            openSteam(id);
         });
     }
 }
@@ -413,9 +343,16 @@ function launchSteam(id) {
  * as specified in the link below
  * https://support.steampowered.com/kb_article.php?ref=5623-QOSV-5250
  */
-function openSteam(user, pass) {
+function openSteam(id) {
     createNotification();
     var child = require("child_process").spawn;
+
+    //!Decrypt here
+
+    var account = getAccountById(id);
+    var key = crypto.createKey(account.key);
+    var pass = crypto.decryptPass(key, account.password);
+    var user = account.username;
 
     //* Exe Location + Launch Params 
     var executablePath =
@@ -426,6 +363,7 @@ function openSteam(user, pass) {
      * Spawn and unref were chosen so that users can 
      * close the app without closing child process
      */
+
     var steam = child(executablePath, parameters, {
             detached: true,
             stdio: 'ignore'
@@ -445,7 +383,7 @@ function openSteam(user, pass) {
  * 
  * Checks is Steam is open
  */
-function steamExists(user, pass, cb) {
+function steamExists(id, cb) {
     var exec = require('child_process').exec;
     exec('tasklist', function(err, stdout, stderr) {
         var steamExists = false;
@@ -461,7 +399,7 @@ function steamExists(user, pass, cb) {
         if (stderr) {
             log(stderr);
         }
-        cb(steamExists, user, pass);
+        cb(id, steamExists);
     });
 }
 
@@ -472,7 +410,7 @@ function steamExists(user, pass, cb) {
  * 
  * Closes Steam if it is found to be open
  */
-function closeSteam(user, pass, cb) {
+function closeSteam(id, cb) {
     var exec = require('child_process').exec;
     exec('taskkill /F /IM Steam.exe', function(err, stdout, stderr) {
         if (err) {
@@ -485,7 +423,7 @@ function closeSteam(user, pass, cb) {
             log(stderr);
         }
 
-        cb(user, pass);
+        cb(id);
     });
 }
 
@@ -504,16 +442,6 @@ function createNotification() {
             notification.hide();
         };
     }
-}
-
-/**
- * @param  length  int  length of id
- * @param  pass    int  encoding of id
- * 
- * Closes Steam if it is found to be open
- */
-function generateId(length, enc = 'hex') {
-    return crypto.randomBytes(length).toString(enc);
 }
 
 /**
@@ -590,22 +518,15 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         }
         if (proc.post) {
             //* Generate Id
-            proc.post.id = generateId(2, 'hex');
+            proc.post.id = crypto.generateId(2, 'hex');
 
-            //* Generate Key 
-            var key = generateId(20);
-
-            //* Store Key 
-            proc.post.key = key;
-
+            //* Generate & Store Key
+            proc.post.key = crypto.generateId(20);
             //* Hash Key 
-            var encKey = createKey(proc.post.key);
+            var key = crypto.createKey(proc.post.key);
 
-            //* Encrypt PW with an extra layer of difficulty
-            var encrypted = utf8.encode(proc.post.password);
-            encrypted = base64.encode(encrypted);
-            encrypted = aes256.encrypt(encKey, encrypted);
-            proc.post.password = encrypted;
+            //* Encrypt
+            proc.post.password = crypto.encryptPass(key, proc.post.password);
 
             storeAccount(proc.post);
             updateStore();

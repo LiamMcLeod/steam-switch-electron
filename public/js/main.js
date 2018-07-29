@@ -171,8 +171,6 @@ window.renderMultiple = function renderMultiple(template, data, el) {
 //* Body Events
 $(document).on("click", function(e) {
     //*To monitor events
-    // console.log($(this));
-    // console.log(e);
     var target = e.target;
 
     if (target.id) {

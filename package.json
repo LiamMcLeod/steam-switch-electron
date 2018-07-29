@@ -1,37 +1,38 @@
 {
-  "name": "steam-switch-electron",
-  "version": "1.0.0",
-  "description": "A minimal application to switch Steam profiles",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": "https://github.com/liammcleod/messing-with-electron",
-  "keywords": [
-    "Electron",
-    "steam",
-    "account",
-    "switcher",
-    "alpha"
-  ],
-  "author": "LiamMcLeod",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^2.0.0",
-    "electron-winstaller": "^2.6.4",
-    "gulp": "^3.9.1",
-    "i": "^0.3.6",
-    "jquery": "^3.3.1",
-    "jsrender": "^0.9.90",
-    "laravel-elixir": "^6.0.0-18",
-    "laravel-elixir-webpack-official": "^1.0.10"
-  },
-  "dependencies": {
-    "aes256": "^1.0.3",
-    "base-64": "^0.1.0",
-    "node-machine-id": "^1.1.10",
-    "sha256": "^0.2.0",
-    "sha512": "0.0.1",
-    "utf8": "^3.0.0"
-  }
+    "name": "steam-switch-electron",
+    "version": "1.0.0",
+    "description": "A minimal application to switch Steam profiles",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron . --d"
+    },
+    "repository": "https://github.com/liammcleod/messing-with-electron",
+    "keywords": [
+        "Electron",
+        "steam",
+        "account",
+        "switcher",
+        "alpha"
+    ],
+    "author": "LiamMcLeod",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "^2.0.0",
+        "electron-winstaller": "^2.6.4",
+        "gulp": "^3.9.1",
+        "i": "^0.3.6",
+        "jquery": "^3.3.1",
+        "jsrender": "^0.9.90",
+        "laravel-elixir": "^6.0.0-18",
+        "laravel-elixir-webpack-official": "^1.0.10"
+    },
+    "dependencies": {
+        "aes256": "^1.0.3",
+        "base-64": "^0.1.0",
+        "node-machine-id": "^1.1.10",
+        "sha256": "^0.2.0",
+        "sha512": "0.0.1",
+        "utf8": "^3.0.0"
+    }
 }
