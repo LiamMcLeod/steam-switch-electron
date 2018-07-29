@@ -15,4 +15,3 @@ Array.prototype.forEach.call(links, (link) => {
 })
 //* document.createElement('clone')
 //* If links have IDs document.getElementById('').import can import from body
-//! JustForYou CODE FOR COFFEE

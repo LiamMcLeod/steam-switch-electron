@@ -16,6 +16,8 @@ const path = require('path');
 const fs = require('fs');
 
 const crypto = require('./modules/crypto');
+const steam = require('./modules/steam');
+const account = require('./modules/account');
 
 var accountsStore = [];
 var userId = '';
@@ -38,20 +40,7 @@ var userId = '';
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
 //TODO modularise
 
-/**
- * @param  log  any
- * 
- * Really basic log function to speed up 
- * my own typing of log, and to ensure it 
- * only happens during dev
- * 
- * console.log should deal with the type itself
- */
-function log(log) {
-    if (process.env.NODE_ENV === "development" || process.argv[2] === "--d") {
-        console.log(log);
-    }
-}
+const log = require('./modules/log');
 
 /** 
  * Keep a global reference of the window object, if you don't, the window will
@@ -159,109 +148,6 @@ app.on('activate', () => {
  */
 
 /**
- * @returns    Boolean  Accounts exist?
- * 
- * Check if accounts exist
- */
-function hasAccounts() {
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    if (fs.existsSync(filePath + "\\.account")) {
-        var accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
-        if (accounts.length) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-
-/**
- * @returns Object account sought by user
- * 
- * Gets account for misc purposes
- */
-function readAccount() {
-    var account = null;
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    if (fs.existsSync(filePath + "\\.account")) {
-        account = fs.readFileSync(filePath + "\\.account", 'utf8');
-        if (typeof(account) === "string" && account != "") {
-            account = JSON.parse(account);
-            return account;
-        } else {
-            return account;
-        }
-    } else {
-        return {};
-    }
-}
-
-/*
- ? Initially meant to return the object rather than 
- ? string but I just moved it to the main readAccount
- */
-/**
- * @returns Object account sought by user
- * 
- * Gets account for misc purposes 
- * Because habit 
- */
-function getAccount() {
-    var accounts = readAccount();
-    return accounts;
-}
-
-/**
- * @param  id  String    id of account to get
- * @param  cb  Function  callback
- * 
- * @returns Object account sought by user
- * 
- * Gets account by id
- */
-function getAccountById(id, cb = null) {
-    var account = readAccount();
-    account = account;
-    //* Returns index
-    var i = account.findIndex(function(index) {
-        if (index.id == id) {
-            return index;
-        }
-    });
-    if (cb) {
-        cb(account[i]);
-    }
-    return account[i];
-}
-
-/**
- * @param  id  string  id of account to delete
- * 
- * Deletes account by id, calls to 
- * storeAccount to write the changes
- */
-function deleteAccount(id) {
-    var account = readAccount();
-
-    var i = account.findIndex(function(index) {
-        //* Returns index
-        if (index.id == id) {
-            return index;
-        }
-    });
-    if (i && account[i]) {
-        //* Delete index
-        account.splice(i, 1);
-        //* Write changes
-        storeAccount(account, true);
-    }
-}
-
-/**
  * @param  e  Object  Event
  * 
  * Create tray icon complete with  
@@ -288,8 +174,8 @@ function createTray(e) {
         },
     ];
     //* Generate additional menu items
-    if (accountsStore) {
-        accountsStore.forEach(function(item) {
+    if (account.accountsStore) {
+        account.accountsStore.forEach(function(item) {
             menuItems.unshift({
                 label: 'Launch ' + item.name,
                 click: function() {
@@ -315,119 +201,6 @@ function createTray(e) {
 }
 
 /**
- * @param  id  String  ID of account
- * 
- * Launches Steam logging into account with ID
- */
-function launchSteam(id) {
-    if (!id) {
-        return;
-    } else {
-        //*Begin with Steam
-        steamExists(id, function(id, steamExists) {
-            if (steamExists) {
-                closeSteam(function(id) {
-                    openSteam(id);
-                });
-            }
-            openSteam(id);
-        });
-    }
-}
-
-/**
- * @param  user  String  username of account
- * @param  pass  String  password of account
- * 
- * Opens Steam passes username and password as launch parameters
- * as specified in the link below
- * https://support.steampowered.com/kb_article.php?ref=5623-QOSV-5250
- */
-function openSteam(id) {
-    createNotification();
-    var child = require("child_process").spawn;
-
-    //!Decrypt here
-
-    var account = getAccountById(id);
-    var key = crypto.createKey(account.key);
-    var pass = crypto.decryptPass(key, account.password);
-    var user = account.username;
-
-    //* Exe Location + Launch Params 
-    var executablePath =
-        'C:\\Program Files (x86)\\Steam\\Steam.exe';
-    var parameters = ["-login", user, pass];
-
-    /**
-     * Spawn and unref were chosen so that users can 
-     * close the app without closing child process
-     */
-
-    var steam = child(executablePath, parameters, {
-            detached: true,
-            stdio: 'ignore'
-        }, () => {
-            log(steam);
-        })
-        .on('close', (code) => {
-            mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-        }).unref();
-    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
-}
-
-/**
- * @param  user  String     username of account
- * @param  pass  String     password of account
- * @param  cb    Function   callback to closeSteam
- * 
- * Checks is Steam is open
- */
-function steamExists(id, cb) {
-    var exec = require('child_process').exec;
-    exec('tasklist', function(err, stdout, stderr) {
-        var steamExists = false;
-        if (err) {
-            log(err);
-        }
-        if (stdout) {
-            // log(stdout);
-            if (stdout.match("Steam.exe")) {
-                steamExists = true;
-            }
-        }
-        if (stderr) {
-            log(stderr);
-        }
-        cb(id, steamExists);
-    });
-}
-
-/**
- * @param  user  String     username of account
- * @param  pass  String     password of account
- * @param  cb    Function   callback to openSteam
- * 
- * Closes Steam if it is found to be open
- */
-function closeSteam(id, cb) {
-    var exec = require('child_process').exec;
-    exec('taskkill /F /IM Steam.exe', function(err, stdout, stderr) {
-        if (err) {
-            log(err);
-        }
-        if (stdout) {
-            log(stdout);
-        }
-        if (stderr) {
-            log(stderr);
-        }
-
-        cb(id);
-    });
-}
-
-/**
  * Simple Notification from Electron Docs
  */
 function createNotification() {
@@ -445,50 +218,23 @@ function createNotification() {
 }
 
 /**
- * @param  account  Object   account to be stored/overwritten
- * @param  del      Boolean  overwrite/delete account 
+ * @param  id  String  ID of account
  * 
- * Writes accounts to file. If del is flagged
- * it will overwrite entire file without object
- * which was requested for deletion
+ * Launches Steam logging into account with ID
  */
-function storeAccount(account, del = false) {
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    var accounts = [];
-    if (account != null && account != "") {
-        if (!del) {
-            if (fs.existsSync(filePath + "\\.account")) {
-                var existingAccounts = readAccount();
-                if (!existingAccounts.length) {
-                    accounts.push(existingAccounts);
-                    accounts.push(account);
-                } else {
-                    for (let i = 0; i < existingAccounts.length; i++) {
-                        accounts.push(existingAccounts[i]);
-                    }
-                    accounts.push(account);
-                }
-                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
-                    if (err) {
-                        return log(err);
-                    }
-                });
-            } else {
-                accounts = JSON.stringify(account);
-                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
-                    if (err) {
-                        return log(err);
-                    }
+function launchSteam(id) {
+    if (!id) {
+        return;
+    } else {
+        //*Begin with Steam
+        steam.steamExists(id, function(id, steamExists) {
+            if (steamExists) {
+                steam.closeSteam(function(id) {
+                    steam.openSteam(id);
                 });
             }
-        } else {
-            fs.writeFile(filePath + "\\.account", JSON.stringify(account), function(err) {
-                if (err) {
-                    return log(err);
-                }
-            });
-        }
+            steam.openSteam(id);
+        });
     }
 }
 
@@ -497,12 +243,10 @@ function storeAccount(account, del = false) {
  * using getAccount
  */
 function updateStore() {
-    if (hasAccounts()) {
-        accountsStore = getAccount();
+    if (account.hasAccounts()) {
+        accountsStore = account.getAccount();
     }
 }
-
-
 
 //* Event Listeners & Inter-Proc Comms
 const {
@@ -528,7 +272,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             //* Encrypt
             proc.post.password = crypto.encryptPass(key, proc.post.password);
 
-            storeAccount(proc.post);
+            account.storeAccount(proc.post);
             updateStore();
             //* Refresh
             mainWindow.reload();
@@ -540,7 +284,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             log(proc.put);
         }
         if (proc.delete) {
-            deleteAccount(proc.delete);
+            account.deleteAccount(proc.delete);
             updateStore();
             //* Refresh
             mainWindow.reload();
@@ -549,9 +293,8 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 });
 
 ipcMain.on('dom-ready', () => {
-    var account = getAccount();
-    // account = readAccount();
-    mainWindow.webContents.send('ping', account);
+    var accounts = account.getAccount();
+    mainWindow.webContents.send('ping', accounts);
 });
 
 ipcMain.on('refresh', () => {
