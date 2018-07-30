@@ -8,6 +8,7 @@ const aes256 = require('aes256');
 const base64 = require('base-64');
 const utf8 = require('utf8');
 const fs = require('fs');
+
 const {
     machineIdSync
 } = require('node-machine-id');

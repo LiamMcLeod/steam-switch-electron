@@ -1,7 +1,7 @@
 /**
 Liam McLeod, 2018.
 */
-const fs = require('fs');
+const path = require('path');
 
 const account = require('./account');
 const crypto = require('./crypto');
@@ -67,8 +67,6 @@ function openSteam(id) {
     // createNotification();
     var child = require("child_process").spawn;
 
-    //!Decrypt here
-
     var acc = account.getAccountById(id);
     var key = crypto.createKey(acc.key);
     var pass = crypto.decryptPass(key, acc.password);
@@ -84,16 +82,29 @@ function openSteam(id) {
      * close the app without closing child process
      */
 
-    var steam = child(executablePath, parameters, {
-            detached: true,
-            stdio: 'ignore'
-        }, () => {
-            log(steam);
-        })
-        .on('close', (code) => {
-            mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-        }).unref();
-    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+
+    //TODO Parse mainWindow somehow, remote is for renderer
+    const {
+        BrowserWindow,
+    } = require('electron');
+
+    log(allWindows);
+
+    // Get all windows
+    const allWindows = BrowserWindow.getAllWindows();
+    const focusedWindow = BrowserWindow.getFocusedWindow();
+
+    focusedWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
+
+    //!Uncomment When done
+    // var steam = child(executablePath, parameters, {
+    //         detached: true,
+    //         stdio: 'ignore'
+    //     })
+    //     .on('close', (code) => {
+    //         mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
+    //     }).unref();
+    // mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
 }
 
 module.exports = {

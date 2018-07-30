@@ -8,7 +8,7 @@
  * console.log should deal with the type itself
  */
 function log(log) {
-    if (process.env.NODE_ENV === "development" || process.argv[2] === "--d") {
+    if (process.env.NODE_ENV === "development" || process.argv[2] === "--d" || process.argv[2] === "d") {
         console.log(log);
     }
 }

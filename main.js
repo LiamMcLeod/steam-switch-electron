@@ -40,6 +40,9 @@ var userId = '';
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
 //TODO modularise
 
+//todo move IPC stuff to controller maybe?
+
+
 const log = require('./modules/log');
 
 /** 
@@ -56,7 +59,15 @@ function createWindow() {
         resizable: false, //!Uncomment when complete
         fullscreenable: false,
         icon: __dirname + "/icon.png",
-        title: "Steam Switcher"
+        title: "Steam Switcher",
+        backgroundColor: '#303030',
+        webPreferences: {
+            darkTheme: true,
+            fullscreenable: false,
+            devTools: true, //!Set to true when complete
+            nodeIntegration: true,
+
+        }
     });
 
     //* and load the index.html of the app.
@@ -119,6 +130,10 @@ app.on('ready', () => {
     globalShortcut.register('F5', reload);
     globalShortcut.register('CommandOrControl+R', reload);
 
+});
+
+app.once('ready-to-show', () => {
+    // app.show();
 });
 
 //* Quit when all windows are closed.
