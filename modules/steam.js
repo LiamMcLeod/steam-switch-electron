@@ -3,6 +3,9 @@ Liam McLeod, 2018.
 */
 const path = require('path');
 
+var event = require('events').EventEmitter,
+    util = require('util');
+
 const account = require('./account');
 const crypto = require('./crypto');
 const log = require('./log');
@@ -29,7 +32,11 @@ function steamExists(id, cb) {
         if (stderr) {
             log(stderr);
         }
-        cb(id, steamExists);
+        if (id && cb) {
+            cb(id, steamExists);
+        } else {
+            return steamExists;
+        }
     });
 }
 
@@ -64,6 +71,7 @@ function closeSteam(id, cb) {
  * https://support.steampowered.com/kb_article.php?ref=5623-QOSV-5250
  */
 function openSteam(id) {
+    // function openSteam(id) {
     // createNotification();
     var child = require("child_process").spawn;
 
@@ -84,31 +92,40 @@ function openSteam(id) {
 
 
     //TODO Parse mainWindow somehow, remote is for renderer
+    //TODO MAKE CUSTOM EVENT THAT CAN BE CALLED TO FROM STEAM.JS 
+    // THAT CHANGES the overlay icon 
     const {
         BrowserWindow,
     } = require('electron');
 
-    log(allWindows);
-
-    // Get all windows
-    const allWindows = BrowserWindow.getAllWindows();
-    const focusedWindow = BrowserWindow.getFocusedWindow();
-
-    focusedWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-
     //!Uncomment When done
-    // var steam = child(executablePath, parameters, {
-    //         detached: true,
-    //         stdio: 'ignore'
-    //     })
-    //     .on('close', (code) => {
-    //         mainWindow.setOverlayIcon(path.join(__dirname, "redoverlay.png"), 'Steam Switcher');
-    //     }).unref();
-    // mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+    var steam = child(executablePath, parameters, {
+            detached: true,
+            stdio: 'ignore'
+        })
+        .on('close', (code) => {
+            //* Event to trigger mainWindow icon change
+            onSteamClose();
+        }).unref();
+    //* Event to trigger mainWindow icon change
+    onSteamOpen();
+}
+var openEvent = new event();
+
+function onSteamOpen() {
+    openEvent.emit('steamOpen', event);
+}
+
+var closeEvent = new event();
+
+function onSteamClose() {
+    closeEvent.emit('steamClose', event);
 }
 
 module.exports = {
+    closeEvent: closeEvent,
     closeSteam: closeSteam,
+    openEvent: openEvent,
     openSteam: openSteam,
     steamExists: steamExists
 };

@@ -17,6 +17,8 @@ const fs = require('fs');
 
 const crypto = require('./modules/crypto');
 const steam = require('./modules/steam');
+const steamOpen = require('./modules/steam').openEvent;
+const steamClose = require('./modules/steam').closeEvent;
 const account = require('./modules/account');
 
 var accountsStore = [];
@@ -262,6 +264,15 @@ function updateStore() {
         accountsStore = account.getAccount();
     }
 }
+//* Steam Event??
+
+steamOpen.on('steamOpen', (e) => {
+    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+});
+
+steamClose.on('steamClose', (e) => {
+    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+});
 
 //* Event Listeners & Inter-Proc Comms
 const {
