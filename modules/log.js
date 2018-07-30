@@ -24,4 +24,8 @@ function isDebug() {
         return false;
     }
 }
-module.exports = log;
+
+module.exports = {
+    log,
+    isDebug
+};

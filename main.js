@@ -50,8 +50,11 @@ var userId = '';
 //todo move IPC stuff to controller maybe?
 
 
-const log = require('./modules/log');
-const isDebug = require('./modules/debug');
+const {
+    log,
+    isDebug
+} = require('./modules/log');
+// const isDebug = require('./modules/debug');
 
 /** 
  * Keep a global reference of the window object, if you don't, the window will
