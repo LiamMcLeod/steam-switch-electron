@@ -12,7 +12,7 @@ const {
     globalShortcut
 } = require('electron');
 
-
+//* Misc Imports
 const path = require('path');
 const fs = require('fs');
 
@@ -29,32 +29,34 @@ const steamClose = require('./modules/steam').closeEvent;
 var accountsStore = [];
 var userId = '';
 
+//* TODOS
 //todo look into below reg to remember based upon the 
 //todo value of index.remember
 //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
 //reg add "HKCU\Software\Valve\Steam" / v RememberPassword / t REG_DWORD / d 1 / f
-//todo resolve int json problem whenever any input data is int
-//todo improve the storage code it's messy and I've forgotten my logic behind it
-//TODO logic for communicating between main proc and render
 
-// TODO MAKE BETTER CRYPTO function
-//? Maybe Concat ID, might be overkill
+//todo improve the storage code it's messy and I've forgotten my logic behind it
+
 // TODO CHECK said ID is UNIQUE
-//? Maybe obfuscate result
-//TODO Maybe bcrypt the key
+
+//? Maybe obfuscate JSON Storage ??
 //https://github.com/mongodb-js/objfuscate
+
+//TODO Maybe bcrypt the key
+
 //TODO separate crypto functions and base it off of below
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
-//TODO modularise
 
 //todo move IPC stuff to controller maybe?
 
-
+/** 
+ * Import my own log system, just to ensure 
+ * no or data make it out of the application
+ */
 const {
     log,
     isDebug
 } = require('./modules/log');
-// const isDebug = require('./modules/debug');
 
 /** 
  * Keep a global reference of the window object, if you don't, the window will
@@ -289,7 +291,7 @@ const {
 
 //* Listener on the mainProcess to recieve renderProcess data
 ipcMain.on('request-mainprocess-action', (event, proc) => {
-
+    //* Basic controller for 
     if (proc) {
         if (proc.id) {
             launchSteam(proc.id);
@@ -319,6 +321,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         }
         if (proc.delete) {
             account.deleteAccount(proc.delete);
+            //? Maybe move to a CB for deleteAccount
             updateStore();
             //* Refresh
             mainWindow.reload();
@@ -326,11 +329,13 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
     }
 });
 
+//* DOM ready, Get accounts to display
 ipcMain.on('dom-ready', () => {
     var accounts = account.getAccount();
     mainWindow.webContents.send('ping', accounts);
 });
 
+//* Request to refresh
 ipcMain.on('refresh', () => {
     mainWindow.reload();
 });

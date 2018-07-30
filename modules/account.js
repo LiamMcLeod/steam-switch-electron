@@ -60,7 +60,7 @@ function storeAccount(account, del = false) {
  * Deletes account by id, calls to 
  * storeAccount to write the changes
  */
-function deleteAccount(id) {
+function deleteAccount(id, cb) {
     var account = readAccount();
 
     var i = account.findIndex(function(index) {
@@ -74,6 +74,9 @@ function deleteAccount(id) {
         account.splice(i, 1);
         //* Write changes
         storeAccount(account, true);
+    }
+    if (cb) {
+        cb();
     }
 }
 

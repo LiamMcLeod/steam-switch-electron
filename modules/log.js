@@ -17,6 +17,12 @@ function log(log) {
     }
 }
 
+/**
+ * @returns  boolean  flag based on debug args
+ * 
+ * Quick and dirty evaluation as to whether 
+ * any debug parameters have been set. Might be useful
+ */
 function isDebug() {
     if (process.env.NODE_ENV === "development" || process.argv[2] === "--d" || process.argv[2] === "d") {
         return true;
