@@ -1,6 +1,7 @@
 /**
 Liam McLeod, 2018.
 */
+
 const path = require('path');
 
 var event = require('events').EventEmitter,
@@ -90,10 +91,6 @@ function openSteam(id) {
      * close the app without closing child process
      */
 
-
-    //TODO Parse mainWindow somehow, remote is for renderer
-    //TODO MAKE CUSTOM EVENT THAT CAN BE CALLED TO FROM STEAM.JS 
-    // THAT CHANGES the overlay icon 
     const {
         BrowserWindow,
     } = require('electron');

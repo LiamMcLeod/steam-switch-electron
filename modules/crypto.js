@@ -52,7 +52,7 @@ function decryptPass(key, pass) {
 
 /**
  * @param  key  String to concat to HWId
- //! id defunct was for when half of the key was stored
+ * 
  * @returns String sha256 hash to be used as key
  * 
  * Uses sha256 to create a hash of hwid and psuedo

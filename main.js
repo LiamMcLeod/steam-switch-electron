@@ -1,6 +1,7 @@
 /**
 Liam McLeod, 2018.
 */
+
 //* Modules to control application life and create native browser window
 const {
     app,
@@ -15,12 +16,16 @@ const {
 const path = require('path');
 const fs = require('fs');
 
+//* My Modules
 const crypto = require('./modules/crypto');
 const steam = require('./modules/steam');
-const steamOpen = require('./modules/steam').openEvent;
-const steamClose = require('./modules/steam').closeEvent;
 const account = require('./modules/account');
 
+//* Steam Events
+const steamOpen = require('./modules/steam').openEvent;
+const steamClose = require('./modules/steam').closeEvent;
+
+//* Stores
 var accountsStore = [];
 var userId = '';
 
@@ -46,6 +51,7 @@ var userId = '';
 
 
 const log = require('./modules/log');
+const isDebug = require('./modules/debug');
 
 /** 
  * Keep a global reference of the window object, if you don't, the window will
@@ -66,7 +72,7 @@ function createWindow() {
         webPreferences: {
             darkTheme: true,
             fullscreenable: false,
-            devTools: true, //!Set to true when complete
+            devTools: isDebug(),
             nodeIntegration: true,
 
         }
@@ -109,8 +115,7 @@ function createWindow() {
  * Some APIs can only be used after  event occurs.
  */
 app.on('ready', () => {
-    // log(process.env.NODE_ENV || process.argv[2]);
-    log("Debug: True");
+    log("Debug: " + isDebug());
     //* Create folder if necessary
     crypto.checkFirstRun();
     //* Retrieve data
