@@ -1,3 +1,7 @@
+/**
+Liam McLeod, 2018.
+*/
+
 //TODO more settings and read from settings file
 
 var homePath = getUserHome();

@@ -101,9 +101,6 @@ function createWindow() {
         createTray(e);
         //* Hide Window
 
-        //globalShortcut.unregister('F5');
-        //globalShortcut.unregister('CommandOrControl+R');
-
         mainWindow.hide();
     });
 
@@ -291,7 +288,9 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         }
         if (proc.post) {
             //* Generate Id
-            proc.post.id = crypto.generateId(2, 'hex');
+            do {
+                proc.post.id = crypto.generateId(2, 'hex');
+            } while (account.checkUnique(proc.post.id) !== true);
 
             //* Generate & Store Key
             proc.post.key = crypto.generateId(20);

@@ -104,7 +104,11 @@ function getAccountById(id, cb = null) {
     if (cb) {
         cb(account[i]);
     }
-    return account[i];
+    if (account[i]) {
+        return account[i];
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -166,7 +170,16 @@ function updateStore() {
     }
 }
 
+function checkUnique(id) {
+    if (getAccountById(id) === null) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 module.exports = {
+    checkUnique: checkUnique,
     deleteAccount: deleteAccount,
     hasAccounts: hasAccounts,
     getAccount: getAccount,
