@@ -62,7 +62,9 @@ function closeSteam(id, cb) {
         if (stderr) {
             log(stderr);
         }
-        cb(id);
+        if (cb) {
+            cb(id);
+        }
     });
 }
 

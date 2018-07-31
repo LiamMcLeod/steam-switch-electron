@@ -252,12 +252,13 @@ function createNotification() {
  */
 function launchSteam(id) {
     if (!id) {
+        //! ERROR MSG HERE
         return;
     } else {
         //*Begin with Steam
         steam.steamExists(id, function(id, steamExists) {
             if (steamExists) {
-                steam.closeSteam(function(id) {
+                steam.closeSteam(id, function(id) {
                     steam.openSteam(id);
                 });
             }
