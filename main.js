@@ -15,6 +15,7 @@ const {
 //* Misc Imports
 const path = require('path');
 const fs = require('fs');
+const electronLocalshortcut = require('electron-localshortcut');
 
 //* My Modules
 const crypto = require('./modules/crypto');
@@ -79,7 +80,6 @@ function createWindow() {
             fullscreenable: false,
             devTools: isDebug(),
             nodeIntegration: true,
-
         }
     });
 
@@ -100,6 +100,10 @@ function createWindow() {
         //* Create tray icon,
         createTray(e);
         //* Hide Window
+
+        //globalShortcut.unregister('F5');
+        //globalShortcut.unregister('CommandOrControl+R');
+
         mainWindow.hide();
     });
 
@@ -130,18 +134,14 @@ app.on('ready', () => {
     //* Create window
     createWindow();
 
-    /** 
-     * Needed to refresh during dev
-     * so that event listeners are 
-     * applied to the renderer
-     */
-    var reload = () => {
+    //* Attack Local Shortcuts
+    /**
+     *!Seem to get this
+     *!https: //github.com/parro-it/electron-localshortcut/issues/59
+    electronLocalshortcut.register(mainWindow, ['Ctrl+R', 'F5'], () => {
         mainWindow.reload();
-    };
-
-    globalShortcut.register('F5', reload);
-    globalShortcut.register('CommandOrControl+R', reload);
-
+    });
+     */
 });
 
 app.once('ready-to-show', () => {
@@ -201,9 +201,8 @@ function createTray(e) {
         },
     ];
     //* Generate additional menu items
-    //! account. here might have to go
-    if (account.accountsStore) {
-        account.accountsStore.forEach(function(item) {
+    if (accountsStore) {
+        accountsStore.forEach(function(item) {
             menuItems.unshift({
                 label: 'Launch ' + item.name,
                 click: function() {
