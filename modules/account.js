@@ -21,13 +21,12 @@ const filePath = settings.filePath;
  */
 function storeAccount(account, del = false) {
     //todo problem with deleting first account
-    //todo  problem with empty array at the start
     var accounts = [];
-    if (account != null && account != "") {
+    if (account !== null && account !== "") {
         if (!del) {
             if (fs.existsSync(filePath + ".account")) {
                 var existingAccounts = readAccount();
-                if (!existingAccounts.length) {
+                if (!existingAccounts.length && existingAccounts.length != 0) {
                     accounts.push(existingAccounts);
                     accounts.push(account);
                 } else {
@@ -74,7 +73,7 @@ function deleteAccount(id, cb) {
             return index;
         }
     });
-    if (i && account[i]) {
+    if (i >= 0 && account[i]) {
         //* Delete index
         account.splice(i, 1);
         //* Write changes
@@ -145,7 +144,6 @@ function readAccount() {
  * Check if accounts exist
  */
 function hasAccounts() {
-
     if (fs.existsSync(filePath + ".account")) {
         var accounts = fs.readFileSync(filePath + ".account", 'utf8');
         if (accounts.length) {
@@ -158,11 +156,22 @@ function hasAccounts() {
     }
 }
 
+/**
+ * Populate storage array
+ * using getAccount
+ */
+function updateStore() {
+    if (hasAccounts()) {
+        return getAccount();
+    }
+}
+
 module.exports = {
     deleteAccount: deleteAccount,
     hasAccounts: hasAccounts,
     getAccount: getAccount,
     getAccountById: getAccountById,
     readAccount: readAccount,
-    storeAccount: storeAccount
+    storeAccount: storeAccount,
+    updateStore: updateStore
 };

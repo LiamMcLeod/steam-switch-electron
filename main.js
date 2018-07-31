@@ -124,7 +124,7 @@ app.on('ready', () => {
     //* Create folder if necessary
     init.checkFirstRun();
     //* Retrieve data
-    accountsStore = init.updateStore();
+    accountsStore = account.updateStore();
     //* Get Id
     userId = crypto.getId();
     //* Create window
@@ -303,7 +303,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             proc.post.password = crypto.encryptPass(key, proc.post.password);
 
             account.storeAccount(proc.post);
-            init.updateStore();
+            accountsStore = account.updateStore();
             //* Refresh
             mainWindow.reload();
         }
@@ -316,7 +316,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         if (proc.delete) {
             account.deleteAccount(proc.delete);
             //? Maybe move to a CB for deleteAccount
-            init.updateStore();
+            accountsStore = account.updateStore();
             //* Refresh
             mainWindow.reload();
         }

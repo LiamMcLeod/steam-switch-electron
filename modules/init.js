@@ -46,16 +46,6 @@ function checkFirstRun() {
 }
 
 /**
- * Populate storage array
- * using getAccount
- */
-function updateStore() {
-    if (account.hasAccounts()) {
-        return account.getAccount();
-    }
-}
-
-/**
  * @param  filePath  String  path to make file in
  * 
  * Makes id file to be used in key generation
@@ -110,5 +100,4 @@ module.exports = {
     makeDir: makeDir,
     makeId: makeId,
     makeStorage: makeStorage,
-    updateStore: updateStore,
 };
