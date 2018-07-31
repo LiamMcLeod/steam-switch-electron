@@ -9,7 +9,10 @@ var event = require('events').EventEmitter,
 
 const account = require('./account');
 const crypto = require('./crypto');
-const log = require('./log');
+
+const {
+    log
+} = require('./log');
 
 /**
  * @param  id	 String     id of account
@@ -90,12 +93,6 @@ function openSteam(id) {
      * Spawn and unref were chosen so that users can 
      * close the app without closing child process
      */
-
-    const {
-        BrowserWindow,
-    } = require('electron');
-
-    //!Uncomment When done
     var steam = child(executablePath, parameters, {
             detached: true,
             stdio: 'ignore'

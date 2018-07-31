@@ -4,7 +4,12 @@ Liam McLeod, 2018.
 
 const fs = require('fs');
 
-const log = require('./log');
+const {
+    log
+} = require('./log');
+
+const settings = require('./settings');
+const filePath = settings.filePath;
 
 /**
  * @param  account  Object   account to be stored/overwritten
@@ -15,12 +20,12 @@ const log = require('./log');
  * which was requested for deletion
  */
 function storeAccount(account, del = false) {
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+    //todo problem with deleting first account
+    //todo  problem with empty array at the start
     var accounts = [];
     if (account != null && account != "") {
         if (!del) {
-            if (fs.existsSync(filePath + "\\.account")) {
+            if (fs.existsSync(filePath + ".account")) {
                 var existingAccounts = readAccount();
                 if (!existingAccounts.length) {
                     accounts.push(existingAccounts);
@@ -31,21 +36,21 @@ function storeAccount(account, del = false) {
                     }
                     accounts.push(account);
                 }
-                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
+                fs.writeFile(filePath + ".account", JSON.stringify(accounts), function(err) {
                     if (err) {
                         return log(err);
                     }
                 });
             } else {
                 accounts = JSON.stringify(account);
-                fs.writeFile(filePath + "\\.account", JSON.stringify(accounts), function(err) {
+                fs.writeFile(filePath + ".account", JSON.stringify(accounts), function(err) {
                     if (err) {
                         return log(err);
                     }
                 });
             }
         } else {
-            fs.writeFile(filePath + "\\.account", JSON.stringify(account), function(err) {
+            fs.writeFile(filePath + ".account", JSON.stringify(account), function(err) {
                 if (err) {
                     return log(err);
                 }
@@ -121,10 +126,8 @@ function getAccount() {
  */
 function readAccount() {
     var account = null;
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    if (fs.existsSync(filePath + "\\.account")) {
-        account = fs.readFileSync(filePath + "\\.account", 'utf8');
+    if (fs.existsSync(filePath + ".account")) {
+        account = fs.readFileSync(filePath + ".account", 'utf8');
         if (typeof(account) === "string" && account != "") {
             account = JSON.parse(account);
             return account;
@@ -132,7 +135,7 @@ function readAccount() {
             return account;
         }
     } else {
-        return {};
+        //! USE EVENT TO PARSE ERROR MSG HERE 
     }
 }
 
@@ -142,10 +145,9 @@ function readAccount() {
  * Check if accounts exist
  */
 function hasAccounts() {
-    var homePath = process.env.Home;
-    var filePath = homePath + "\\Documents\\SteamSwitcher\\";
-    if (fs.existsSync(filePath + "\\.account")) {
-        var accounts = fs.readFileSync(filePath + "\\.account", 'utf8');
+
+    if (fs.existsSync(filePath + ".account")) {
+        var accounts = fs.readFileSync(filePath + ".account", 'utf8');
         if (accounts.length) {
             return true;
         } else {

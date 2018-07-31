@@ -13,7 +13,11 @@ const {
     machineIdSync
 } = require('node-machine-id');
 
-const log = require('./log');
+const {
+    log
+} = require('./log');
+
+const init = require('./init')
 
 //* Get HW Id
 let hardwareId = machineIdSync();
@@ -21,8 +25,8 @@ let hardwareId = machineIdSync();
 //* Get Id
 var id = getId();
 
-var homePath = process.env.Home;
-var filePath = homePath + "\\Documents\\SteamSwitcher\\";
+//Import filePath
+var filePath = init.filePath;
 
 /**
  * @param  length  int  length of id
@@ -62,48 +66,6 @@ function createKey(key) {
     return sha256(hardwareId.concat(key.concat(id))).toString('hex');
 }
 
-/**
- * @param  filePath  String  path to make file in
- * 
- * Makes id file to be used in key generation
- */
-function makeId() {
-    fs.writeFile(filePath + "\\.id", generateId(20), function(err) {
-        if (err) {
-            return console.log(err);
-        }
-    });
-}
-
-/**
- * @param  filePath  String  path to make dir in
- * 
- * Makes dir in filePath
- */
-function makeDir() {
-    fs.mkdirSync(filePath);
-}
-
-/**
- * Checks if this is the first time the user has run the app
- * so that the necessary keys and directories can be made.
- */
-function checkFirstRun() {
-    if (fs.existsSync(filePath)) {
-        if (fs.existsSync(filePath + "\\.id")) {
-            id = fs.readFileSync(filePath + "\\.id", 'utf8');
-            return true;
-        } else {
-            makeId();
-            checkFirstRun();
-        }
-    } else {
-        makeDir();
-        makeId();
-        checkFirstRun();
-    }
-}
-
 function getId() {
     if (fs.existsSync(filePath)) {
         if (fs.existsSync(filePath + "\\.id")) {
@@ -114,7 +76,6 @@ function getId() {
 }
 
 module.exports = {
-    checkFirstRun: checkFirstRun,
     createKey: createKey,
     decryptPass: decryptPass,
     encryptPass: encryptPass,

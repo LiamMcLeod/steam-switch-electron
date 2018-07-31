@@ -1,13 +1,19 @@
 {
-    "name": "steam-switch-electron",
+    "name": "SteamSwitch",
     "version": "1.0.0",
     "description": "A minimal application to switch Steam profiles",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "dev": "electron . --d"
+        "dev": "electron . --d",
+        "build-linux": "export NODE_ENV=production && electron-packager . SteamSwitch --out=dist --overwrite",
+        "build-win": "set NODE_ENV=production && electron-packager . SteamSwitch --out=dist --overwrite",
+        "build-mac": "npm run build-linux"
     },
-    "repository": "https://github.com/liammcleod/messing-with-electron",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/liammcleod/messing-with-electron"
+    },
     "keywords": [
         "Electron",
         "steam",
@@ -15,10 +21,16 @@
         "switcher",
         "alpha"
     ],
-    "author": "LiamMcLeod",
+    "author": {
+        "name": "Liam McLeod",
+        "email": "N/A",
+        "url": "http://liammcleod.co.uk"
+    },
     "license": "CC0-1.0",
     "devDependencies": {
         "electron": "^2.0.0",
+        "electron-builder": "^20.26.0",
+        "electron-packager": "^12.1.0",
         "electron-winstaller": "^2.6.4",
         "gulp": "^3.9.1",
         "i": "^0.3.6",

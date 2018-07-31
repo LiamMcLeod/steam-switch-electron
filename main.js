@@ -20,10 +20,7 @@ const fs = require('fs');
 const crypto = require('./modules/crypto');
 const steam = require('./modules/steam');
 const account = require('./modules/account');
-
-//* Steam Events
-const steamOpen = require('./modules/steam').openEvent;
-const steamClose = require('./modules/steam').closeEvent;
+const init = require('./modules/init');
 
 //* Stores
 var accountsStore = [];
@@ -32,6 +29,7 @@ var userId = '';
 //* TODOS
 //todo look into below reg to remember based upon the 
 //todo value of index.remember
+//? https://github.com/CatalystCode/windows-registry-node
 //reg add "HKCU\Software\Valve\Steam" / v AutoLoginUser / t REG_SZ / d % username % /f
 //reg add "HKCU\Software\Valve\Steam" / v RememberPassword / t REG_DWORD / d 1 / f
 
@@ -48,6 +46,8 @@ var userId = '';
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
 
 //todo move IPC stuff to controller maybe?
+
+//todo settings file
 
 /** 
  * Import my own log system, just to ensure 
@@ -122,9 +122,9 @@ function createWindow() {
 app.on('ready', () => {
     log("Debug: " + isDebug());
     //* Create folder if necessary
-    crypto.checkFirstRun();
+    init.checkFirstRun();
     //* Retrieve data
-    updateStore();
+    accountsStore = init.updateStore();
     //* Get Id
     userId = crypto.getId();
     //* Create window
@@ -201,6 +201,7 @@ function createTray(e) {
         },
     ];
     //* Generate additional menu items
+    //! account. here might have to go
     if (account.accountsStore) {
         account.accountsStore.forEach(function(item) {
             menuItems.unshift({
@@ -265,17 +266,9 @@ function launchSteam(id) {
     }
 }
 
-/**
- * Populate storage array
- * using getAccount
- */
-function updateStore() {
-    if (account.hasAccounts()) {
-        accountsStore = account.getAccount();
-    }
-}
-//* Steam Event??
-
+//* Steam Events
+const steamOpen = require('./modules/steam').openEvent;
+const steamClose = require('./modules/steam').closeEvent;
 steamOpen.on('steamOpen', (e) => {
     mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
 });
@@ -309,7 +302,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             proc.post.password = crypto.encryptPass(key, proc.post.password);
 
             account.storeAccount(proc.post);
-            updateStore();
+            init.updateStore();
             //* Refresh
             mainWindow.reload();
         }
@@ -322,7 +315,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
         if (proc.delete) {
             account.deleteAccount(proc.delete);
             //? Maybe move to a CB for deleteAccount
-            updateStore();
+            init.updateStore();
             //* Refresh
             mainWindow.reload();
         }
@@ -343,3 +336,14 @@ ipcMain.on('refresh', () => {
 //! When complete use electron-winstaller to build exes
 //? https://github.com/electron/windows-installer
 //* main process, for example app/main.js
+// var electronInstaller = require('electron-winstaller');
+// resultPromise = electronInstaller.createWindowsInstaller({
+//     appDirectory: './dist/SteamSwitch-win32-x64',
+//     outputDirectory: './dist/installer64',
+//     authors: 'Liam McLeod',
+//     exe: 'SteamSwitch.exe',
+//     setupMsi: 'SteamSwitch_installer.msi',
+//     setupExe: 'SteamSwitch_installer.exe'
+// });
+
+// resultPromise.then(() => console.log("Success!"), (e) => console.log(`Failed: ${e.message}`));
