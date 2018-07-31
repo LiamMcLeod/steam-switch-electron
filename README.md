@@ -1,44 +1,23 @@
-# electron-quick-start
+# Steam Switch Electron
 
-**Clone and run for a quick way to see Electron in action.**
+Basic electron application to switch between multiple steam accounts. There are still various problems that I need to iron out, nothing that affects the security of the application, just the running e.g. it currently doesn't remember the account, for this registry tweaks need to be made. 
 
-This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start) within the Electron documentation.
+AES-256 is to encrypt the passwords of your account, with a SHA-2 key created from a multiple sources: your hardware ID, a unique generated on first launch and and a pseudo random sequence generated upon each addition of an account.
 
-**Use this app along with the [Electron API Demos](https://electronjs.org/#get-started) app for API code examples to help you get started.**
+As is the nature of all 2-way encryption it is inherently vulnerable in that and what goes in can be retrievable, indeed the application would not function without that being possible. But I have done what I can to ensure it is to a large degree time consuming and perhaps difficult to brute-force, though someone with access to your system, enough knowledge about the application could probably do this rather quickly without brute-force.
 
-A basic Electron application needs just these files:
+## Todos
+Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+Basic error alerts 
 
-You can learn more about each of these components within the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start).
+Testing from a new system
 
-## To Use
+Maybe a masterpass system to be used with the key so that not all components used to form a key are available on system with a deep enough search
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+finish about modal
 
-```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies
-npm install
-# Run the app
-npm start
-```
-
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
-
-## Resources for Learning Electron
-
-- [electronjs.org/docs](https://electronjs.org/docs) - all of Electron's documentation
-- [electronjs.org/community#boilerplates](https://electronjs.org/community#boilerplates) - sample starter apps created by the community
-- [electron/electron-quick-start](https://github.com/electron/electron-quick-start) - a very basic starter Electron app
-- [electron/simple-samples](https://github.com/electron/simple-samples) - small applications with ideas for taking them further
-- [electron/electron-api-demos](https://github.com/electron/electron-api-demos) - an Electron app that teaches you how to use Electron
-- [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
+Other stuff listed in main.js
 
 ## License
 
