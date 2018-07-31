@@ -48,10 +48,22 @@
                         }
                         var accountTemplate = [];
                         var renderData = [];
+                        /** Compile Templates **/
+                        var env = data.shift(data);
+                        if (env === "development") {
+                            path = './views/'
+                        } else {
+                            path = './resources/app/views/'
+                        }
                         data.forEach(function(item, i) {
-                            accountTemplate.push(jsrender.templates('account' + i, './views/account-styling.html'));
+                            //!Dev
+                            //accountTemplate.push(jsrender.templates('account' + i, './views/account-styling.html'));
+                            //!Prod
+                            //accountTemplate.push(jsrender.templates('account' + i, './resources/app/views/account-styling.html'));
+                            accountTemplate.push(jsrender.templates('account' + i, path + 'account-styling.html'));
                             renderData.push(data[i])
                         })
+                        /** Render Templates **/
                         window.renderMultiple(accountTemplate, data, '#list');
                     })
                 </script>

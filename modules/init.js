@@ -16,11 +16,10 @@ const {
     log
 } = require('./log');
 
-log(filePath + ".account");
-
 /**
  * Checks if this is the first time the user has run the app
  * so that the necessary keys and directories can be made.
+ * ? Maybe switch to graceful-fs??
  */
 function checkFirstRun() {
     if (fs.existsSync(filePath)) {

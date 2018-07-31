@@ -17,7 +17,7 @@ const {
     log
 } = require('./log');
 
-const init = require('./init')
+const init = require('./init');
 
 //* Get HW Id
 let hardwareId = machineIdSync();

@@ -69,7 +69,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 480,
         height: 380,
-        resizable: false, //!Uncomment when complete
+        resizable: false,
         fullscreenable: false,
         icon: __dirname + "/icon.png",
         title: "Steam Switcher",
@@ -91,7 +91,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    //mainWindow.webContents.openDevTools(); 
+    // mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -145,7 +145,7 @@ app.on('ready', () => {
 });
 
 app.once('ready-to-show', () => {
-    // app.show();
+    // mainWindow.show();
 });
 
 //* Quit when all windows are closed.
@@ -326,6 +326,11 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 //* DOM ready, Get accounts to display
 ipcMain.on('dom-ready', () => {
     var accounts = account.getAccount();
+    /** 
+     * Flag for rendering engine to know where templates are stored based 
+     * as this differs between production and dev due to compiling
+     */
+    accounts.unshift(process.env.NODE_ENV);
     mainWindow.webContents.send('ping', accounts);
 });
 

@@ -17,6 +17,10 @@ function log(log) {
     }
 }
 
+function stdOut(log) {
+    process.stdout.write(log + "\n");
+}
+
 /**
  * @returns  boolean  flag based on debug args
  * 
@@ -25,6 +29,7 @@ function log(log) {
  */
 function isDebug() {
     if (process.env.NODE_ENV === "development" || process.argv[2] === "--d" || process.argv[2] === "d") {
+        process.env.NODE_ENV = "development";
         return true;
     } else {
         return false;
@@ -33,5 +38,6 @@ function isDebug() {
 
 module.exports = {
     log,
-    isDebug
+    isDebug,
+    stdOut
 };
