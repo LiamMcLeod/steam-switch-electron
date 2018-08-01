@@ -87,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -96,7 +96,6 @@ function createWindow() {
         //* Create tray icon,
         createTray(e);
         //* Hide Window
-
         mainWindow.hide();
     });
 
@@ -127,7 +126,14 @@ app.on('ready', () => {
     //* Create window
     createWindow();
 
-    //* Attack Local Shortcuts
+    //* Global 
+    if (isDebug()){
+        globalShortcut.register('CommandOrControl+R', () => {
+            mainWindow.reload();
+        });
+    }
+
+    //* Attach local Shortcuts
     /**
      *!Seem to get this
      *!https: //github.com/parro-it/electron-localshortcut/issues/59

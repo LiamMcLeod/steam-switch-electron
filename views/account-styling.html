@@ -1,45 +1,16 @@
-<div class="columns inline-flex">
-    <div class="column is-5-mobile is-offset-1-mobile">
-        <div class="card">
-            <header class="card-header">
-                <span class="card-header-title has-text-centered">
-                    {{:name}}
-                </span>
-                <div class="dropdown is-hoverable">
-                    <div class="dropdown-trigger">
-                        <a href="#" class="card-header-icon" aria-label="more options">
-                            <span class="icon dropdown-trigger">
-                                <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                        <div class="dropdown-content">
-                            <a data-id={{:id}} href="#" class="dropdown-item launch-drop">
-                                Launch
-                            </a>
-                            <!-- TODO REMOVE STRIKETHROUGHS -->
-
-                            <a data-id={{:id}} href="#" class="dropdown-item edit-drop">
-                                Edit 
-                            </a>
-
-                            <hr class="dropdown-divider">
-                            <a data-id={{:id}} href="#" class="dropdown-item delete-drop has-text-danger">
-                                Delete
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <!-- <div class="card-content has-text-centered">
-            </div> -->
-            <footer class="card-footer">
-                <a data-id={{:id}} href="#" class="card-footer-item">Launch</a>
-            </footer>
-        </div>
+<div class="card">
+    <div class="card-content">
+        <button data-id={{:id}} class="fright delete delete-button"></button>
+        <p class="title">
+            {{:name}} - {{:username}}
+        </p>
     </div>
-    <div class="column is-1-mobile ">
-
-    </div>
+    <footer class="card-footer">
+        <a data-id={{:id}} href="#" class="card-footer-item edit">
+                Edit
+        </a>
+        <a data-id={{:id}} href="#" class="card-footer-item launch">
+                Launch
+        </a>
+    </footer>
 </div>

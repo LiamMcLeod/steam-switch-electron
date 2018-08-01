@@ -143,17 +143,15 @@
     <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
     <script>
         require("./renderer.js");
+        /**
         $('.card-footer-item').on('click', (e) => {
             launchAccount(e)
         })
+        **/
 
-
-        /**
-        $('.fab.fa-steam-symbol.fa-7x').on('dblclick', (e) => {
-            launchAccount(e)
-        })
-        */
-        $('.dropdown-item.edit-drop').on('click', (e) => {
+        //var editButton = $('.dropdown-item.edit-drop')
+        var editButton = $('.card-footer-item.edit');
+        editButton.on('click', (e) => {
             hideAll(false);
             var edit = $(".content-body.edit");
             show(edit);
@@ -161,12 +159,14 @@
             beginEdit(e)
         })
 
-
-        $('.dropdown-item.launch-drop').on('click', (e) => {
+        //var launchButton = $('.dropdown-item.launch-drop');
+        var launchButton = $('.card-footer-item.launch');
+        launchButton.on('click', (e) => {
             launchAccount(e);
         })
-
-        $('.dropdown-item.delete-drop').on('click', (e) => {
+        //var deleteButton = $('.dropdown-item.delete-drop');
+        var deleteButton = $('.delete-button');
+        deleteButton.on('click', (e) => {
             deleteAccount(e);
         })
 
@@ -184,6 +184,7 @@
             var proc = {};
             proc.get = $(e.currentTarget).data("id");
             //* Send data to main process 
+            console.log($(e.currentTarget));
             ipcRenderer.send('request-mainprocess-action', proc);
             ipcRenderer.on('edit', (e, edit) => {
                 editTemplate = jsrender.templates('edit', path + 'edit.html');

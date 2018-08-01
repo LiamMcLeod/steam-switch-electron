@@ -1,5 +1,10 @@
 .list {
     padding-top: 15px;
+    width: 100%;
+}
+
+.card-footer p:not(:last-child) {
+    margin-bottom: 0;
 }
 
 div.account-container {
@@ -29,12 +34,17 @@ header a.card-header-icon {
 }
 
 .card {
-    color: $color;
-    min-width: 200px;
+    color: $color-strong;
+    width: 95%; // min-width: 100%;
+    margin: 0 auto 25px auto;
 }
 
 .card header span {
     color: $color-strong;
+}
+
+.card .card-content .title {
+    color: $color;
 }
 
 .text-no-decoration {
@@ -43,6 +53,7 @@ header a.card-header-icon {
 
 .card-content {
     background: $color-dark;
+    color: $color;
 }
 
 footer.card-footer {

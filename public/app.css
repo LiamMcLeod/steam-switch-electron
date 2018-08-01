@@ -9642,7 +9642,7 @@ label.panel-block:hover {
 /* Accent Colours */
 body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  background: #303030;
+  background: #1b1b1b;
   color: #f0f0f0;
   height: 100%;
   -webkit-user-select: none;
@@ -9693,6 +9693,11 @@ a {
 
 .list {
   padding-top: 15px;
+  width: 100%;
+}
+
+.card-footer p:not(:last-child) {
+  margin-bottom: 0;
 }
 
 div.account-container {
@@ -9722,12 +9727,17 @@ header a.card-header-icon {
 }
 
 .card {
-  color: #f0f0f0;
-  min-width: 200px;
+  color: white;
+  width: 95%;
+  margin: 0 auto 25px auto;
 }
 
 .card header span {
   color: white;
+}
+
+.card .card-content .title {
+  color: #f0f0f0;
 }
 
 .text-no-decoration {
@@ -9736,6 +9746,7 @@ header a.card-header-icon {
 
 .card-content {
   background: #333;
+  color: #f0f0f0;
 }
 
 footer.card-footer {
@@ -9905,6 +9916,10 @@ footer.card-footer a:hover {
 
 .inline-flex {
   display: inline-flex;
+}
+
+.flex {
+  display: flex;
 }
 
 *.unselectable {
