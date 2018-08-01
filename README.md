@@ -6,6 +6,13 @@ AES-256 is to encrypt the passwords of your account, with a SHA-2 key created fr
 
 As is the nature of all 2-way encryption it is inherently vulnerable in that and what goes in can be retrievable, indeed the application would not function without that being possible. But I have done what I can to ensure it is to a large degree time consuming and perhaps difficult to brute-force, though someone with access to your system, enough knowledge about the application could probably do this rather quickly without brute-force.
 
+## Notes
+
+It is my first Electron app and really just an excuse to learn the framework. 
+
+It only works on Windows, I really only thought of designing it for Windows. Probably not a great idea but, hey ho.
+
+
 ## Todos
 Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
 

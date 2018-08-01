@@ -1,54 +1,55 @@
 .list {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 
 div.account-container {
-	background: $color-bg-dark;
-	height: 80px;
-	display: inline-flex;
-	margin-right: 3px;
-	margin-left: 3px;
+    background: $color-bg-dark;
+    height: 80px;
+    display: inline-flex;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 a.show-account,
 .hide-account {
-	position: fixed; // bottom: 5px;
-	top: 5px;
-	right: 5px;
-	color: $color-accent;
-	z-index: 1;
+    position: fixed; // bottom: 5px;
+    top: 5px;
+    right: 5px;
+    color: $color-accent;
+    z-index: 1;
 }
 
 header.card-header {
-	background-color: $color-bg-dark;
-	height: 35px;
+    background-color: $color-bg-dark;
+    height: 35px;
 }
 
 header a.card-header-icon {
-	padding-top: .50rem;
+    padding-top: .50rem;
 }
 
 .card {
-	color: $color;
-	min-width: 200px;
+    color: $color;
+    min-width: 200px;
 }
 
 .card header span {
-	color: $color-strong;
+    color: $color-strong;
 }
 
 .text-no-decoration {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .card-content {
-	background: $color-dark;
+    background: $color-dark;
 }
 
 footer.card-footer {
-	background: $color-dark;
+    background: $color-dark;
+    height: 38px;
 }
 
 footer.card-footer a:hover {
-	color: $color-accent;
+    color: $color-accent;
 }

@@ -66,9 +66,9 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 480,
         height: 380,
-        // resizable: false,
+        resizable: isDebug(),
         fullscreenable: false,
-        icon: __dirname + "/icon.png",
+        icon: __dirname + "/favicon-32x32.png",
         title: "Steam Switcher",
         backgroundColor: '#303030',
         webPreferences: {
@@ -87,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -226,7 +226,7 @@ function createTray(e) {
 function createNotification() {
     if (Notification.isSupported()) {
         var notification = new Notification('Launching Steam...', {
-            icon: __dirname + '/icon.png',
+            icon: __dirname + '/favicon-32x32.png',
             body: 'Steam is launching, this shouldn\'t take long...'
         });
         notification.show();
@@ -263,11 +263,11 @@ function launchSteam(id) {
 const steamOpen = require('./modules/steam').openEvent;
 const steamClose = require('./modules/steam').closeEvent;
 steamOpen.on('steamOpen', (e) => {
-    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switcher');
 });
 
 steamClose.on('steamClose', (e) => {
-    mainWindow.setOverlayIcon(path.join(__dirname, "greenoverlay.png"), 'Steam Switcher');
+    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switcher');
 });
 
 //* Event Listeners & Inter-Proc Comms
@@ -304,17 +304,13 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             mainWindow.webContents.send('edit', edit);
         }
         if (proc.put) {
-            log(proc.put);
-
             //* Generate & Store Key
             proc.put.key = crypto.generateId(20);
             //* Hash Key 
             var key = crypto.createKey(proc.put.key);
-
             //* Encrypt
             proc.put.password = crypto.encryptPass(key, proc.put.password);
-
-            //todo below 
+            //* Store
             account.editAccount(proc.put);
             accountsStore = account.updateStore();
         }

@@ -9740,6 +9740,7 @@ header a.card-header-icon {
 
 footer.card-footer {
   background: #333;
+  height: 38px;
 }
 
 footer.card-footer a:hover {
