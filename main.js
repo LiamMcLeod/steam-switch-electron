@@ -87,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -127,11 +127,21 @@ app.on('ready', () => {
     createWindow();
 
     //* Global 
-    if (isDebug()){
+    if (isDebug()) {
         globalShortcut.register('CommandOrControl+R', () => {
             mainWindow.reload();
         });
     }
+
+    let modal = new BrowserWindow({
+        parent: mainWindow,
+        modal: true,
+        show: false
+    });
+    modal.loadURL('https://github.com');
+    modal.once('ready-to-show', () => {
+        modal.show();
+    });
 
     //* Attach local Shortcuts
     /**

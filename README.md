@@ -16,7 +16,7 @@ It only works on Windows, I really only thought of designing it for Windows. Pro
 ## Todos
 Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
 
-Basic error alerts 
+Basic error checking and messaging
 
 Testing from a new system
 
