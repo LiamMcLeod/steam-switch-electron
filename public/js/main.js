@@ -41,7 +41,7 @@ function showMainContent() {
  * Switches buttons based upon whether 
  * account creation div is shown
  */
-function switchButtons(def) {
+window.switchButtons = function switchButtons(def) {
     if (def) {
         show($('#account-show'));
         hide($('#account-hide'));
@@ -57,7 +57,7 @@ function switchButtons(def) {
  * Returns all content to original
  * hidden state
  */
-function hideAll(showMain = true) {
+window.hideAll = function hideAll(showMain = true) {
     var content = $('.content-body');
     var modal = $('#modal');
 
@@ -107,7 +107,7 @@ function objectHasNoId(classList) {
  * shows the provided object
  * provided it has the class hidden
  */
-function show(el) {
+window.show = function show(el) {
     if (el.hasClass('hidden')) {
         el.removeClass('hidden');
     }

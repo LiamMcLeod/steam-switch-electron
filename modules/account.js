@@ -58,6 +58,28 @@ function storeAccount(account, del = false) {
     }
 }
 
+function editAccount(account, cb) {
+    var accounts = getAccount();
+    log(account);
+    var i = accounts.findIndex(function(item) {
+        if (item.id === account.id) {
+            return item;
+        }
+    });
+    accounts[i] = account;
+    log(accounts);
+    if (fs.existsSync(filePath + ".account")) {
+        fs.writeFile(filePath + ".account", JSON.stringify(accounts), function(err) {
+            if (err) {
+                return log(err);
+            }
+        });
+    }
+    if (cb) {
+        cb();
+    }
+}
+
 /**
  * @param  id  string  id of account to delete
  * 
@@ -182,6 +204,7 @@ module.exports = {
     checkUnique: checkUnique,
     deleteAccount: deleteAccount,
     hasAccounts: hasAccounts,
+    editAccount: editAccount,
     getAccount: getAccount,
     getAccountById: getAccountById,
     readAccount: readAccount,

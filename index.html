@@ -42,7 +42,7 @@
             <div id="list" class="content-body list hidden">
                 <script>
                     var jsrender = require('jsrender');
-                    ipcRenderer.on('ping', (event, data) => {
+                    ipcRenderer.on('ping', (e, data) => {
                         if (typeof(data) != "object") {
                             data = JSON.parse(data);
                         }
@@ -119,7 +119,10 @@
                     </div>
                 </div>
             </div>
+            <!-- EDIT ACCOUNT -->
+            <div id="edit" class="content-body edit hidden">
 
+            </div>
         </div>
     </main>
     <footer class="medium">
@@ -138,17 +141,27 @@
             launchAccount(e)
         })
 
-        $('.dropdown-item.launch-drop').on('click', (e) => {
-            launchAccount(e)
-        })
 
+        /**
         $('.fab.fa-steam-symbol.fa-7x').on('dblclick', (e) => {
             launchAccount(e)
         })
+        */
+        $('.dropdown-item.edit-drop').on('click', (e) => {
+            hideAll(false);
+            var edit = $(".content-body.edit");
+            show(edit);
+            switchButtons();
+            beginEdit(e)
+        })
+
+
+        $('.dropdown-item.launch-drop').on('click', (e) => {
+            launchAccount(e);
+        })
 
         $('.dropdown-item.delete-drop').on('click', (e) => {
-            console.log("Delete requested");
-            deleteAccount(e)
+            deleteAccount(e);
         })
 
         $("#submitAccount").on('click', (e) => {
@@ -161,12 +174,42 @@
             createAccount(create);
         })
 
+        function beginEdit(e) {
+            var proc = {};
+            proc.get = $(e.currentTarget).data("id");
+            //* Send data to main process 
+            ipcRenderer.send('request-mainprocess-action', proc);
+            ipcRenderer.on('edit', (e, edit) => {
+                editTemplate = jsrender.templates('edit', path + 'edit.html');
+                renderTemplate(editTemplate, edit, '#edit');
+                $("#editAccount").on('click', editHandler)
+            })
+        }
+
+        function editHandler() {
+            var edit = {};
+            edit['id'] = $('#edit-form').find('#editId').val();
+            edit['name'] = $('#edit-form').find('#editName').val();
+            edit['username'] = $('#edit-form').find('#editUsername').val();
+            edit['password'] = $('#edit-form').find('#editPassword').val();
+            edit['remember'] = $('#edit-form').find('#editRemember').is(':checked');
+            editAccount(edit);
+        }
+
+        function editAccount(edit) {
+            var proc = {};
+            proc.put = edit;
+            ipcRenderer.send('request-mainprocess-action', proc);
+            ipcRenderer.send('refresh');
+        }
+
         function createAccount(create) {
             var proc = {}
             proc.post = create;
 
             //* Send data to main process
             ipcRenderer.send('request-mainprocess-action', proc);
+            ipcRenderer.send('refresh');
         }
 
         function launchAccount(e) {
@@ -175,12 +218,12 @@
 
             //* Send data to main process
             ipcRenderer.send('request-mainprocess-action', proc);
-            ipcRenderer.send('refresh');
         }
 
         function deleteAccount(e) {
             var proc = {};
             proc.delete = $(e.currentTarget).data("id");
+            //* Send data to main process
             ipcRenderer.send('request-mainprocess-action', proc);
             ipcRenderer.send('refresh');
         }

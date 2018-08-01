@@ -36,12 +36,8 @@ var userId = '';
 
 //todo improve the storage code it's messy and I've forgotten my logic behind it
 
-// TODO CHECK said ID is UNIQUE
-
 //? Maybe obfuscate JSON Storage ??
 //https://github.com/mongodb-js/objfuscate
-
-//TODO Maybe bcrypt the key
 
 //TODO separate crypto functions and base it off of below
 //* https://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved
@@ -70,7 +66,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 480,
         height: 380,
-        resizable: false,
+        // resizable: false,
         fullscreenable: false,
         icon: __dirname + "/icon.png",
         title: "Steam Switcher",
@@ -91,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -302,23 +298,32 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
 
             account.storeAccount(proc.post);
             accountsStore = account.updateStore();
-            //* Refresh
-            mainWindow.reload();
         }
         if (proc.get) {
-            log(proc.get);
+            var edit = account.getAccountById(proc.get);
+            mainWindow.webContents.send('edit', edit);
         }
         if (proc.put) {
             log(proc.put);
+
+            //* Generate & Store Key
+            proc.put.key = crypto.generateId(20);
+            //* Hash Key 
+            var key = crypto.createKey(proc.put.key);
+
+            //* Encrypt
+            proc.put.password = crypto.encryptPass(key, proc.put.password);
+
+            //todo below 
+            account.editAccount(proc.put);
+            accountsStore = account.updateStore();
         }
         if (proc.delete) {
             account.deleteAccount(proc.delete);
-            //? Maybe move to a CB for deleteAccount
             accountsStore = account.updateStore();
-            //* Refresh
-            mainWindow.reload();
         }
     }
+    // mainWindow.reload();
 });
 
 //* DOM ready, Get accounts to display
@@ -337,9 +342,10 @@ ipcMain.on('refresh', () => {
     mainWindow.reload();
 });
 
-//! When complete use electron-winstaller to build exes
-//? https://github.com/electron/windows-installer
 //* main process, for example app/main.js
+
+//! When complete use electron-winstaller to build installer
+//? https://github.com/electron/windows-installer
 // var electronInstaller = require('electron-winstaller');
 // resultPromise = electronInstaller.createWindowsInstaller({
 //     appDirectory: './dist/SteamSwitch-win32-x64',

@@ -9746,6 +9746,23 @@ footer.card-footer a:hover {
   color: grey;
 }
 
+.edit {
+  color: #f0f0f0;
+  transition: visibility 0s 0.12s linear, opacity 0.12s ease-in, transform 0.12s ease-in;
+}
+
+.edit label {
+  color: #f0f0f0;
+}
+
+.button.is-primary {
+  background: #1b1b1b;
+}
+
+.button.is-primary:hover, .button.is-primary.is-hovered {
+  background: grey;
+}
+
 .account {
   color: #f0f0f0;
   transition: visibility 0s 0.12s linear, opacity 0.12s ease-in, transform 0.12s ease-in;
