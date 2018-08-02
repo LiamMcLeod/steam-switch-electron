@@ -18,6 +18,10 @@ To delete all traces of this from your system beyond  deleting the application f
 
 	C:\Users\<username>\Documents\SteamSwitch
 
+## Images
+![Main App Screen](/images/MainScreen.png)
+![Add Account Screen](/images/AddScreen.png)
+![Edit Account Screen](/images/EditScreen.png)
 
 ## Todos
  - Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
