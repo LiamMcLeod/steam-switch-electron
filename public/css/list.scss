@@ -68,6 +68,11 @@ header a.card-header-icon {
 footer.card-footer {
     background: $color-dark;
     height: 38px;
+    border-top: 1px solid #1b1b1b;
+}
+
+.card-footer-item:not(:last-child) {
+    border-right: 1px solid #1b1b1b;
 }
 
 footer.card-footer a:hover {
