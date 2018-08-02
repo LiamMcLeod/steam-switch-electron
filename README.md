@@ -32,8 +32,6 @@ To delete all traces of this from your system beyond  deleting the application f
 
  - Maybe a masterpass system to be used with the key so that not all components used to form a key are available on system with a deep enough search
 
- - finish about modal
-
  - Other stuff listed in main.js
 
 ## License

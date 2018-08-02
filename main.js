@@ -297,7 +297,7 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             //* Launch Steam,
             launchSteam(proc.id);
             //* Create tray icon,
-            createTray(e);
+            createTray();
             //* Hide Window,
             mainWindow.hide();
         }
