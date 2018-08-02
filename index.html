@@ -4,7 +4,7 @@
 <head>
     <!-- Liam Mcloed, 2018 -->
     <meta charset="UTF-8">
-    <title>Steam Switcher</title>
+    <title>Steam Switch</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="public/css/all.min.css">
@@ -36,11 +36,11 @@
 <body>
     <header>
         <a class="hide-account" href="#">
-      <i id="account-hide" class="fas fa-times fa-lg hidden"></i>
-    </a>
+        <i id="account-hide" class="fas fa-times fa-lg hidden"></i>
+        </a>
         <a class="show-account" href="#">
-      <i id="account-show" class="fas fa-plus fa-lg"></i>
-    </a>
+        <i id="account-show" class="fas fa-plus fa-lg"></i>
+        </a>
     </header>
     <main class="content js-content">
         <div class="container">
@@ -130,14 +130,14 @@
 
             </div>
             <!-- ABOUT MODAL -->
-            <!-- <div id="about" class="content-body about hidden">
+            <div id="about" class="content-body about hidden">
 
-            </div> -->
+            </div>
         </div>
     </main>
-    <footer class="medium">
+    <footer class="medium about-footer">
         <div class="content has-text-centered">
-            <a id="modal-show" href="">
+            <a id="about-button" href="">
         About
       </a>
         </div>
@@ -147,14 +147,22 @@
     <!-- and Electron <script>document.write(process.versions.electron)</script>.-->
     <script>
         require("./renderer.js");
-        /**
-        $('.card-footer-item').on('click', (e) => {
-            launchAccount(e)
-        })
-        **/
 
-        //var editButton = $('.dropdown-item.edit-drop')
-        var editButton = $('.card-footer-item.edit');
+        var aboutButton = $('#about-button')
+        aboutButton.on('click', (e) => {
+            hideAll(false);
+            var aboutModal = $(".content-body.about");
+            //* TODO RENDER 
+            aboutTemplate = jsrender.templates('about', path + 'about.html');
+            renderTemplate(aboutTemplate, {}, '#about');
+
+            show(aboutModal);
+            switchButtons();
+            //* For some reason the page refreshes, so below is needed
+            e.preventDefault();
+        })
+
+        var editButton = $('.card-footer-item.edit-item');
         editButton.on('click', (e) => {
             hideAll(false);
             var edit = $(".content-body.edit");
@@ -163,12 +171,11 @@
             beginEdit(e)
         })
 
-        //var launchButton = $('.dropdown-item.launch-drop');
-        var launchButton = $('.card-footer-item.launch');
+        var launchButton = $('.card-footer-item.launch-item');
         launchButton.on('click', (e) => {
             launchAccount(e);
         })
-        //var deleteButton = $('.dropdown-item.delete-drop');
+
         var deleteButton = $('.delete-button');
         deleteButton.on('click', (e) => {
             deleteAccount(e);
@@ -237,6 +244,13 @@
             //* Send data to main process
             ipcRenderer.send('request-mainprocess-action', proc);
             ipcRenderer.send('refresh');
+        }
+
+        function openExternalLink(link) {
+            const {
+                shell
+            } = require('electron');
+            shell.openExternal(link);
         }
     </script>
 </body>

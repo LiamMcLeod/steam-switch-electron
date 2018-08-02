@@ -46,9 +46,12 @@ var userId = '';
 
 //todo settings file
 
+//todo maybe adjust  crypto to use username, encrypt entire JSON output???
+
 /** 
  * Import my own log system, just to ensure 
- * no or data make it out of the application
+ * nothing makes it out of the application
+ * in production
  */
 const {
     log,
@@ -69,7 +72,7 @@ function createWindow() {
         resizable: isDebug(),
         fullscreenable: false,
         icon: __dirname + "/favicon-32x32.png",
-        title: "Steam Switcher",
+        title: "Steam Switch",
         backgroundColor: '#303030',
         webPreferences: {
             darkTheme: true,
@@ -274,11 +277,11 @@ function launchSteam(id) {
 const steamOpen = require('./modules/steam').openEvent;
 const steamClose = require('./modules/steam').closeEvent;
 steamOpen.on('steamOpen', (e) => {
-    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switcher');
+    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switch');
 });
 
 steamClose.on('steamClose', (e) => {
-    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switcher');
+    mainWindow.setOverlayIcon(path.join(__dirname, "public/greenoverlay.png"), 'Steam Switch');
 });
 
 //* Event Listeners & Inter-Proc Comms
@@ -291,7 +294,12 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
     //* Basic controller for 
     if (proc) {
         if (proc.id) {
+            //* Launch Steam,
             launchSteam(proc.id);
+            //* Create tray icon,
+            createTray(e);
+            //* Hide Window,
+            mainWindow.hide();
         }
         if (proc.post) {
             //* Generate Id

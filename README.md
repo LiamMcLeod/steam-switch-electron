@@ -1,6 +1,6 @@
 # Steam Switch Electron
 
-Basic electron application to switch between multiple steam accounts. There are still various problems that I need to iron out, nothing that affects the security of the application, just the running e.g. it currently doesn't remember the account, for this registry tweaks need to be made. 
+Basic electron application to switch between multiple steam accounts. There are still various problems that I need to iron out, nothing that affects the security of the application, just the running e.g. it currently doesn't remember the account password on the steam client, for this registry tweaks need to be made. 
 
 AES-256 is to encrypt the passwords of your account, with a SHA-2 key created from a multiple sources: your hardware ID, a unique generated on first launch and and a pseudo random sequence generated upon each addition of an account.
 

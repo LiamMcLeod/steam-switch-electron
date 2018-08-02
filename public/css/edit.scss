@@ -1,4 +1,12 @@
 .edit {
+    padding-top: 25px;
+    background: $color-bg-dark;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
     color: $color;
     transition: visibility 0s.12s linear, opacity.12s ease-in, transform.12s ease-in; // 	margin: 50px 0 0 0; // padding: 50px 0 0 0;\
 }
@@ -8,7 +16,7 @@
 }
 
 .button.is-primary {
-    background: $color-bg-dark;
+    background: $color-dark;
 }
 
 .button.is-primary:hover,

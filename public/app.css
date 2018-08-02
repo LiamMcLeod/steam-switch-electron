@@ -9663,8 +9663,8 @@ body > header {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
   height: 30px;
+  width: 10px;
   z-index: 99;
 }
 
@@ -9678,6 +9678,7 @@ main {
 body > footer {
   height: 25px;
   position: fixed;
+  z-index: 1;
   bottom: 0;
   left: 0;
   right: 0;
@@ -9712,7 +9713,7 @@ a.show-account,
 .hide-account {
   position: fixed;
   top: 5px;
-  right: 5px;
+  left: 5px;
   color: grey;
   z-index: 1;
 }
@@ -9728,7 +9729,7 @@ header a.card-header-icon {
 
 .card {
   color: white;
-  width: 95%;
+  width: 88%;
   margin: 0 auto 25px auto;
 }
 
@@ -9753,9 +9754,10 @@ header a.card-header-icon {
   text-decoration: none;
 }
 
-.card-content {
+.card .card-content {
   background: #333;
   color: #f0f0f0;
+  padding: 0 .8rem 0 .8rem;
 }
 
 footer.card-footer {
@@ -9774,11 +9776,19 @@ footer.card-footer a:hover {
 
 .delete-col {
   color: #838383;
-  margin-top: -25px;
-  margin-right: -25px;
+  margin-top: -20px;
+  margin-right: -30px;
 }
 
 .edit {
+  padding-top: 25px;
+  background: #1b1b1b;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
   color: #f0f0f0;
   transition: visibility 0s 0.12s linear, opacity 0.12s ease-in, transform 0.12s ease-in;
 }
@@ -9788,7 +9798,7 @@ footer.card-footer a:hover {
 }
 
 .button.is-primary {
-  background: #1b1b1b;
+  background: #333;
 }
 
 .button.is-primary:hover, .button.is-primary.is-hovered {
@@ -9796,6 +9806,14 @@ footer.card-footer a:hover {
 }
 
 .account {
+  padding-top: 25px;
+  background: #1b1b1b;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
   color: #f0f0f0;
   transition: visibility 0s 0.12s linear, opacity 0.12s ease-in, transform 0.12s ease-in;
 }
@@ -9805,7 +9823,7 @@ footer.card-footer a:hover {
 }
 
 .button.is-primary {
-  background: #1b1b1b;
+  background: #333;
 }
 
 .button.is-primary:hover, .button.is-primary.is-hovered {
@@ -9813,27 +9831,44 @@ footer.card-footer a:hover {
 }
 
 .about {
-  height: 380px;
-  width: 500px;
-  max-width: 500px;
-  min-width: 500px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 2;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 0;
   background-color: rgba(202, 202, 202, 0.98);
-  color: grey;
-  pointer-events: none;
+  color: #1b1b1b;
   transition: visibility 0s .12s linear, opacity .12s ease-in, transform .12s ease-in;
+}
+
+.about .content {
+  padding-top: 10px;
+}
+
+.about p {
+  margin: 1em;
+}
+
+.about a {
+  color: #1b1b1b;
 }
 
 .fixed {
   position: fixed;
+}
+
+.about footer {
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
+
+.about .level:last-child {
+  margin-bottom: 0;
 }
 
 ::-webkit-scrollbar {

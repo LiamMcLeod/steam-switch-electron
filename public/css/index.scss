@@ -20,9 +20,9 @@ body>header {
     // background: $color-bg-md;
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 0; // right: 0;
     height: 30px;
+    width: 10px;
     z-index: 99;
 }
 
@@ -37,6 +37,7 @@ main {
 body>footer {
     height: 25px;
     position: fixed;
+    z-index: 1;
     bottom: 0;
     left: 0;
     right: 0;

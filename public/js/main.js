@@ -41,7 +41,7 @@ function showMainContent() {
  * Switches buttons based upon whether 
  * account creation div is shown
  */
-window.switchButtons = function switchButtons(def) {
+window.switchButtons = function switchButtons(def = false) {
     if (def) {
         show($('#account-show'));
         hide($('#account-hide'));
@@ -72,7 +72,7 @@ window.hideAll = function hideAll(showMain = true) {
     if (showMain) {
         showMainContent();
     }
-}
+};
 
 /**
  * @param  id  String  HTML id interacted with
@@ -190,8 +190,6 @@ $("#account-show").click(e => {
 $("#account-hide").on('click', (e) => {
     hideAll(false);
 });
-
-
 
 //* Load Linked Content
 //! Giving up on templates until I at least have the basics of the app down
