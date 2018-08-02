@@ -1,15 +1,24 @@
 <div class="card">
-    <div class="card-content">
-        <button data-id={{:id}} class="fright delete delete-button"></button>
-        <p class="title">
-            {{:name}} - {{:username}}
-        </p>
+    <div class="card-content columns is-mobile">
+        <div class="column is-2 is-mobile">
+            <i class="fab fa-steam-symbol fa-3x"></i>
+        </div>
+        <div class="column has-text-centered">
+            <p class="title">
+                {{:name}}
+            </p>
+        </div>
+        <div class="column is-1 is-mobile delete-col">
+            <a data-id={{:id}} href="#" class="delete-button">
+                <i class="fas fa-minus-circle fa-1x fright"></i>
+            </a>
+        </div>
     </div>
     <footer class="card-footer">
-        <a data-id={{:id}} href="#" class="card-footer-item edit">
+        <a data-id={{:id}} href="# " class="card-footer-item edit ">
                 Edit
         </a>
-        <a data-id={{:id}} href="#" class="card-footer-item launch">
+        <a data-id={{:id}} href="# " class="card-footer-item launch ">
                 Launch
         </a>
     </footer>

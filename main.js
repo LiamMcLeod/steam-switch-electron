@@ -87,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
 
     //* Main Window Event Listeners
@@ -133,17 +133,8 @@ app.on('ready', () => {
         });
     }
 
-    let modal = new BrowserWindow({
-        parent: mainWindow,
-        modal: true,
-        show: false
-    });
-    modal.loadURL('https://github.com');
-    modal.once('ready-to-show', () => {
-        modal.show();
-    });
-
     //* Attach local Shortcuts
+    //todo look into solving it
     /**
      *!Seem to get this
      *!https: //github.com/parro-it/electron-localshortcut/issues/59

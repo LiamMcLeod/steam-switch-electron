@@ -47,6 +47,15 @@ header a.card-header-icon {
     color: $color;
 }
 
+.card .columns {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.card .columns:not(:last-child) {
+    margin-bottom: 0;
+}
+
 .text-no-decoration {
     text-decoration: none;
 }
@@ -64,3 +73,11 @@ footer.card-footer {
 footer.card-footer a:hover {
     color: $color-accent;
 }
+
+.delete-col {
+    color: $color-subtle;
+    margin-top: -25px;
+    margin-right: -25px;
+}
+
+.delete-button {}

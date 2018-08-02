@@ -184,7 +184,6 @@
             var proc = {};
             proc.get = $(e.currentTarget).data("id");
             //* Send data to main process 
-            console.log($(e.currentTarget));
             ipcRenderer.send('request-mainprocess-action', proc);
             ipcRenderer.on('edit', (e, edit) => {
                 editTemplate = jsrender.templates('edit', path + 'edit.html');
@@ -229,6 +228,7 @@
 
         function deleteAccount(e) {
             var proc = {};
+            console.log($(e.currentTarget))
             proc.delete = $(e.currentTarget).data("id");
             //* Send data to main process
             ipcRenderer.send('request-mainprocess-action', proc);

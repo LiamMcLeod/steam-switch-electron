@@ -12,6 +12,7 @@ It is my first Electron app and really just an excuse to learn the framework.
 
 It only works on Windows, I really only thought of designing it for Windows. Probably not a great idea but, hey ho.
 
+It doesn't connect to the Internet in anyway, so you can add it to your firewall without issue and I advise that you do so that you too are sure. 
 
 ## Todos
 Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
