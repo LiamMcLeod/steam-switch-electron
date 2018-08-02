@@ -1,3 +1,4 @@
+![Logo](/images/icon.png)
 # Steam Switch Electron
 
 Basic electron application to switch between multiple steam accounts. There are still various problems that I need to iron out, nothing that affects the security of the application, just the running e.g. it currently doesn't remember the account password on the steam client, for this registry tweaks need to be made. 
@@ -20,8 +21,10 @@ To delete all traces of this from your system beyond  deleting the application f
 
 ## Images
 ![Main App Screen](/images/MainScreen.png)
+![Tray Icon Menu](/images/TrayMenu.png)
 ![Add Account Screen](/images/AddScreen.png)
 ![Edit Account Screen](/images/EditScreen.png)
+
 
 ## Todos
  - Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
