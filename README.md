@@ -14,18 +14,23 @@ It only works on Windows, I really only thought of designing it for Windows. Pro
 
 It doesn't connect to the Internet in anyway, so you can add it to your firewall without issue and I advise that you do so that you too are sure. 
 
+To delete all traces of this from your system beyond  deleting the application folder, you will want to remove the directory below.
+
+	C:\Users\<username>\Documents\SteamSwitch
+
+
 ## Todos
-Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
+ - Remember checkbox still doesn't work, as I need to look into the registry tweaks required to make it work
 
-Basic error checking and messaging
+ - Basic error checking and messaging
 
-Testing from a new system
+ - Testing from a new system
 
-Maybe a masterpass system to be used with the key so that not all components used to form a key are available on system with a deep enough search
+ - Maybe a masterpass system to be used with the key so that not all components used to form a key are available on system with a deep enough search
 
-finish about modal
+ - finish about modal
 
-Other stuff listed in main.js
+ - Other stuff listed in main.js
 
 ## License
 

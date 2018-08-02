@@ -1,6 +1,6 @@
 {
     "name": "SteamSwitch",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A minimal application to switch Steam profiles",
     "main": "main.js",
     "scripts": {

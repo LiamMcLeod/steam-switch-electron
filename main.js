@@ -87,7 +87,7 @@ function createWindow() {
 
     //* Open the DevTools.
     //! But must be off when debugging with VS Code
-    if (isDebug()){
+    if (isDebug()) {
         mainWindow.webContents.openDevTools();
     }
 
@@ -197,6 +197,8 @@ function createTray(e) {
         {
             label: 'Quit',
             click: function() {
+                //* Remove Tray Icon
+                tray.destroy();
                 //* Quit
                 app.quit();
             }
