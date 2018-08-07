@@ -17,8 +17,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#122024">
+
     <meta name="msapplication-TileColor" content="#222222">
     <meta name="theme-color" content="#222">
     <!-- HTML Imports -->
@@ -84,19 +83,19 @@
                             <div class="field">
                                 <label class="label">Name</label>
                                 <div class="control has-icons-left has-icons-right">
-                                    <input id="name" class="input" type="text" placeholder="Name" value="">
+                                    <input id="name" class="input" type="text" placeholder="Name">
                                     <span class="icon is-small is-left">
-                    <i class="fas fa-pencil-alt"></i>
-                  </span>
+                                       <i class="fas fa-pencil-alt"></i>
+                                    </span>
                                 </div>
                             </div>
                             <div class="field">
                                 <label class="label">Username</label>
                                 <div class="control has-icons-left has-icons-right">
-                                    <input id="username" class="input" type="text" placeholder="Username" value="">
+                                    <input id="username" class="input" type="text" placeholder="Username">
                                     <span class="icon is-small is-left">
-                    <i class="fas fa-user"></i>
-                  </span>
+                                       <i class="fas fa-user"></i>
+                                    </span>
                                 </div>
                             </div>
 
@@ -105,20 +104,20 @@
                                 <p class="control has-icons-left">
                                     <input id="password" class="input" type="password" placeholder="Password">
                                     <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                  </span>
+                                       <i class="fas fa-lock"></i>
+                                    </span>
                                 </p>
                             </div>
 
                             <label class="checkbox">
-                <input id="remember" type="checkbox"> Remember me
-              </label>
+                                <input id="remember" type="checkbox"> Remember me
+                            </label>
 
                             <div class="field">
                                 <p class="control">
                                     <button id="submitAccount" class="button is-primary fright">
-                    Add
-                  </button>
+                                        Add
+                                    </button>
                                 </p>
                             </div>
                         </form>
@@ -186,9 +185,18 @@
             create['name'] = $('#account-form').find('#name').val();
             create['username'] = $('#account-form').find('#username').val();
             create['password'] = $('#account-form').find('#password').val();
-            create['remember'] = $('#account-form').find('#remember').is(':checked');;
-            //TODO ERROR CHECK
-            createAccount(create);
+            create['remember'] = $('#account-form').find('#remember').is(':checked');
+
+            if (hasEmpty(create)) {
+                var error = {
+                    title: "Empty input",
+                    message: "One or more field was left empty.  Please try again."
+                }
+                ipcRenderer.send('show-error', error);
+                e.preventDefault();
+            } else {
+                createAccount(create);
+            }
         })
 
         function beginEdit(e) {
@@ -210,7 +218,16 @@
             edit['username'] = $('#edit-form').find('#editUsername').val();
             edit['password'] = $('#edit-form').find('#editPassword').val();
             edit['remember'] = $('#edit-form').find('#editRemember').is(':checked');
-            editAccount(edit);
+            if (hasEmpty(edit)) {
+                var error = {
+                    title: "Empty input",
+                    message: "One or more field was left empty. Please try again."
+                }
+                ipcRenderer.send('show-error', error);
+                e.preventDefault();
+            } else {
+                editAccount(edit);
+            }
         }
 
         function editAccount(edit) {

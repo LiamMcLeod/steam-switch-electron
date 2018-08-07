@@ -6,10 +6,12 @@ Liam McLeod, 2018.
 const {
     app,
     BrowserWindow,
+    dialog,
+    globalShortcut,
     Menu,
-    Tray,
     Notification,
-    globalShortcut
+    Tray
+
 } = require('electron');
 
 //* Misc Imports
@@ -251,6 +253,20 @@ function createNotification() {
     }
 }
 
+
+/**
+ * Simple Error Dialogue
+ */
+function createError(title, message) {
+    var options = {
+        title: title,
+        type: 'error',
+        buttons: ['OK'],
+        message: message
+    };
+    dialog.showMessageBox(mainWindow, options, () => {});
+}
+
 /**
  * @param  id  String  ID of account
  * 
@@ -315,6 +331,8 @@ ipcMain.on('request-mainprocess-action', (event, proc) => {
             //* Encrypt
             proc.post.password = crypto.encryptPass(key, proc.post.password);
 
+            //TODO ERROR CHECK
+
             account.storeAccount(proc.post);
             accountsStore = account.updateStore();
         }
@@ -355,6 +373,11 @@ ipcMain.on('dom-ready', () => {
 //* Request to refresh
 ipcMain.on('refresh', () => {
     mainWindow.reload();
+});
+
+//* Error feedback
+ipcMain.on('show-error', (e, error) => {
+    createError(error.title, error.message);
 });
 
 //* main process, for example app/main.js

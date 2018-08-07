@@ -49,7 +49,7 @@ window.switchButtons = function switchButtons(def = false) {
         toggle($('#account-show'));
         toggle($('#account-hide'));
     }
-}
+};
 
 /**
  * @param  showMain  boolean  show main content boolean
@@ -111,7 +111,7 @@ window.show = function show(el) {
     if (el.hasClass('hidden')) {
         el.removeClass('hidden');
     }
-}
+};
 
 /**
  * @param  el  Object  element to hide
@@ -138,6 +138,20 @@ function toggle(el) {
         el.addClass("hidden");
     }
 }
+
+/**
+ * @param   obj  Object  object to iterate through
+ * 
+ * Check for empty props
+ */
+window.hasEmpty = function hasEmpty(obj) {
+    for (var prop in obj) {
+        if (obj[prop] === "") {
+            return true;
+        }
+    }
+    return false;
+};
 
 //* JS Render Functions
 /**
