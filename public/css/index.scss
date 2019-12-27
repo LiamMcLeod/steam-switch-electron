@@ -1,12 +1,13 @@
 //* My CSS
 // Main Colour #2b2f46
 body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    background: $color-bg-dark;
-    color: $color;
-    height: 100%;
-    user-select: none; //! important
-    /*
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+		Helvetica, Arial, "Lucida Grande", sans-serif;
+	background: $color-bg-alt;
+	color: $color;
+	height: 100%;
+	user-select: none; //! important
+	/*
 	overflow-y: hidden;
 	overflow-x: hidden;
 	
@@ -16,37 +17,37 @@ body {
 	*/
 }
 
-body>header {
-    // background: $color-bg-md;
-    position: fixed;
-    top: 0;
-    left: 0; // right: 0;
-    height: 30px;
-    width: 10px;
-    z-index: 99;
+body > header {
+	// background: $color-bg-md;
+	position: fixed;
+	top: 0;
+	left: 0; // right: 0;
+	height: 30px;
+	width: 10px;
+	z-index: 99;
 }
 
 main {
-    padding-top: 15px; // height: 310px;
-    // height: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    min-height: 320px; // max-height: 80px;
+	padding-top: 15px; // height: 310px;
+	// height: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	min-height: 320px; // max-height: 80px;
 }
 
-body>footer {
-    height: 25px;
-    position: fixed;
-    z-index: 1;
-    bottom: 0;
-    left: 0;
-    right: 0;
+body > footer {
+	height: 25px;
+	position: fixed;
+	z-index: 1;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 
-body>footer a {
-    color: $color-accent;
+body > footer a {
+	color: $color-accent;
 }
 
 a {
-    color: $color;
+	color: $color;
 }
