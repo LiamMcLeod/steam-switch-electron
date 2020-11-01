@@ -22,25 +22,28 @@ const {
  */
 function steamExists(id, cb) {
     var exec = require('child_process').exec;
+    var exists = false;
     exec('tasklist', function(err, stdout, stderr) {
-        var steamExists = false;
         if (err) {
             log(err);
         }
         if (stdout) {
-            // log(stdout);
-            if (stdout.match("Steam.exe")) {
-                steamExists = true;
+            log(stdout);
+            var regex = /(steam).(exe)/gim;
+            // if (stdout.match("steam.exe")) {
+            if (stdout.match(regex)) {
+                exists = true;
             }
         }
         if (stderr) {
             log(stderr);
         }
         if (id && cb) {
-            cb(id, steamExists);
+            cb(id, exists);
         } else {
-            return steamExists;
+            return exists;
         }
+        return exists
     });
 }
 
