@@ -34,7 +34,7 @@
         "electron-packager": "^12.2.0",
         "electron-winstaller": "^2.7.0",
         "gulp": "^3.9.1",
-        "i": "^0.3.6",
+        "i": "^0.3.7",
         "jquery": "^3.5.0",
         "laravel-elixir": "^6.0.0-18",
         "laravel-elixir-webpack-official": "^1.0.10"
