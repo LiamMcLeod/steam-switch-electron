@@ -33,7 +33,7 @@
         "electron-builder": "^20.44.4",
         "electron-packager": "^12.2.0",
         "electron-winstaller": "^2.7.0",
-        "gulp": "^3.9.1",
+        "gulp": "^4.0.2",
         "i": "^0.3.6",
         "jquery": "^3.5.0",
         "laravel-elixir": "^6.0.0-18",
